@@ -37,6 +37,7 @@ h2.small { font-size: 12px; color: var(--muted); text-transform: uppercase; lett
 .call { display: grid; grid-template-columns: 14px 1fr auto auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 13px; animation: fade .25s ease; }
 .call .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); }
 .call .dot.ok { background: var(--green); } .call .dot.cached { background: var(--blue); } .call .dot.fail { background: var(--red); } .call .dot.pending { background: var(--amber); animation: pulse 1s infinite; }
+.call > span:nth-child(2) { min-width: 0; }
 .call .ep { font-family: var(--mono); }
 .call .fields { color: var(--dim); font-size: 11px; display: block; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .call .n { color: var(--muted); font-family: var(--mono); font-size: 12px; white-space: nowrap; }
@@ -73,7 +74,8 @@ details.drawer[open] summary { border-bottom: 1px solid var(--line); }
 .deep { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; font-size: 13px; color: var(--muted); }
 .deep .agree { color: var(--green); } .deep .disagree { color: var(--red); }
 footer.foot { margin-top: 48px; color: var(--dim); font-size: 12px; line-height: 1.6; border-top: 1px solid var(--line); padding-top: 16px; }
-.shareline { margin-top: 10px; font-size: 13px; color: var(--muted); }
+.shareline { margin-top: 10px; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.meta span, ul.evidence li .src, .deep a { overflow-wrap: anywhere; }
 @media (max-width: 640px) {
   .wrap { padding: 20px 14px 60px; }
   .hook { font-size: 24px; }
