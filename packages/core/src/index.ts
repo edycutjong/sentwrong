@@ -4,3 +4,15 @@ export { CachedNansenClient, cachedClientFromEnv, DiskCache, MemoryCache, cacheK
 export type { CacheStore, CacheEntry, CachedClientOptions } from "./cache.js";
 export { nansen, CHAINS, ALL_TIME } from "./nansen.js";
 export type * from "./nansen.js";
+export { parseLabel, stripLabel, isDepositLabel, isContractLabel } from "./labels.js";
+export type { ParsedLabel } from "./labels.js";
+export { gather, splitDirection, isBurnRejection, EVM_ADDRESS } from "./lookups.js";
+export type { Lookups, LookupResult, TxLookup, GatherOptions } from "./lookups.js";
+export { classify, ownLabels, outboundDestinations, funderLabel, outflowConcentration, activity } from "./classify.js";
+export type { Decision, Evidence, Route, Confidence } from "./classify.js";
+export { actionFor } from "./text.js";
+export type { Action, Transfer } from "./text.js";
+export { sentWrong, decisionHash, rowsFor, findTransfer } from "./verdict.js";
+export type { Verdict, VerdictOptions, Row } from "./verdict.js";
+export { writeFixture, readFixture, listFixtures, fixtureStore, fixtureName, FIXTURES_DIR } from "./fixtures.js";
+export type { Fixture } from "./fixtures.js";
