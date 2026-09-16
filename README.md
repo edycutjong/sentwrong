@@ -4,7 +4,7 @@
 
 **Sent crypto to the wrong address? Paste it. Nansen tells you which of four recovery routes you're on — and drafts the ticket.**
 
-[Live preview](https://sentwrong-4y8xarjvl-edy-cus-projects.vercel.app) · [30-second demo](DEMO.md) · [How it decides](docs/SCORING.md) · [Architecture](ARCHITECTURE.md) · [Nansen API friction log](docs/DX-REPORT.md)
+[Live preview](https://sentwrong-oisot76tw-edy-cus-projects.vercel.app) · [30-second demo](DEMO.md) · [How it decides](docs/SCORING.md) · [Architecture](ARCHITECTURE.md) · [Nansen API friction log](docs/DX-REPORT.md)
 
 ![verdict for a Binance deposit address](docs/screenshots/02-binance-deposit.png)
 
