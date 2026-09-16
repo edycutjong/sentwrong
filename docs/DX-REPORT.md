@@ -1,0 +1,17 @@
+# DX-REPORT.md — Nansen API friction log (everything that surprised us, 2026-09-16)
+
+Written for the Nansen API team; every item was hit for real while building this. Ordered by impact on the build.
+
+1. **Entity labels are in one 1-credit place only.** `profiler/address/counterparties.counterparty_address_label`, `first-funder.first_funder_name` and `related-wallets.address_label` return wealth/activity tags ("Token Billionaire", "High Activity", ENS names). Binance 14 — the most famous labelled address on Ethereum — comes back as `["Token Billionaire"]`. The entity name appears in `profiler/address/labels` (100 credits) and, unexpectedly, in `transaction-with-token-transfer-lookup.token_transfer_array[].from/to_address_label` ("🏦 Binance 14", "🏦 Binance: Deposit") for 1 credit. Nothing in the docs says the transaction lookup carries entity labels; it is the best-value field in the API for identity questions. Suggest: expose the same label string on the profiler endpoints, or document the difference.
+2. **The all-time date range times out on busy addresses.** `profiler/address/transactions` with `date: {from: 2015-07-30, to: 2030-01-01}` returns **HTTP 500 after ~30 s** on the Uniswap V2 router and hangs past 8 s on Binance 14 and the USDT contract; a 14-day window answers in 1–6 s. `counterparties` behaves the same. Suggest: a documented max range, or a fast-fail 4xx instead of a 30 s 500.
+3. **Burn addresses are rejected with 422** (`"Burn address not allowed"`) on `transactions` and `counterparties`, but `first-funder` and `related-wallets` answer normally for the same address (with 20 "Multisig Signer of" rows for 0x…dEaD). We use the 422 as a signal; documenting it would make that intentional.
+4. **`transaction-with-token-transfer-lookup` top-level `to_address_label` is not the transfer's label.** For an ERC-20 transfer the top-level `to` is the token contract and its label shows an ENS reverse record ("pssssssshao.eth" for USDT, "usdc.eth*" for USDC). Only `token_transfer_array[]` labels are usable.
+5. **`token_symbol` sometimes contains U+FFF0** ("USD￰T") in multi-transfer lookups, and spoof tokens with homoglyph symbols ("ÚЅDТ") pass `hide_spam_token: true`. The latter is actually useful (it is how we detect address poisoning) but "hide spam" suggests otherwise.
+6. **`profiler/address/first-funder` returns `data: []`** for wallets that never received native gas (e.g. a fresh Binance withdrawal recipient) — documented, and correct, but a `reason` field would save a lookup.
+7. **`search/entity-name` is a name search**, `search/general` is the endpoint that accepts an address. The names suggest the opposite.
+8. **`counterparties` returns one row per (address, token)**, so the same counterparty appears several times; `group_by: "entity"` collapses rows but does not expose the entity name, so it cannot be used to *name* the counterparty.
+9. **Address validation is strict and helpful** (`422 Invalid address format` for 39 hex chars) — good; the CLI validates client-side to avoid the round trip.
+10. **Rate limits were never an issue** at ≤ 10 calls per verdict; the free-tier 15 req/s cap was not approached.
+11. **Emoji prefixes carry meaning** (🏦 exchange-like incl. DEX routers, 🤖 automated/contract) but are undocumented; we strip them before parsing and treat 🏦 as a hint only.
+
+Positive notes: `X-Nansen-Credits-Cost/Remaining` headers make budgeting trivial; 4xx bodies are JSON with a `message`; the openapi.json is accurate for every body we send.
