@@ -162,8 +162,8 @@
         {
           "code": "OUTFLOW_CONCENTRATED",
           "field": "profiler/address/counterparties → volume_out_usd",
-          "value": "100% of $5,179 to 0xa9d1…3e43",
-          "meaning": "All outflow goes to one counterparty: the sweep pattern of a deposit address."
+          "value": "100% to 0xa9d1…3e43",
+          "meaning": "All outflow ($5,179 at today's prices) goes to one counterparty: the sweep pattern of a deposit address."
         },
         {
           "code": "FUNDED_BY_EXCHANGE",
@@ -178,7 +178,7 @@
     "action": {
       "kind": "ticket",
       "title": "Support ticket for Coinbase",
-      "text": "Subject: Funds sent to a Coinbase deposit address by mistake — recovery request\n\nHello Coinbase support,\n\nOn [date] I sent [amount and token] from my wallet [your address] to 0x5523aec7e0a5d5a02a80adbb5a8823732729c691 on ethereum (transaction [transaction hash]).\n\nThis was a mistake. 0x5523aec7e0a5d5a02a80adbb5a8823732729c691 is a Coinbase customer deposit address — Nansen labels it \"🏦 Coinbase: Deposit [0x5523ae]\" and its transfers are swept into Coinbase's own wallets. It may belong to another Coinbase customer, or to an old account of mine. Please locate the account that owns this deposit address and either credit the funds to it (if it is mine) or return them to [your address].\n\nEvidence (Nansen API):\n- transaction-with-token-transfer-lookup → token_transfer_array[].from_address_label: 🏦 Coinbase: Deposit [0x5523ae]\n- transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label: 🤖 🏦 Coinbase [0xa9d1e0]\n- profiler/address/counterparties → volume_out_usd: 100% of $5,179 to 0xa9d1…3e43\n- profiler/address/first-funder → first_funder_address (looked up): 🤖 🏦 Coinbase [0xa9d1e0]\n\nAccount email: [your Coinbase account email]\nThank you,\n[your name]"
+      "text": "Subject: Funds sent to a Coinbase deposit address by mistake — recovery request\n\nHello Coinbase support,\n\nOn [date] I sent [amount and token] from my wallet [your address] to 0x5523aec7e0a5d5a02a80adbb5a8823732729c691 on ethereum (transaction [transaction hash]).\n\nThis was a mistake. 0x5523aec7e0a5d5a02a80adbb5a8823732729c691 is a Coinbase customer deposit address — Nansen labels it \"🏦 Coinbase: Deposit [0x5523ae]\" and its transfers are swept into Coinbase's own wallets. It may belong to another Coinbase customer, or to an old account of mine. Please locate the account that owns this deposit address and either credit the funds to it (if it is mine) or return them to [your address].\n\nEvidence (Nansen API):\n- transaction-with-token-transfer-lookup → token_transfer_array[].from_address_label: 🏦 Coinbase: Deposit [0x5523ae]\n- transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label: 🤖 🏦 Coinbase [0xa9d1e0]\n- profiler/address/counterparties → volume_out_usd: 100% to 0xa9d1…3e43\n- profiler/address/first-funder → first_funder_address (looked up): 🤖 🏦 Coinbase [0xa9d1e0]\n\nAccount email: [your Coinbase account email]\nThank you,\n[your name]"
     },
     "rows": [
       {
@@ -234,8 +234,8 @@
           "limit": 10
         },
         "credits": 0,
-        "ms": 492,
-        "cached": false,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "tokens[].address",
@@ -243,52 +243,8 @@
           "entities[].name"
         ],
         "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
-        "attempts": 1,
-        "totalMs": 492,
-        "ok": true
-      },
-      {
-        "endpoint": "profiler/address/first-funder",
-        "body": {
-          "address": "0x5523aec7e0a5d5a02a80adbb5a8823732729c691",
-          "chain": "all"
-        },
-        "credits": 1,
-        "ms": 357,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].first_funder_address",
-          "data[].first_funder_name",
-          "data[].transaction_hash"
-        ],
-        "responseHash": "78c29b6870cd70ce5edb9fab6aa2392d28afd9e01fb027b51c6d18608943c236",
-        "attempts": 1,
-        "totalMs": 358,
-        "ok": true
-      },
-      {
-        "endpoint": "profiler/address/related-wallets",
-        "body": {
-          "address": "0x5523aec7e0a5d5a02a80adbb5a8823732729c691",
-          "chain": "ethereum",
-          "pagination": {
-            "page": 1,
-            "per_page": 50
-          }
-        },
-        "credits": 1,
-        "ms": 615,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].address",
-          "data[].relation",
-          "data[].address_label"
-        ],
-        "responseHash": "fbc9185b69af47ea3731c53e8bc735e5f5dacd1a8741c128e385625fd7bcf1ae",
-        "attempts": 1,
-        "totalMs": 616,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -312,9 +268,9 @@
             }
           ]
         },
-        "credits": 1,
-        "ms": 1425,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].method",
@@ -324,8 +280,52 @@
           "data[].transaction_hash"
         ],
         "responseHash": "0361bc263dd8d098cac5e25d4937386b179bebb8fd7cf440a8c56c6dbfa4db1c",
-        "attempts": 1,
-        "totalMs": 1425,
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/related-wallets",
+        "body": {
+          "address": "0x5523aec7e0a5d5a02a80adbb5a8823732729c691",
+          "chain": "ethereum",
+          "pagination": {
+            "page": 1,
+            "per_page": 50
+          }
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].address",
+          "data[].relation",
+          "data[].address_label"
+        ],
+        "responseHash": "fbc9185b69af47ea3731c53e8bc735e5f5dacd1a8741c128e385625fd7bcf1ae",
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/first-funder",
+        "body": {
+          "address": "0x5523aec7e0a5d5a02a80adbb5a8823732729c691",
+          "chain": "all"
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].first_funder_address",
+          "data[].first_funder_name",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "78c29b6870cd70ce5edb9fab6aa2392d28afd9e01fb027b51c6d18608943c236",
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -350,9 +350,9 @@
             }
           ]
         },
-        "credits": 5,
-        "ms": 584,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].counterparty_address",
@@ -362,48 +362,8 @@
           "data[].volume_out_usd"
         ],
         "responseHash": "7c0dac12b2cd4e760ab5fbdc3245d42b2b5a93c56c45c08529624df1ee8bcd79",
-        "attempts": 1,
-        "totalMs": 584,
-        "ok": true
-      },
-      {
-        "endpoint": "transaction-with-token-transfer-lookup",
-        "body": {
-          "chain": "ethereum",
-          "transaction_hash": "0x2fd9a82e146a8c7b51f481caf7a198df94f81c64cf38c272a6782e6f4c7d21e3"
-        },
-        "credits": 1,
-        "ms": 669,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].to_address_label",
-          "data[].token_transfer_array[].to_address_label",
-          "data[].token_transfer_array[].from_address_label"
-        ],
-        "responseHash": "bba40216c3c46a1b2372185c9d0028b06d37f9adb11a174478ff118bfd41d62e",
-        "attempts": 1,
-        "totalMs": 669,
-        "ok": true
-      },
-      {
-        "endpoint": "transaction-with-token-transfer-lookup",
-        "body": {
-          "chain": "ethereum",
-          "transaction_hash": "0x74f87577b91406b16ba36f544653a01a5803e80cc7bef874488d49ba134417af"
-        },
-        "credits": 1,
-        "ms": 747,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].to_address_label",
-          "data[].token_transfer_array[].to_address_label",
-          "data[].token_transfer_array[].from_address_label"
-        ],
-        "responseHash": "67c198b2f498134df9618c845ca2fc47ba6b107d6edcf0a9ba95425c6a9b95ee",
-        "attempts": 1,
-        "totalMs": 747,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -412,9 +372,9 @@
           "chain": "ethereum",
           "transaction_hash": "0x074db50b019aaa913b69f94e818103fe6554c89a432e9dd3ac8d3aa76ba45b87"
         },
-        "credits": 1,
-        "ms": 904,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].to_address_label",
@@ -422,8 +382,48 @@
           "data[].token_transfer_array[].from_address_label"
         ],
         "responseHash": "913d7ae79d11198e007dc1458dc291f1e1290ad832fd17c49b0cee6b5cd84d3a",
-        "attempts": 1,
-        "totalMs": 904,
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "transaction-with-token-transfer-lookup",
+        "body": {
+          "chain": "ethereum",
+          "transaction_hash": "0x74f87577b91406b16ba36f544653a01a5803e80cc7bef874488d49ba134417af"
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].to_address_label",
+          "data[].token_transfer_array[].to_address_label",
+          "data[].token_transfer_array[].from_address_label"
+        ],
+        "responseHash": "67c198b2f498134df9618c845ca2fc47ba6b107d6edcf0a9ba95425c6a9b95ee",
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "transaction-with-token-transfer-lookup",
+        "body": {
+          "chain": "ethereum",
+          "transaction_hash": "0x2fd9a82e146a8c7b51f481caf7a198df94f81c64cf38c272a6782e6f4c7d21e3"
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].to_address_label",
+          "data[].token_transfer_array[].to_address_label",
+          "data[].token_transfer_array[].from_address_label"
+        ],
+        "responseHash": "bba40216c3c46a1b2372185c9d0028b06d37f9adb11a174478ff118bfd41d62e",
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -432,9 +432,9 @@
           "chain": "ethereum",
           "transaction_hash": "0x02041500c33e2c0f96eaf646c6c253b8a82f5dc3e370c1c82cdac2834a7c179b"
         },
-        "credits": 1,
-        "ms": 910,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].to_address_label",
@@ -442,17 +442,17 @@
           "data[].token_transfer_array[].from_address_label"
         ],
         "responseHash": "b203bff30a5d0baa94d582fe79f05938aa9f0c1741db3159f0f536453f14bef9",
-        "attempts": 1,
-        "totalMs": 911,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       }
     ],
-    "credits": 12,
+    "credits": 0,
     "calls": 9,
-    "cachedCalls": 0,
+    "cachedCalls": 9,
     "skipped": [],
-    "ms": 3415,
+    "ms": 0,
     "asOf": "2026-09-16T14:38:18.745Z",
-    "hash": "531a10498a67cfe9559b9616fa10d4391d111624784c04e6f86387c9f650dedb"
+    "hash": "0ecf20faa610b11f2ac8b444e9f6a2b45b29754f57a9db37245a75aa1e06ff79"
   }
 }

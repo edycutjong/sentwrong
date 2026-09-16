@@ -3,10 +3,14 @@
  * evidence, same decision hash, zero network calls, zero credits. Exit 1 on any mismatch. No API key needed.
  *
  *   npm run verify
+ *   npm run verify -- --update     # after an INTENTIONAL engine change: rewrite each fixture's verdict from its recorded
+ *                                  # responses (the responses themselves are never touched) and say which ones changed
  */
+import { writeFileSync } from "node:fs";
 import { CachedNansenClient, sentWrong, listFixtures, readFixture, fixtureStore, type Verdict } from "../packages/core/src/index.js";
 
 process.env.NANSEN_OFFLINE = "1";
+const UPDATE = process.argv.includes("--update");
 const files = listFixtures();
 if (files.length === 0) { console.error("no fixtures/ — run `npm run seed` first"); process.exit(1); }
 
@@ -24,6 +28,12 @@ for (const path of files) {
   let replay: Verdict | undefined;
   try { replay = await sentWrong(client, f.address, { ...f.options, now: f.now }); }
   catch (e) { problems.push(`threw: ${(e as Error).message.slice(0, 120)}`); }
+  if (replay && UPDATE) {
+    const changed = replay.hash !== f.verdict.hash;
+    writeFileSync(path, JSON.stringify({ ...f, verdict: replay }, null, 2) + "\n");
+    console.log(`${changed ? "↻" : "="} ${f.address.slice(0, 10)}…${f.options.sender ? " --from" : ""}  ${changed ? `${f.verdict.hash.slice(0, 12)} → ${replay.hash.slice(0, 12)}` : replay.hash.slice(0, 12)}  ${replay.decision.route}/${replay.decision.sub}`);
+    ok++; continue;
+  }
   if (replay) {
     const want = JSON.stringify(projection(f.verdict)), got = JSON.stringify(projection(replay));
     if (replay.hash !== f.verdict.hash) problems.push(`hash ${replay.hash.slice(0, 12)} ≠ recorded ${f.verdict.hash.slice(0, 12)}`);
@@ -40,5 +50,5 @@ for (const path of files) {
     console.log(`✔ ${label} ${replay!.hash.slice(0, 12)}  ${replay!.provenance.length} calls replayed · ${replay!.decision.route}/${replay!.decision.sub} · recorded ${f.recordedAt.slice(0, 16)}Z · ${f.edge}`);
   } else { failures.push(path); console.log(`✖ ${label} ${problems.join("; ")}`); }
 }
-console.log(`\n${ok}/${files.length} verdicts reproduced offline`);
+console.log(UPDATE ? `\n${ok}/${files.length} fixture verdicts rewritten from their recorded responses` : `\n${ok}/${files.length} verdicts reproduced offline`);
 if (failures.length) process.exit(1);

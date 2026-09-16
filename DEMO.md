@@ -14,7 +14,7 @@
 
 Everything on screen is live; a rehearsal warms the 24 h cache, so if Nansen is slow on the day the rows still resolve (they say "cached").
 
-## The hero query, real output (2026-09-16, `npm run sentwrong -- 0xe460774c849089ee3edf0fb06da14c066caabbef --explain`)
+## The hero query, real output (2026-09-16 15:08 UTC, `npm run sentwrong -- 0xe460774c849089ee3edf0fb06da14c066caabbef --explain --no-cache`, verbatim)
 
 ```
 0xe460774c849089ee3edf0fb06da14c066caabbef on ethereum
@@ -30,21 +30,46 @@ This is a Binance deposit address. Recoverable through Binance support.
     transaction-with-token-transfer-lookup → token_transfer_array[].from_address_label = 🏦 Binance: Deposit [0xe46077]
   ✔ Everything it receives is swept into Binance's own wallet.
     transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label = 🏦 Binance 14 [0x28c6c0]
-  ✔ All outflow goes to one counterparty: the sweep pattern of a deposit address.
-    profiler/address/counterparties → volume_out_usd = 100% of $2,953 to 0x28c6…1d60
+  ✔ All outflow ($2,953 at today's prices) goes to one counterparty: the sweep pattern of a deposit address.
+    profiler/address/counterparties → volume_out_usd = 100% to 0x28c6…1d60
   ✔ Binance paid this address's first gas — exchanges do that for their deposit addresses.
     profiler/address/first-funder → first_funder_address (looked up) = 🏦 Binance [0x943080]
 
-rule 3 fired · decision hash 1a3ea6aded8c27b746cd8bfab96832e32f4685e980e92dd80be30685edb92b18
-   live search/general                             0 cr   587 ms
-   live profiler/address/first-funder              1 cr   419 ms
-   live profiler/address/related-wallets           1 cr   460 ms
-   live profiler/address/transactions              1 cr   761 ms   (14-day window)
-   live profiler/address/transactions              1 cr   881 ms   (all-time — the 14-day page was not full)
-   live profiler/address/counterparties            5 cr   994 ms
-   live transaction-with-token-transfer-lookup     1 cr   713 ms   ×4
-13 credits · 10 calls (0 cached) · 3.9s · verdict 1a3ea6aded8c
+Support ticket for Binance
+────────────────────────────────────────────────────────────
+Subject: Funds sent to a Binance deposit address by mistake — recovery request
+
+Hello Binance support,
+
+On [date] I sent [amount and token] from my wallet [your address] to 0xe460774c849089ee3edf0fb06da14c066caabbef on ethereum (transaction [transaction hash]).
+
+This was a mistake. 0xe460774c849089ee3edf0fb06da14c066caabbef is a Binance customer deposit address — Nansen labels it "🏦 Binance: Deposit [0xe46077]" and its transfers are swept into Binance's own wallets. It may belong to another Binance customer, or to an old account of mine. Please locate the account that owns this deposit address and either credit the funds to it (if it is mine) or return them to [your address].
+
+Evidence (Nansen API):
+- transaction-with-token-transfer-lookup → token_transfer_array[].from_address_label: 🏦 Binance: Deposit [0xe46077]
+- transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label: 🏦 Binance 14 [0x28c6c0]
+- profiler/address/counterparties → volume_out_usd: 100% to 0x28c6…1d60
+- profiler/address/first-funder → first_funder_address (looked up): 🏦 Binance [0x943080]
+
+Account email: [your Binance account email]
+Thank you,
+[your name]
+────────────────────────────────────────────────────────────
+rule 3 fired · decision hash 3ea6cfcd752bc589ad424a5d3b0431c3631ad70a3b11ed1e64e8df12a1185027
+   live search/general                             0 cr   591 ms  fields: tokens[].address, tokens[].chain, entities[].name
+   live profiler/address/first-funder              1 cr   373 ms  fields: data[].first_funder_address, data[].first_funder_name, data[].transaction_hash
+   live profiler/address/related-wallets           1 cr   548 ms  fields: data[].address, data[].relation, data[].address_label
+   live profiler/address/transactions              1 cr   738 ms  fields: data[].method, data[].tokens_sent[].to_address, data[].tokens_received[].from_address, data[].block_timestamp, data[].transaction_hash
+   live profiler/address/counterparties            5 cr   333 ms  fields: data[].counterparty_address, data[].counterparty_address_label, data[].interaction_count, data[].volume_in_usd, data[].volume_out_usd
+   live profiler/address/transactions              1 cr   919 ms  fields: data[].method, data[].tokens_sent[].to_address, data[].tokens_received[].from_address, data[].block_timestamp, data[].transaction_hash
+   live transaction-with-token-transfer-lookup     1 cr   657 ms  fields: data[].to_address_label, data[].token_transfer_array[].to_address_label, data[].token_transfer_array[].from_address_label
+   live transaction-with-token-transfer-lookup     1 cr   802 ms  fields: data[].to_address_label, data[].token_transfer_array[].to_address_label, data[].token_transfer_array[].from_address_label
+   live transaction-with-token-transfer-lookup     1 cr  1121 ms  fields: data[].to_address_label, data[].token_transfer_array[].to_address_label, data[].token_transfer_array[].from_address_label
+   live transaction-with-token-transfer-lookup     1 cr  1634 ms  fields: data[].to_address_label, data[].token_transfer_array[].to_address_label, data[].token_transfer_array[].from_address_label
+13 credits · 10 calls (0 cached) · 3.9s · verdict 3ea6cfcd752b
 ```
+
+A second `--no-cache` run 45 s later: `13 credits · 10 calls (0 cached) · 3.9s · verdict 3ea6cfcd752b` — same hash. (`volume_out_usd` is priced at current rates and drifts by the minute, so the hashed evidence value is the outflow *share*, not the dollars.)
 
 ## Benchmark — `npm run bench` (13 addresses × 3 runs, live, 2026-09-16 15:0x UTC)
 

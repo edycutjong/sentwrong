@@ -47,8 +47,8 @@ This is a Binance deposit address. Recoverable through Binance support.
     transaction-with-token-transfer-lookup → token_transfer_array[].from_address_label = 🏦 Binance: Deposit [0xe46077]
   ✔ Everything it receives is swept into Binance's own wallet.
     transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label = 🏦 Binance 14 [0x28c6c0]
-  ✔ All outflow goes to one counterparty: the sweep pattern of a deposit address.
-    profiler/address/counterparties → volume_out_usd = 100% of $2,953 to 0x28c6…1d60
+  ✔ All outflow ($2,953 at today's prices) goes to one counterparty: the sweep pattern of a deposit address.
+    profiler/address/counterparties → volume_out_usd = 100% to 0x28c6…1d60
   ✔ Binance paid this address's first gas — exchanges do that for their deposit addresses.
     profiler/address/first-funder → first_funder_address (looked up) = 🏦 Binance [0x943080]
 
@@ -56,7 +56,7 @@ Support ticket for Binance
 ────────────────────────────────────────────────────────────
 Subject: Funds sent to a Binance deposit address by mistake — recovery request
 …
-13 credits · 10 calls (0 cached) · 3.9s · verdict 1a3ea6aded8c
+13 credits · 10 calls (0 cached) · 3.9s · verdict 3ea6cfcd752b
 ```
 
 Options: `--from <your address>` (own-wallet check + finds your transfer for the ticket) · `--chain ethereum|base|arbitrum|polygon|optimism|bnb|avalanche|linea` · `--json` · `--explain` (rule fired, every call with fields and timing) · `--deep` (one `profiler/address/labels` call, **100 credits**, cost printed, shows whether it agrees) · `--no-cache`.
@@ -65,17 +65,17 @@ Web app: `npm run dev -w apps/web` → http://localhost:3000 (same engine; the k
 
 ## Runs in under 10 minutes
 
-Timed on a clean clone, macOS, Node 22, 2026-09-16:
+Timed with `date` around each step on a fresh clone into an empty directory (macOS, Node 22, warm npm cache, 2026-09-16 15:05 UTC):
 
-| Step | Command | Time |
+| Step | Command | Measured |
 |---|---|---|
-| 1 | `git clone … && cd sentwrong && npm install` | 0:35 |
-| 2 | `export NANSEN_API_KEY=…` | 0:05 |
-| 3 | `npm run sentwrong -- 0xe460774c849089ee3edf0fb06da14c066caabbef` (live, 13 credits) | 0:05 |
-| 4 | `npm run verify` — 13 recorded verdicts replayed offline, 0 credits, 0 network | 0:03 |
-| 5 | `npm test` — 111 vitest tests | 0:06 |
-| 6 | `npm run dev -w apps/web` and paste an address | 0:20 |
-| | **Total** | **≈ 1:15** |
+| 1 | `git clone https://github.com/edycutjong/sentwrong && cd sentwrong && npm install` | 7 s |
+| 2 | `export NANSEN_API_KEY=…` | typing |
+| 3 | `npm run sentwrong -- 0xe460774c849089ee3edf0fb06da14c066caabbef --explain` (live, 13 credits) | 6 s (5.0 s of it Nansen) |
+| 4 | `npm run verify` — 13 recorded verdicts replayed offline, 0 credits, 0 network | < 1 s |
+| 5 | `npm test` — 111 vitest tests | 3 s |
+| 6 | `npm run dev -w apps/web`, open http://localhost:3000, paste an address | ~20 s (first compile) |
+| | **Total, including reading this README** | **well under 10 minutes; the commands themselves take about 40 s** (a cold npm cache adds a minute or two) |
 
 ## Nansen integration
 

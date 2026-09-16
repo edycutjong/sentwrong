@@ -187,8 +187,8 @@
           "limit": 10
         },
         "credits": 0,
-        "ms": 567,
-        "cached": false,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "tokens[].address",
@@ -196,52 +196,8 @@
           "entities[].name"
         ],
         "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
-        "attempts": 1,
-        "totalMs": 567,
-        "ok": true
-      },
-      {
-        "endpoint": "profiler/address/first-funder",
-        "body": {
-          "address": "0x4004000c2108e1ed5206b42a3baca0969cc6a02c",
-          "chain": "all"
-        },
-        "credits": 1,
-        "ms": 290,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].first_funder_address",
-          "data[].first_funder_name",
-          "data[].transaction_hash"
-        ],
-        "responseHash": "f9f6759d00a0eaf5f300c932efbc04cb8742a4f79181aa70f54ae7df48a322d1",
-        "attempts": 1,
-        "totalMs": 291,
-        "ok": true
-      },
-      {
-        "endpoint": "profiler/address/related-wallets",
-        "body": {
-          "address": "0x4004000c2108e1ed5206b42a3baca0969cc6a02c",
-          "chain": "ethereum",
-          "pagination": {
-            "page": 1,
-            "per_page": 50
-          }
-        },
-        "credits": 1,
-        "ms": 404,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].address",
-          "data[].relation",
-          "data[].address_label"
-        ],
-        "responseHash": "3ac687a36059579d1c3e851d6bec931f16eb68b66f1c508bc9c8a5e10bd6b700",
-        "attempts": 1,
-        "totalMs": 404,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -265,9 +221,9 @@
             }
           ]
         },
-        "credits": 1,
-        "ms": 654,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].method",
@@ -277,8 +233,52 @@
           "data[].transaction_hash"
         ],
         "responseHash": "c7d76e99b2568fa901e81028fee69c758aa347fdbbb452f00e8b6ef10c5c4ed0",
-        "attempts": 1,
-        "totalMs": 654,
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/related-wallets",
+        "body": {
+          "address": "0x4004000c2108e1ed5206b42a3baca0969cc6a02c",
+          "chain": "ethereum",
+          "pagination": {
+            "page": 1,
+            "per_page": 50
+          }
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].address",
+          "data[].relation",
+          "data[].address_label"
+        ],
+        "responseHash": "3ac687a36059579d1c3e851d6bec931f16eb68b66f1c508bc9c8a5e10bd6b700",
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/first-funder",
+        "body": {
+          "address": "0x4004000c2108e1ed5206b42a3baca0969cc6a02c",
+          "chain": "all"
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].first_funder_address",
+          "data[].first_funder_name",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "f9f6759d00a0eaf5f300c932efbc04cb8742a4f79181aa70f54ae7df48a322d1",
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -302,9 +302,9 @@
             }
           ]
         },
-        "credits": 1,
-        "ms": 608,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].method",
@@ -314,8 +314,8 @@
           "data[].transaction_hash"
         ],
         "responseHash": "c7d76e99b2568fa901e81028fee69c758aa347fdbbb452f00e8b6ef10c5c4ed0",
-        "attempts": 1,
-        "totalMs": 608,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -340,9 +340,9 @@
             }
           ]
         },
-        "credits": 5,
-        "ms": 1829,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].counterparty_address",
@@ -352,8 +352,8 @@
           "data[].volume_out_usd"
         ],
         "responseHash": "9fa2ea0355f0d893af964bb7f681de58111eb9a6dd1b459dc5133c57b3de8299",
-        "attempts": 1,
-        "totalMs": 1830,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -362,9 +362,9 @@
           "chain": "ethereum",
           "transaction_hash": "0x56be434e875826ecea97e1b1141b1fc484ebfa29939afa9cdf444e330c440793"
         },
-        "credits": 1,
-        "ms": 706,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].to_address_label",
@@ -372,16 +372,16 @@
           "data[].token_transfer_array[].from_address_label"
         ],
         "responseHash": "35a32d018a27a9d3f7ca659bc2f77a106768bb35caaafc6fc41a80da79bf990c",
-        "attempts": 1,
-        "totalMs": 706,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       }
     ],
-    "credits": 10,
+    "credits": 0,
     "calls": 7,
-    "cachedCalls": 0,
+    "cachedCalls": 7,
     "skipped": [],
-    "ms": 3759,
+    "ms": 0,
     "asOf": "2026-09-16T14:38:44.404Z",
     "hash": "efb4b205ec54418d598d639c17fa9b538838fc61628d8f23c3d8c7172d783e71"
   }

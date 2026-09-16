@@ -200,8 +200,8 @@
           "limit": 10
         },
         "credits": 0,
-        "ms": 457,
-        "cached": false,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "tokens[].address",
@@ -209,52 +209,8 @@
           "entities[].name"
         ],
         "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
-        "attempts": 1,
-        "totalMs": 457,
-        "ok": true
-      },
-      {
-        "endpoint": "profiler/address/first-funder",
-        "body": {
-          "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
-          "chain": "all"
-        },
-        "credits": 1,
-        "ms": 338,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].first_funder_address",
-          "data[].first_funder_name",
-          "data[].transaction_hash"
-        ],
-        "responseHash": "3b3ff9cca0f7766a872ebeee520132f4bb5cb5d389b49b3fa0abb69daa4a547b",
-        "attempts": 1,
-        "totalMs": 339,
-        "ok": true
-      },
-      {
-        "endpoint": "profiler/address/related-wallets",
-        "body": {
-          "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
-          "chain": "ethereum",
-          "pagination": {
-            "page": 1,
-            "per_page": 50
-          }
-        },
-        "credits": 1,
-        "ms": 498,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].address",
-          "data[].relation",
-          "data[].address_label"
-        ],
-        "responseHash": "4b99430c98b21e7641b37437405d3358dbc47846b6ebee4eff92bd6c44fca128",
-        "attempts": 1,
-        "totalMs": 498,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -278,9 +234,9 @@
             }
           ]
         },
-        "credits": 1,
-        "ms": 5409,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].method",
@@ -290,8 +246,89 @@
           "data[].transaction_hash"
         ],
         "responseHash": "dca4752a652719f777601e5d498d1b27b97ba37de6520a9a2ff6393c0046287d",
-        "attempts": 1,
-        "totalMs": 5409,
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/related-wallets",
+        "body": {
+          "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
+          "chain": "ethereum",
+          "pagination": {
+            "page": 1,
+            "per_page": 50
+          }
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].address",
+          "data[].relation",
+          "data[].address_label"
+        ],
+        "responseHash": "4b99430c98b21e7641b37437405d3358dbc47846b6ebee4eff92bd6c44fca128",
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/first-funder",
+        "body": {
+          "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
+          "chain": "all"
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].first_funder_address",
+          "data[].first_funder_name",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "3b3ff9cca0f7766a872ebeee520132f4bb5cb5d389b49b3fa0abb69daa4a547b",
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/transactions",
+        "body": {
+          "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
+          "chain": "ethereum",
+          "date": {
+            "from": "2015-07-30",
+            "to": "2030-01-01"
+          },
+          "hide_spam_token": true,
+          "pagination": {
+            "page": 1,
+            "per_page": 100
+          },
+          "order_by": [
+            {
+              "field": "block_timestamp",
+              "direction": "DESC"
+            }
+          ]
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].method",
+          "data[].tokens_sent[].to_address",
+          "data[].tokens_received[].from_address",
+          "data[].block_timestamp",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "dca4752a652719f777601e5d498d1b27b97ba37de6520a9a2ff6393c0046287d",
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -316,9 +353,9 @@
             }
           ]
         },
-        "credits": 5,
-        "ms": 377,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].counterparty_address",
@@ -328,65 +365,8 @@
           "data[].volume_out_usd"
         ],
         "responseHash": "6dd010f4f6c71f80f59aa7fbb831d117330761e386cbbb7c69a6baeae09dd0a3",
-        "attempts": 1,
-        "totalMs": 377,
-        "ok": true
-      },
-      {
-        "endpoint": "profiler/address/transactions",
-        "body": {
-          "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
-          "chain": "ethereum",
-          "date": {
-            "from": "2015-07-30",
-            "to": "2030-01-01"
-          },
-          "hide_spam_token": true,
-          "pagination": {
-            "page": 1,
-            "per_page": 100
-          },
-          "order_by": [
-            {
-              "field": "block_timestamp",
-              "direction": "DESC"
-            }
-          ]
-        },
-        "credits": 1,
-        "ms": 2502,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].method",
-          "data[].tokens_sent[].to_address",
-          "data[].tokens_received[].from_address",
-          "data[].block_timestamp",
-          "data[].transaction_hash"
-        ],
-        "responseHash": "dca4752a652719f777601e5d498d1b27b97ba37de6520a9a2ff6393c0046287d",
-        "attempts": 1,
-        "totalMs": 2502,
-        "ok": true
-      },
-      {
-        "endpoint": "transaction-with-token-transfer-lookup",
-        "body": {
-          "chain": "ethereum",
-          "transaction_hash": "0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35"
-        },
-        "credits": 1,
-        "ms": 667,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].to_address_label",
-          "data[].token_transfer_array[].to_address_label",
-          "data[].token_transfer_array[].from_address_label"
-        ],
-        "responseHash": "d55d848cd806c66c80e23b6ec7f3656f9e5932fa6f5004ae202082b571e534f6",
-        "attempts": 1,
-        "totalMs": 668,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -395,9 +375,9 @@
           "chain": "ethereum",
           "transaction_hash": "0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc"
         },
-        "credits": 1,
-        "ms": 816,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].to_address_label",
@@ -405,16 +385,36 @@
           "data[].token_transfer_array[].from_address_label"
         ],
         "responseHash": "ac8a33d285524415d098075a716eb33aecd40f76f6f71eaaf49e99403ac86603",
-        "attempts": 1,
-        "totalMs": 816,
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "transaction-with-token-transfer-lookup",
+        "body": {
+          "chain": "ethereum",
+          "transaction_hash": "0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35"
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].to_address_label",
+          "data[].token_transfer_array[].to_address_label",
+          "data[].token_transfer_array[].from_address_label"
+        ],
+        "responseHash": "d55d848cd806c66c80e23b6ec7f3656f9e5932fa6f5004ae202082b571e534f6",
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       }
     ],
-    "credits": 11,
+    "credits": 0,
     "calls": 8,
-    "cachedCalls": 0,
+    "cachedCalls": 8,
     "skipped": [],
-    "ms": 9187,
+    "ms": 1,
     "asOf": "2026-09-16T14:38:29.514Z",
     "hash": "4f5a8b89b93e26280b06ce26962bf60216ecc6cacb105c54dbe9d82e5294a660"
   }

@@ -161,8 +161,8 @@
         {
           "code": "OUTFLOW_CONCENTRATED",
           "field": "profiler/address/counterparties → volume_out_usd",
-          "value": "100% of $319 to 0xa9d1…3e43",
-          "meaning": "All outflow goes to one counterparty."
+          "value": "100% to 0xa9d1…3e43",
+          "meaning": "All outflow ($319 at today's prices) goes to one counterparty."
         }
       ],
       "rule": 4,
@@ -173,7 +173,7 @@
     "action": {
       "kind": "ticket",
       "title": "Support ticket for Coinbase",
-      "text": "Subject: Funds sent to a Coinbase deposit address by mistake — recovery request\n\nHello Coinbase support,\n\nOn [date] I sent [amount and token] from my wallet [your address] to 0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2 on ethereum (transaction [transaction hash]).\n\nThis was a mistake. 0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2 is a Coinbase customer deposit address — Nansen labels it \"🤖 🏦 Coinbase [0xa9d1e0]\" and its transfers are swept into Coinbase's own wallets. It may belong to another Coinbase customer, or to an old account of mine. Please locate the account that owns this deposit address and either credit the funds to it (if it is mine) or return them to [your address].\n\nEvidence (Nansen API):\n- transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label: 🤖 🏦 Coinbase [0xa9d1e0]\n- profiler/address/counterparties → volume_out_usd: 100% of $319 to 0xa9d1…3e43\n\nAccount email: [your Coinbase account email]\nThank you,\n[your name]"
+      "text": "Subject: Funds sent to a Coinbase deposit address by mistake — recovery request\n\nHello Coinbase support,\n\nOn [date] I sent [amount and token] from my wallet [your address] to 0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2 on ethereum (transaction [transaction hash]).\n\nThis was a mistake. 0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2 is a Coinbase customer deposit address — Nansen labels it \"🤖 🏦 Coinbase [0xa9d1e0]\" and its transfers are swept into Coinbase's own wallets. It may belong to another Coinbase customer, or to an old account of mine. Please locate the account that owns this deposit address and either credit the funds to it (if it is mine) or return them to [your address].\n\nEvidence (Nansen API):\n- transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label: 🤖 🏦 Coinbase [0xa9d1e0]\n- profiler/address/counterparties → volume_out_usd: 100% to 0xa9d1…3e43\n\nAccount email: [your Coinbase account email]\nThank you,\n[your name]"
     },
     "rows": [
       {
@@ -201,8 +201,8 @@
           "limit": 10
         },
         "credits": 0,
-        "ms": 470,
-        "cached": false,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "tokens[].address",
@@ -210,28 +210,8 @@
           "entities[].name"
         ],
         "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
-        "attempts": 1,
-        "totalMs": 470,
-        "ok": true
-      },
-      {
-        "endpoint": "profiler/address/first-funder",
-        "body": {
-          "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
-          "chain": "all"
-        },
-        "credits": 1,
-        "ms": 356,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].first_funder_address",
-          "data[].first_funder_name",
-          "data[].transaction_hash"
-        ],
-        "responseHash": "9bab477ad9b5e06f0665315ade5a6a7ba0a96b6484a45fbb960ae0fa2524a15f",
-        "attempts": 1,
-        "totalMs": 356,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -255,9 +235,9 @@
             }
           ]
         },
-        "credits": 1,
-        "ms": 546,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].method",
@@ -267,8 +247,8 @@
           "data[].transaction_hash"
         ],
         "responseHash": "6dfb5fb6a5b589da94aa55cb7536be17aa1e84bca8232b92e870d7fbc8389bda",
-        "attempts": 1,
-        "totalMs": 546,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -281,9 +261,9 @@
             "per_page": 50
           }
         },
-        "credits": 1,
-        "ms": 604,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].address",
@@ -291,8 +271,28 @@
           "data[].address_label"
         ],
         "responseHash": "f2df9f3c9cbd9bedf48a3df869b242dfa6bf647f8e8f52b2a91870a2432094df",
-        "attempts": 1,
-        "totalMs": 604,
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/first-funder",
+        "body": {
+          "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+          "chain": "all"
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].first_funder_address",
+          "data[].first_funder_name",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "9bab477ad9b5e06f0665315ade5a6a7ba0a96b6484a45fbb960ae0fa2524a15f",
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -316,9 +316,9 @@
             }
           ]
         },
-        "credits": 1,
-        "ms": 998,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].method",
@@ -328,8 +328,8 @@
           "data[].transaction_hash"
         ],
         "responseHash": "6dfb5fb6a5b589da94aa55cb7536be17aa1e84bca8232b92e870d7fbc8389bda",
-        "attempts": 1,
-        "totalMs": 998,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -354,9 +354,9 @@
             }
           ]
         },
-        "credits": 5,
-        "ms": 1337,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].counterparty_address",
@@ -366,8 +366,8 @@
           "data[].volume_out_usd"
         ],
         "responseHash": "ea8e88cae5dcd73f903e1c2847a360a419fcb0151edc7cb5f238017db9848d82",
-        "attempts": 1,
-        "totalMs": 1338,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -376,9 +376,9 @@
           "chain": "ethereum",
           "transaction_hash": "0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec"
         },
-        "credits": 1,
-        "ms": 763,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].to_address_label",
@@ -386,8 +386,8 @@
           "data[].token_transfer_array[].from_address_label"
         ],
         "responseHash": "918350ee988bedd001823204bb3abdec6891c54f234940d9c7310408cb83503c",
-        "attempts": 1,
-        "totalMs": 763,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -396,9 +396,9 @@
           "chain": "ethereum",
           "transaction_hash": "0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec"
         },
-        "credits": 1,
-        "ms": 771,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].to_address_label",
@@ -406,17 +406,17 @@
           "data[].token_transfer_array[].from_address_label"
         ],
         "responseHash": "46806319f623c12e1cd786c36f189917468a49fc5c09b8303807e8f850e55d26",
-        "attempts": 1,
-        "totalMs": 771,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       }
     ],
-    "credits": 11,
+    "credits": 0,
     "calls": 8,
-    "cachedCalls": 0,
+    "cachedCalls": 8,
     "skipped": [],
-    "ms": 3185,
+    "ms": 0,
     "asOf": "2026-09-16T14:38:22.162Z",
-    "hash": "65339ad6844da45e010c6065e1ac81321b30be96fb517686c1cc4c2547e614ec"
+    "hash": "6c4ec14843c35dd64f828b41a0ce8b5832f7762f95c66e85c5a2ea324f468e16"
   }
 }

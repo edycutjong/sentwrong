@@ -263,9 +263,9 @@ describe("decision hash", () => {
     const ctx = { address: R, chain: "ethereum" };
     expect(decisionHash(a, actionFor(a, ctx))).not.toBe(decisionHash(b, actionFor(b, ctx)));
   });
-  it("does not depend on timing or warnings", () => {
+  it("does not depend on timing, warnings, or the USD total of the outflow (priced at current rates, drifts by the minute)", () => {
     const a = classify(binanceDeposit(), NOW);
-    const b = classify(binanceDeposit({ counterparties: ok(cps([{ address: HOT, out: 2953 }])) }), NOW); // same terms, warnings identical
+    const b = classify(binanceDeposit({ counterparties: ok(cps([{ address: HOT, out: 2954 }])) }), NOW); // $2,954 instead of $2,953: same share
     b.warnings.push("a transient note");
     const ctx = { address: R, chain: "ethereum" };
     expect(decisionHash(a, actionFor(a, ctx))).toBe(decisionHash(b, actionFor(b, ctx)));

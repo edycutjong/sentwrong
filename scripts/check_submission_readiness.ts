@@ -17,7 +17,7 @@ for (const h of ["## What it does", "## The four routes", "## Quickstart", "## R
 // 3. counts match
 const testCount = Number(/(\d+) vitest tests/.exec(readme)?.[1] ?? 0);
 const real = (() => { try { const out = execSync("npx vitest run --reporter=json 2>/dev/null", { encoding: "utf8" }); const j = JSON.parse(out.slice(out.indexOf("{"))); return j.numTotalTests as number; } catch { return -1; } })();
-ok(real === -1 || real === testCount, `README says ${testCount} tests, vitest reports ${real}`);
+ok(real === testCount, `README says ${testCount} tests, vitest reports ${real === -1 ? "nothing (could not run vitest --reporter=json)" : real}`);
 const fixtures = existsSync("fixtures") ? readdirSync("fixtures").filter((f) => f.endsWith(".json")).length : 0;
 ok(readme.includes(`${fixtures} fixtures`) || readme.includes(`${fixtures}/${fixtures}`), `README fixture count does not match ${fixtures} files`);
 // 4. screenshots referenced exist

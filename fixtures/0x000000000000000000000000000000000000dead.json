@@ -133,8 +133,8 @@
           "limit": 10
         },
         "credits": 0,
-        "ms": 564,
-        "cached": false,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "tokens[].address",
@@ -142,8 +142,8 @@
           "entities[].name"
         ],
         "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
-        "attempts": 1,
-        "totalMs": 564,
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -169,7 +169,7 @@
         },
         "credits": 0,
         "ms": 0,
-        "cached": false,
+        "cached": true,
         "status": 422,
         "fieldsUsed": [
           "data[].method",
@@ -178,31 +178,11 @@
           "data[].block_timestamp",
           "data[].transaction_hash"
         ],
-        "responseHash": "",
-        "attempts": 1,
-        "totalMs": 278,
+        "responseHash": "3efbaf28ed73988bd76ce9e98d19916b1a62c3bf9c176e50855ba3a4a89bb095",
+        "attempts": 0,
+        "totalMs": 0,
         "ok": false,
         "error": "Nansen profiler/address/transactions → HTTP 422: {\"error\":\"Burn address not allowed\",\"message\":\"Burn address '0x00000000"
-      },
-      {
-        "endpoint": "profiler/address/first-funder",
-        "body": {
-          "address": "0x000000000000000000000000000000000000dead",
-          "chain": "all"
-        },
-        "credits": 1,
-        "ms": 429,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].first_funder_address",
-          "data[].first_funder_name",
-          "data[].transaction_hash"
-        ],
-        "responseHash": "b9b02100386477924b555514f98bb7d099c7e1efc023fcad4a35f2c181015009",
-        "attempts": 1,
-        "totalMs": 429,
-        "ok": true
       },
       {
         "endpoint": "profiler/address/related-wallets",
@@ -214,9 +194,9 @@
             "per_page": 50
           }
         },
-        "credits": 1,
-        "ms": 637,
-        "cached": false,
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
         "status": 200,
         "fieldsUsed": [
           "data[].address",
@@ -224,8 +204,28 @@
           "data[].address_label"
         ],
         "responseHash": "f344c407e247e3ef395fa2d25c1837a46fbdcee8bebc1692e97469e9adb6f676",
-        "attempts": 1,
-        "totalMs": 637,
+        "attempts": 0,
+        "totalMs": 0,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/first-funder",
+        "body": {
+          "address": "0x000000000000000000000000000000000000dead",
+          "chain": "all"
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": true,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].first_funder_address",
+          "data[].first_funder_name",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "b9b02100386477924b555514f98bb7d099c7e1efc023fcad4a35f2c181015009",
+        "attempts": 0,
+        "totalMs": 0,
         "ok": true
       },
       {
@@ -252,7 +252,7 @@
         },
         "credits": 0,
         "ms": 0,
-        "cached": false,
+        "cached": true,
         "status": 422,
         "fieldsUsed": [
           "data[].counterparty_address",
@@ -261,20 +261,20 @@
           "data[].volume_in_usd",
           "data[].volume_out_usd"
         ],
-        "responseHash": "",
-        "attempts": 1,
-        "totalMs": 270,
+        "responseHash": "87f8732b8a2d7f2c03a82b996df161797c6300298470095f4d236ffa38474ee2",
+        "attempts": 0,
+        "totalMs": 0,
         "ok": false,
         "error": "Nansen profiler/address/counterparties → HTTP 422: {\"error\":\"Burn address not allowed\",\"message\":\"Burn address '0x000000"
       }
     ],
-    "credits": 2,
+    "credits": 0,
     "calls": 5,
-    "cachedCalls": 0,
+    "cachedCalls": 5,
     "skipped": [
       "transaction-with-token-transfer-lookup (burn address)"
     ],
-    "ms": 1473,
+    "ms": 2,
     "asOf": "2026-09-16T14:38:38.702Z",
     "hash": "1a31c96f33f22bd35fe6033f75edc3f374a4d2d4f43a80c99f9d5e8a6fbadd45"
   }
