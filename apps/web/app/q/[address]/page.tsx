@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import { parseInput, verdictFor } from "@/lib/engine";
 import { VerdictCard } from "../../VerdictCard";
 
@@ -7,11 +8,16 @@ export const maxDuration = 60;
 
 type Props = { params: Promise<{ address: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 
+// generateMetadata and the page both need the verdict; React's per-request cache makes it one set of Nansen calls, not two
+const loadVerdict = cache(async (address: string, sender: string | undefined, chain: string | undefined) => {
+  const input = parseInput({ address, sender, chain });
+  return { input, verdict: await verdictFor(input) };
+});
+
 async function load(props: Props) {
   const { address } = await props.params;
   const sp = await props.searchParams;
-  const input = parseInput({ address, sender: typeof sp.from === "string" ? sp.from : undefined, chain: typeof sp.chain === "string" ? sp.chain : undefined });
-  return { input, verdict: await verdictFor(input) };
+  return loadVerdict(address, typeof sp.from === "string" ? sp.from : undefined, typeof sp.chain === "string" ? sp.chain : undefined);
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {

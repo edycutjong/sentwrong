@@ -32,7 +32,8 @@ export class MemoryCache implements CacheStore {
   entries(): Record<string, CacheEntry> { return Object.fromEntries(this.m); }
 }
 
-export const DEFAULT_TTL_MS = 30 * 60 * 1000;
+/** 24 h, as the README states (a rehearsal the day before still warms the recording). --no-cache passes ttlMs 0. */
+export const DEFAULT_TTL_MS = 24 * 60 * 60 * 1000;
 
 /** Recursively sort object keys so `{a:{y,x}}` and `{a:{x,y}}` serialize identically (arrays keep order). */
 export function canonicalize(v: unknown): unknown {

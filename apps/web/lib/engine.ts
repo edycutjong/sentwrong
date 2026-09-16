@@ -2,9 +2,13 @@
  * Server-side engine for the web app. The Nansen key never leaves this process: the browser talks to /api/verdict.
  * One in-memory cache per server instance (Vercel functions have no durable disk) with the same 24 h TTL as the CLI.
  */
-import { CachedNansenClient, MemoryCache, sentWrong, CHAINS, EVM_ADDRESS, type Chain, type Verdict } from "@sentwrong/core";
+import { CachedNansenClient, MemoryCache, DiskCache, sentWrong, CHAINS, EVM_ADDRESS, type Chain, type Verdict } from "@sentwrong/core";
+import { join } from "node:path";
 
-const store = new MemoryCache();
+// On Vercel the function has no durable disk, so the cache lives in memory and only for the life of one warm instance
+// (a cold start begins empty — every call is live again). Locally (`npm run dev`) the same on-disk cache the CLI uses
+// survives restarts, so a rehearsed address stays warm for a recording.
+const store = process.env.VERCEL ? new MemoryCache() : new DiskCache(join(process.cwd(), ".cache"));
 export const TTL_MS = 24 * 3600 * 1000;
 
 export function client(): CachedNansenClient {
