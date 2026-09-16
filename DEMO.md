@@ -12,7 +12,7 @@
 | 32 s | paste `0x50b37a3ec6c04609968810801531f5021929eac9` → amber **ACTIVE STRANGER · poisoner** — "address-poisoning scam address: only ever 'receives' fake tokens (ÚЅDТ)" |
 | 42 s | open the provenance drawer: 10 calls · 13 credits · every field named |
 
-Everything on screen is live; a rehearsal warms the 24 h cache, so if Nansen is slow on the day the rows still resolve (they say "cached").
+Everything on screen is live; a rehearsal warms the 24 h cache, so if Nansen is slow on the day the rows still resolve (they say "cached"). Record against `npm run dev -w apps/web` on localhost: there the cache is on disk and survives restarts. On the Vercel deployment the cache is in-memory per function instance — a cold start begins empty and every call is live again (measured 2026-09-16: three back-to-back API hits were 13 → 0 → 0 credits, but a permalink render five seconds earlier had not warmed the API route's instance).
 
 ## The hero query, real output (2026-09-16 15:08 UTC, `npm run sentwrong -- 0xe460774c849089ee3edf0fb06da14c066caabbef --explain --no-cache`, verbatim)
 
@@ -110,5 +110,5 @@ npm install
 npm run sentwrong -- 0xe460774c849089ee3edf0fb06da14c066caabbef --explain   # the hero, live, 13 credits
 npm run verify                                                              # 13/13 fixtures replay offline, 0 credits
 npm run bench -- --runs 1                                                   # ~130 credits; --runs 3 for the table above
-npm test                                                                    # 111 tests
+npm test                                                                    # 114 tests
 ```

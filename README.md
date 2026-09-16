@@ -4,7 +4,7 @@
 
 **Sent crypto to the wrong address? Paste it. Nansen tells you which of four recovery routes you're on — and drafts the ticket.**
 
-[Live preview](https://sentwrong-oisot76tw-edy-cus-projects.vercel.app) · [30-second demo](DEMO.md) · [How it decides](docs/SCORING.md) · [Architecture](ARCHITECTURE.md) · [Nansen API friction log](docs/DX-REPORT.md)
+[Live app](https://sentwrong-app.vercel.app) · [30-second demo](DEMO.md) · [How it decides](docs/SCORING.md) · [Architecture](ARCHITECTURE.md) · [Nansen API friction log](docs/DX-REPORT.md)
 
 ![verdict for a Binance deposit address](docs/screenshots/02-binance-deposit.png)
 
@@ -61,7 +61,7 @@ Subject: Funds sent to a Binance deposit address by mistake — recovery request
 
 Options: `--from <your address>` (own-wallet check + finds your transfer for the ticket) · `--chain ethereum|base|arbitrum|polygon|optimism|bnb|avalanche|linea` · `--json` · `--explain` (rule fired, every call with fields and timing) · `--deep` (one `profiler/address/labels` call, **100 credits**, cost printed, shows whether it agrees) · `--no-cache`.
 
-Web app: `npm run dev -w apps/web` → http://localhost:3000 (same engine; the key stays on the server; rows appear as each Nansen call lands).
+Web app: `npm run dev -w apps/web` → http://localhost:3000 (same engine; the key stays on the server; rows appear as each Nansen call lands; locally it shares the CLI's on-disk 24 h cache layout under `apps/web/.cache`, so a rehearsed address stays warm across restarts).
 
 ## Runs in under 10 minutes
 
@@ -71,11 +71,11 @@ Timed with `date` around each step on a fresh clone into an empty directory (mac
 |---|---|---|
 | 1 | `git clone https://github.com/edycutjong/sentwrong && cd sentwrong && npm install` | 7 s |
 | 2 | `export NANSEN_API_KEY=…` | typing |
-| 3 | `npm run sentwrong -- 0xe460774c849089ee3edf0fb06da14c066caabbef --explain` (live, 13 credits) | 6 s (5.0 s of it Nansen) |
+| 3 | `npm run sentwrong -- 0xe460774c849089ee3edf0fb06da14c066caabbef --explain` (live, 13 credits) | 6 s (5.0 s of it Nansen); an independent re-run from a second fresh clone at 23:55 UTC took 13 s — Nansen's per-call latency varies 0.3–3 s by the minute |
 | 4 | `npm run verify` — 13 recorded verdicts replayed offline, 0 credits, 0 network | < 1 s |
-| 5 | `npm test` — 111 vitest tests | 3 s |
+| 5 | `npm test` — 114 vitest tests | 3 s |
 | 6 | `npm run dev -w apps/web`, open http://localhost:3000, paste an address | ~20 s (first compile) |
-| | **Total, including reading this README** | **well under 10 minutes; the commands themselves take about 40 s** (a cold npm cache adds a minute or two) |
+| | **Total, including reading this README** | **well under 10 minutes; the commands themselves take 40–60 s** (a cold npm cache adds a minute or two) |
 
 ## Nansen integration
 
@@ -105,7 +105,7 @@ What we learned the hard way is in [docs/DX-REPORT.md](docs/DX-REPORT.md) — in
 
 ## Tests, fixtures and replay
 
-- **111 vitest tests** (`npm test`): the decision table rule by rule, with the regressions live QA produced (a wallet depositing into its own `Binance: Deposit` address; Nansen's 🏦 marker on Uniswap's router; an exchange wallet given as "your address"), label parsing on the exact strings Nansen returns, the action texts, the wire-level call plan, client retry/timeout, cache, and a replay of every fixture.
+- **114 vitest tests** (`npm test`): the decision table rule by rule, with the regressions live QA produced (a wallet depositing into its own `Binance: Deposit` address; Nansen's 🏦 marker on Uniswap's router; an exchange wallet given as "your address"; a DEX router read as a "forwarder"; a transactions timeout read as "nothing on record"), label parsing on the exact strings Nansen returns, the action texts, the wire-level call plan, client retry/timeout, cache, and a replay of every fixture.
 - **13 fixtures** (`fixtures/*.json`): real Nansen responses recorded live on 2026-09-16 by `npm run seed`, byte-for-byte, never edited, no key material. `npm run verify` replays them with `NANSEN_OFFLINE=1` → **13/13 verdicts reproduced offline**, same decision hash, zero network, zero credits. They exist so CI and a judge without a key can see the engine decide; the CLI and the web app hit Nansen live by default and say "cached" when they do not.
 - CI (`.github/workflows/ci.yml`): typecheck, tests, offline verify, submission-readiness check — no key needed.
 
