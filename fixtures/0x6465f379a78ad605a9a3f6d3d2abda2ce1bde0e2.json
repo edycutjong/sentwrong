@@ -2,16 +2,16 @@
   "edge": "4 · Coinbase deposit address created minutes before the spike: no own label yet → sweep-pattern rule",
   "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
   "options": {},
-  "now": 1789569442962,
-  "recordedAt": "2026-09-16T14:37:22.962Z",
+  "now": 1789569502162,
+  "recordedAt": "2026-09-16T14:38:22.162Z",
   "live": {
     "calls": 8,
     "credits": 11,
-    "ms": 3801
+    "ms": 3185
   },
   "responses": {
     "caefc5db38b539dc65940c27209df5e9": {
-      "storedAt": "2026-09-16T14:37:23.409Z",
+      "storedAt": "2026-09-16T14:38:22.632Z",
       "ttlMs": 1800000,
       "endpoint": "search/general",
       "body": {
@@ -22,7 +22,7 @@
       "text": "{\"tokens\":[],\"entities\":[],\"total_results\":0}"
     },
     "ded74edc5cfa7a95999542e9ba0894b1": {
-      "storedAt": "2026-09-16T14:37:23.908Z",
+      "storedAt": "2026-09-16T14:38:22.989Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/first-funder",
       "body": {
@@ -31,22 +31,8 @@
       },
       "text": "{\"pagination\":{\"page\":1,\"per_page\":10,\"is_last_page\":true},\"data\":[{\"wallet_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"first_funder_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"first_funder_name\":\"High Activity\",\"transaction_hash\":\"0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec\",\"block_timestamp\":\"2026-09-16T13:52:11Z\",\"chain\":\"ethereum\"}]}"
     },
-    "2a89aea111d3b1ef6749a8c8d0e72f56": {
-      "storedAt": "2026-09-16T14:37:24.052Z",
-      "ttlMs": 1800000,
-      "endpoint": "profiler/address/related-wallets",
-      "body": {
-        "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
-        "chain": "ethereum",
-        "pagination": {
-          "page": 1,
-          "per_page": 50
-        }
-      },
-      "text": "{\"pagination\":{\"page\":1,\"per_page\":50,\"is_last_page\":true},\"data\":[{\"address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"address_label\":\"High Activity\",\"relation\":\"First Funder\",\"transaction_hash\":\"0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec\",\"block_timestamp\":\"2026-09-16T13:52:11Z\",\"order\":1,\"chain\":\"ethereum\"}]}"
-    },
     "2e44fcaadcbf83675dbe9eeb1d0d3892": {
-      "storedAt": "2026-09-16T14:37:24.460Z",
+      "storedAt": "2026-09-16T14:38:23.179Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/transactions",
       "body": {
@@ -68,10 +54,24 @@
           }
         ]
       },
-      "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[{\"token_symbol\":\"USDC\",\"token_amount\":-319.068482,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"chain\":\"ethereum\",\"from_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"to_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"[0x6465f3]\",\"to_address_label\":\"High Activity [0xa9d1e0]\"}],\"tokens_received\":[],\"volume_usd\":318.7210090552291,\"block_timestamp\":\"2026-09-16T13:54:11\",\"transaction_hash\":\"0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"received\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"ETH\",\"token_amount\":0.000045758,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"chain\":\"ethereum\",\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"to_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"High Activity [0xa9d1e0]\",\"to_address_label\":\"[0x6465f3]\"}],\"volume_usd\":0.10940847590552394,\"block_timestamp\":\"2026-09-16T13:52:11\",\"transaction_hash\":\"0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"execute(address,uint256,bytes)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"USDC\",\"token_amount\":319.068482,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"chain\":\"ethereum\",\"from_address\":\"0x445f16314284b43dfa1fd3cd77b9dea4a1bebd97\",\"to_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"Token Millionaire [0x445f16]\",\"to_address_label\":\"[0x6465f3]\"}],\"volume_usd\":318.7210090552291,\"block_timestamp\":\"2026-09-16T13:49:35\",\"transaction_hash\":\"0xe3d110491055c0e55de60daaf8a172691aca132149183c9709719d950c60a6f1\",\"source_type\":\"transfer\"}]}"
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[{\"token_symbol\":\"USDC\",\"token_amount\":-319.068482,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"chain\":\"ethereum\",\"from_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"to_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"[0x6465f3]\",\"to_address_label\":\"High Activity [0xa9d1e0]\"}],\"tokens_received\":[],\"volume_usd\":319.3001146222681,\"block_timestamp\":\"2026-09-16T13:54:11\",\"transaction_hash\":\"0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"received\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"ETH\",\"token_amount\":0.000045758,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"chain\":\"ethereum\",\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"to_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"High Activity [0xa9d1e0]\",\"to_address_label\":\"[0x6465f3]\"}],\"volume_usd\":0.10940847590552394,\"block_timestamp\":\"2026-09-16T13:52:11\",\"transaction_hash\":\"0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"execute(address,uint256,bytes)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"USDC\",\"token_amount\":319.068482,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"chain\":\"ethereum\",\"from_address\":\"0x445f16314284b43dfa1fd3cd77b9dea4a1bebd97\",\"to_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"Token Millionaire [0x445f16]\",\"to_address_label\":\"[0x6465f3]\"}],\"volume_usd\":319.3001146222681,\"block_timestamp\":\"2026-09-16T13:49:35\",\"transaction_hash\":\"0xe3d110491055c0e55de60daaf8a172691aca132149183c9709719d950c60a6f1\",\"source_type\":\"transfer\"}]}"
+    },
+    "2a89aea111d3b1ef6749a8c8d0e72f56": {
+      "storedAt": "2026-09-16T14:38:23.237Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/related-wallets",
+      "body": {
+        "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+        "chain": "ethereum",
+        "pagination": {
+          "page": 1,
+          "per_page": 50
+        }
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":50,\"is_last_page\":true},\"data\":[{\"address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"address_label\":\"High Activity\",\"relation\":\"First Funder\",\"transaction_hash\":\"0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec\",\"block_timestamp\":\"2026-09-16T13:52:11Z\",\"order\":1,\"chain\":\"ethereum\"}]}"
     },
     "c51243ab531586a1484b706dacee429e": {
-      "storedAt": "2026-09-16T14:37:25.966Z",
+      "storedAt": "2026-09-16T14:38:24.235Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/transactions",
       "body": {
@@ -93,10 +93,10 @@
           }
         ]
       },
-      "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[{\"token_symbol\":\"USDC\",\"token_amount\":-319.068482,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"chain\":\"ethereum\",\"from_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"to_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"[0x6465f3]\",\"to_address_label\":\"High Activity [0xa9d1e0]\"}],\"tokens_received\":[],\"volume_usd\":318.7210090552291,\"block_timestamp\":\"2026-09-16T13:54:11\",\"transaction_hash\":\"0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"received\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"ETH\",\"token_amount\":0.000045758,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"chain\":\"ethereum\",\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"to_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"High Activity [0xa9d1e0]\",\"to_address_label\":\"[0x6465f3]\"}],\"volume_usd\":0.10940847590552394,\"block_timestamp\":\"2026-09-16T13:52:11\",\"transaction_hash\":\"0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"execute(address,uint256,bytes)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"USDC\",\"token_amount\":319.068482,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"chain\":\"ethereum\",\"from_address\":\"0x445f16314284b43dfa1fd3cd77b9dea4a1bebd97\",\"to_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"Token Millionaire [0x445f16]\",\"to_address_label\":\"[0x6465f3]\"}],\"volume_usd\":318.7210090552291,\"block_timestamp\":\"2026-09-16T13:49:35\",\"transaction_hash\":\"0xe3d110491055c0e55de60daaf8a172691aca132149183c9709719d950c60a6f1\",\"source_type\":\"transfer\"}]}"
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[{\"token_symbol\":\"USDC\",\"token_amount\":-319.068482,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"chain\":\"ethereum\",\"from_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"to_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"[0x6465f3]\",\"to_address_label\":\"High Activity [0xa9d1e0]\"}],\"tokens_received\":[],\"volume_usd\":319.3001146222681,\"block_timestamp\":\"2026-09-16T13:54:11\",\"transaction_hash\":\"0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"received\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"ETH\",\"token_amount\":0.000045758,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"chain\":\"ethereum\",\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"to_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"High Activity [0xa9d1e0]\",\"to_address_label\":\"[0x6465f3]\"}],\"volume_usd\":0.10940847590552394,\"block_timestamp\":\"2026-09-16T13:52:11\",\"transaction_hash\":\"0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"execute(address,uint256,bytes)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"USDC\",\"token_amount\":319.068482,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"chain\":\"ethereum\",\"from_address\":\"0x445f16314284b43dfa1fd3cd77b9dea4a1bebd97\",\"to_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"Token Millionaire [0x445f16]\",\"to_address_label\":\"[0x6465f3]\"}],\"volume_usd\":319.3001146222681,\"block_timestamp\":\"2026-09-16T13:49:35\",\"transaction_hash\":\"0xe3d110491055c0e55de60daaf8a172691aca132149183c9709719d950c60a6f1\",\"source_type\":\"transfer\"}]}"
     },
     "92de1db985b6f9289538f19253e5ee3a": {
-      "storedAt": "2026-09-16T14:37:26.006Z",
+      "storedAt": "2026-09-16T14:38:24.575Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/counterparties",
       "body": {
@@ -119,20 +119,20 @@
           }
         ]
       },
-      "text": "{\"pagination\":{\"page\":1,\"per_page\":20,\"is_last_page\":true},\"data\":[{\"counterparty_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"counterparty_address_label\":[\"High Activity\"],\"interaction_count\":2,\"total_volume_usd\":318.83041753113463,\"volume_in_usd\":0.10940847590552394,\"volume_out_usd\":318.7210090552291,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"1\",\"total_token_amount\":0.000045758,\"token_in_amount\":0.000045758,\"token_out_amount\":0.0},{\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"token_symbol\":\"USDC\",\"token_name\":\"USD Coin\",\"num_transfer\":\"1\",\"total_token_amount\":319.068482,\"token_in_amount\":0.0,\"token_out_amount\":319.068482}]},{\"counterparty_address\":\"0x445f16314284b43dfa1fd3cd77b9dea4a1bebd97\",\"counterparty_address_label\":[\"Token Millionaire\"],\"interaction_count\":1,\"total_volume_usd\":318.7210090552291,\"volume_in_usd\":318.7210090552291,\"volume_out_usd\":0.0,\"tokens_info\":[{\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"token_symbol\":\"USDC\",\"token_name\":\"USD Coin\",\"num_transfer\":\"1\",\"total_token_amount\":319.068482,\"token_in_amount\":319.068482,\"token_out_amount\":0.0}]}]}"
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":20,\"is_last_page\":true},\"data\":[{\"counterparty_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"counterparty_address_label\":[\"High Activity\"],\"interaction_count\":2,\"total_volume_usd\":319.4095230981736,\"volume_in_usd\":0.10940847590552394,\"volume_out_usd\":319.3001146222681,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"1\",\"total_token_amount\":0.000045758,\"token_in_amount\":0.000045758,\"token_out_amount\":0.0},{\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"token_symbol\":\"USDC\",\"token_name\":\"USD Coin\",\"num_transfer\":\"1\",\"total_token_amount\":319.068482,\"token_in_amount\":0.0,\"token_out_amount\":319.068482}]},{\"counterparty_address\":\"0x445f16314284b43dfa1fd3cd77b9dea4a1bebd97\",\"counterparty_address_label\":[\"Token Millionaire\"],\"interaction_count\":1,\"total_volume_usd\":319.3001146222681,\"volume_in_usd\":319.3001146222681,\"volume_out_usd\":0.0,\"tokens_info\":[{\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"token_symbol\":\"USDC\",\"token_name\":\"USD Coin\",\"num_transfer\":\"1\",\"total_token_amount\":319.068482,\"token_in_amount\":319.068482,\"token_out_amount\":0.0}]}]}"
     },
     "d97c72bccf816dbc0949dc8057fc3206": {
-      "storedAt": "2026-09-16T14:37:26.722Z",
+      "storedAt": "2026-09-16T14:38:25.338Z",
       "ttlMs": 1800000,
       "endpoint": "transaction-with-token-transfer-lookup",
       "body": {
         "chain": "ethereum",
         "transaction_hash": "0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec"
       },
-      "text": "{\"data\":[{\"chain\":\"ethereum\",\"transaction_hash\":\"0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec\",\"from_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"\",\"to_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"to_address_label\":\"usdc.eth*\",\"native_value\":0.0,\"dated_native_price\":2391.023993739323,\"dated_native_value_usd\":0.0,\"current_native_price\":2391.023993739323,\"current_native_value_usd\":0.0,\"receipt_status\":1,\"block_timestamp\":\"2026-09-16T13:54:11Z\",\"token_transfer_array\":[{\"from_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"[0x6465f3]\",\"to_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"to_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"token_symbol\":\"USDC\",\"token_amount\":319.068482,\"dated_price_usd\":0.998910976908177,\"dated_value_usd\":318.7210090552291,\"current_price_usd\":0.998910976908177,\"current_value_usd\":318.7210090552291,\"transfer_id\":\"token-transfer-0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec-282\"}],\"nft_transfer_array\":null}]}"
+      "text": "{\"data\":[{\"chain\":\"ethereum\",\"transaction_hash\":\"0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec\",\"from_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"\",\"to_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"to_address_label\":\"usdc.eth*\",\"native_value\":0.0,\"dated_native_price\":2391.023993739323,\"dated_native_value_usd\":0.0,\"current_native_price\":2391.023993739323,\"current_native_value_usd\":0.0,\"receipt_status\":1,\"block_timestamp\":\"2026-09-16T13:54:11Z\",\"token_transfer_array\":[{\"from_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"[0x6465f3]\",\"to_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"to_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"token_symbol\":\"USDC\",\"token_amount\":319.068482,\"dated_price_usd\":1.00072596522482,\"dated_value_usd\":319.3001146222681,\"current_price_usd\":1.00072596522482,\"current_value_usd\":319.3001146222681,\"transfer_id\":\"token-transfer-0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec-282\"}],\"nft_transfer_array\":null}]}"
     },
     "0f6aee2f08de0eafc66b04b1990a4a97": {
-      "storedAt": "2026-09-16T14:37:26.761Z",
+      "storedAt": "2026-09-16T14:38:25.346Z",
       "ttlMs": 1800000,
       "endpoint": "transaction-with-token-transfer-lookup",
       "body": {
@@ -182,13 +182,13 @@
         "entityLabel": "🤖 🏦 Coinbase [0xa9d1e0]",
         "interactions": 2,
         "inUsd": 0.10940847590552394,
-        "outUsd": 318.7210090552291
+        "outUsd": 319.3001146222681
       },
       {
         "address": "0x445f16314284b43dfa1fd3cd77b9dea4a1bebd97",
         "label": "Token Millionaire",
         "interactions": 1,
-        "inUsd": 318.7210090552291,
+        "inUsd": 319.3001146222681,
         "outUsd": 0
       }
     ],
@@ -201,7 +201,7 @@
           "limit": 10
         },
         "credits": 0,
-        "ms": 447,
+        "ms": 470,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -211,7 +211,7 @@
         ],
         "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
         "attempts": 1,
-        "totalMs": 447,
+        "totalMs": 470,
         "ok": true
       },
       {
@@ -221,7 +221,7 @@
           "chain": "all"
         },
         "credits": 1,
-        "ms": 497,
+        "ms": 356,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -231,31 +231,7 @@
         ],
         "responseHash": "9bab477ad9b5e06f0665315ade5a6a7ba0a96b6484a45fbb960ae0fa2524a15f",
         "attempts": 1,
-        "totalMs": 497,
-        "ok": true
-      },
-      {
-        "endpoint": "profiler/address/related-wallets",
-        "body": {
-          "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
-          "chain": "ethereum",
-          "pagination": {
-            "page": 1,
-            "per_page": 50
-          }
-        },
-        "credits": 1,
-        "ms": 642,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].address",
-          "data[].relation",
-          "data[].address_label"
-        ],
-        "responseHash": "f2df9f3c9cbd9bedf48a3df869b242dfa6bf647f8e8f52b2a91870a2432094df",
-        "attempts": 1,
-        "totalMs": 642,
+        "totalMs": 356,
         "ok": true
       },
       {
@@ -280,7 +256,7 @@
           ]
         },
         "credits": 1,
-        "ms": 1050,
+        "ms": 546,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -290,9 +266,33 @@
           "data[].block_timestamp",
           "data[].transaction_hash"
         ],
-        "responseHash": "679598268ae066105d4211b5e1c67b16b65946d0d8fafa7585047d39c1645696",
+        "responseHash": "6dfb5fb6a5b589da94aa55cb7536be17aa1e84bca8232b92e870d7fbc8389bda",
         "attempts": 1,
-        "totalMs": 1051,
+        "totalMs": 546,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/related-wallets",
+        "body": {
+          "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+          "chain": "ethereum",
+          "pagination": {
+            "page": 1,
+            "per_page": 50
+          }
+        },
+        "credits": 1,
+        "ms": 604,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].address",
+          "data[].relation",
+          "data[].address_label"
+        ],
+        "responseHash": "f2df9f3c9cbd9bedf48a3df869b242dfa6bf647f8e8f52b2a91870a2432094df",
+        "attempts": 1,
+        "totalMs": 604,
         "ok": true
       },
       {
@@ -317,7 +317,7 @@
           ]
         },
         "credits": 1,
-        "ms": 1506,
+        "ms": 998,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -327,9 +327,9 @@
           "data[].block_timestamp",
           "data[].transaction_hash"
         ],
-        "responseHash": "679598268ae066105d4211b5e1c67b16b65946d0d8fafa7585047d39c1645696",
+        "responseHash": "6dfb5fb6a5b589da94aa55cb7536be17aa1e84bca8232b92e870d7fbc8389bda",
         "attempts": 1,
-        "totalMs": 1506,
+        "totalMs": 998,
         "ok": true
       },
       {
@@ -355,7 +355,7 @@
           ]
         },
         "credits": 5,
-        "ms": 1546,
+        "ms": 1337,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -365,9 +365,9 @@
           "data[].volume_in_usd",
           "data[].volume_out_usd"
         ],
-        "responseHash": "277a5727d4e28ed4a37b9ba11cbf54afed21a3c0bc13d62ae96bb6ac13e8e1d0",
+        "responseHash": "ea8e88cae5dcd73f903e1c2847a360a419fcb0151edc7cb5f238017db9848d82",
         "attempts": 1,
-        "totalMs": 1546,
+        "totalMs": 1338,
         "ok": true
       },
       {
@@ -377,7 +377,7 @@
           "transaction_hash": "0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec"
         },
         "credits": 1,
-        "ms": 716,
+        "ms": 763,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -385,9 +385,9 @@
           "data[].token_transfer_array[].to_address_label",
           "data[].token_transfer_array[].from_address_label"
         ],
-        "responseHash": "cd830f0c2520f00339ebd994f016a292d178b106585d27e16c4aa05b25dd7c11",
+        "responseHash": "918350ee988bedd001823204bb3abdec6891c54f234940d9c7310408cb83503c",
         "attempts": 1,
-        "totalMs": 716,
+        "totalMs": 763,
         "ok": true
       },
       {
@@ -397,7 +397,7 @@
           "transaction_hash": "0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec"
         },
         "credits": 1,
-        "ms": 754,
+        "ms": 771,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -407,7 +407,7 @@
         ],
         "responseHash": "46806319f623c12e1cd786c36f189917468a49fc5c09b8303807e8f850e55d26",
         "attempts": 1,
-        "totalMs": 755,
+        "totalMs": 771,
         "ok": true
       }
     ],
@@ -415,8 +415,8 @@
     "calls": 8,
     "cachedCalls": 0,
     "skipped": [],
-    "ms": 3801,
-    "asOf": "2026-09-16T14:37:22.962Z",
+    "ms": 3185,
+    "asOf": "2026-09-16T14:38:22.162Z",
     "hash": "65339ad6844da45e010c6065e1ac81321b30be96fb517686c1cc4c2547e614ec"
   }
 }

@@ -6,7 +6,7 @@
  *   npm run bench -- --runs 1
  */
 import { CachedNansenClient, MemoryCache, sentWrong } from "../packages/core/src/index.js";
-import { FIXTURE_SET } from "./seed.js";
+import { FIXTURE_SET } from "./fixture-set.js";
 
 const runsIdx = process.argv.indexOf("--runs");
 const RUNS = runsIdx >= 0 ? Number(process.argv[runsIdx + 1]) : 3;

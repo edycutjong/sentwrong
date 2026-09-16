@@ -2,16 +2,16 @@
   "edge": "8 · USDC token contract: search/general short-circuit, 0 credits",
   "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
   "options": {},
-  "now": 1789569456422,
-  "recordedAt": "2026-09-16T14:37:36.422Z",
+  "now": 1789569520176,
+  "recordedAt": "2026-09-16T14:38:40.176Z",
   "live": {
     "calls": 1,
     "credits": 0,
-    "ms": 476
+    "ms": 392
   },
   "responses": {
     "a0c69bf1d2e73b575cc37752079a3b6e": {
-      "storedAt": "2026-09-16T14:37:36.897Z",
+      "storedAt": "2026-09-16T14:38:40.567Z",
       "ttlMs": 1800000,
       "endpoint": "search/general",
       "body": {
@@ -57,7 +57,7 @@
           "limit": 10
         },
         "credits": 0,
-        "ms": 475,
+        "ms": 391,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -67,7 +67,7 @@
         ],
         "responseHash": "b11ec2aee6ec50d64a5f563ed559004d4395f4aee741c1db2dd237df34b421f7",
         "attempts": 1,
-        "totalMs": 475,
+        "totalMs": 391,
         "ok": true
       }
     ],
@@ -80,8 +80,8 @@
       "profiler/address/related-wallets",
       "profiler/address/first-funder"
     ],
-    "ms": 476,
-    "asOf": "2026-09-16T14:37:36.422Z",
+    "ms": 392,
+    "asOf": "2026-09-16T14:38:40.176Z",
     "hash": "717d638086684ac36f423dc38c8ef849c7913b5cc78618d2c94229f21432e576"
   }
 }

@@ -1,0 +1,23 @@
+{
+  "name": "sentwrong-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sent Wrong — paste the address you sent to; Nansen decides your recovery route.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@sentwrong/core": "0.1.0",
+    "next": "15.5.2",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.7.0"
+  }
+}

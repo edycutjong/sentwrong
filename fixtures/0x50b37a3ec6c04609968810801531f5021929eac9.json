@@ -2,16 +2,16 @@
   "edge": "13 · an address-poisoning look-alike: only ever 'receives' homoglyph tokens (ÚЅDТ) → poisoner state",
   "address": "0x50b37a3ec6c04609968810801531f5021929eac9",
   "options": {},
-  "now": 1789569469809,
-  "recordedAt": "2026-09-16T14:37:49.809Z",
+  "now": 1789569534092,
+  "recordedAt": "2026-09-16T14:38:54.092Z",
   "live": {
     "calls": 7,
     "credits": 10,
-    "ms": 3294
+    "ms": 5489
   },
   "responses": {
     "eeb8e7fec38377ee94bc697b373e5b77": {
-      "storedAt": "2026-09-16T14:37:50.258Z",
+      "storedAt": "2026-09-16T14:38:54.554Z",
       "ttlMs": 1800000,
       "endpoint": "search/general",
       "body": {
@@ -22,7 +22,7 @@
       "text": "{\"tokens\":[],\"entities\":[],\"total_results\":0}"
     },
     "cef64b8003698525b553aa7570a2b72d": {
-      "storedAt": "2026-09-16T14:37:50.555Z",
+      "storedAt": "2026-09-16T14:38:54.865Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/first-funder",
       "body": {
@@ -32,7 +32,7 @@
       "text": "{\"pagination\":{\"page\":1,\"per_page\":10,\"is_last_page\":true},\"data\":[]}"
     },
     "9ffa80e0fa5e9c19b2d5713d3df678d4": {
-      "storedAt": "2026-09-16T14:37:50.771Z",
+      "storedAt": "2026-09-16T14:38:54.990Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/related-wallets",
       "body": {
@@ -46,7 +46,7 @@
       "text": "{\"pagination\":{\"page\":1,\"per_page\":50,\"is_last_page\":true},\"data\":[]}"
     },
     "cd10cf1dbf9e7fe928e4b14b33db7e4d": {
-      "storedAt": "2026-09-16T14:37:50.840Z",
+      "storedAt": "2026-09-16T14:38:55.193Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/transactions",
       "body": {
@@ -71,7 +71,7 @@
       "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[]}"
     },
     "b58883fcb26b462b7a52ae0e5bb65986": {
-      "storedAt": "2026-09-16T14:37:51.539Z",
+      "storedAt": "2026-09-16T14:38:55.886Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/counterparties",
       "body": {
@@ -97,7 +97,7 @@
       "text": "{\"pagination\":{\"page\":1,\"per_page\":20,\"is_last_page\":true},\"data\":[{\"counterparty_address\":\"0x3ff462b155011159f9afe68b0a3c509dc6f462b0\",\"counterparty_address_label\":null,\"interaction_count\":3,\"total_volume_usd\":0.0,\"volume_in_usd\":0.0,\"volume_out_usd\":0.0,\"tokens_info\":[{\"token_address\":\"0x5b40f9e45655ebf058e253444c90019a61012437\",\"token_symbol\":\"ÚЅDТ\",\"token_name\":\"ÚЅDТ\",\"num_transfer\":\"3\",\"total_token_amount\":141.173712,\"token_in_amount\":141.173712,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0x0e279ea6dd81d8e53c374c4694b44b5bc6e996d0\",\"counterparty_address_label\":null,\"interaction_count\":1,\"total_volume_usd\":0.0,\"volume_in_usd\":0.0,\"volume_out_usd\":0.0,\"tokens_info\":[{\"token_address\":\"0xd9a3679764855e03b6030db48ae36cea8a2a7526\",\"token_symbol\":\" U5DТ \",\"token_name\":\" U5DТ \",\"num_transfer\":\"1\",\"total_token_amount\":29.0,\"token_in_amount\":29.0,\"token_out_amount\":0.0}]}]}"
     },
     "490ae03a184c5cd7254b35ef264fef62": {
-      "storedAt": "2026-09-16T14:37:51.737Z",
+      "storedAt": "2026-09-16T14:38:56.204Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/transactions",
       "body": {
@@ -122,7 +122,7 @@
       "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"ÚЅDТ\",\"token_amount\":47.057904,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0x5b40f9e45655ebf058e253444c90019a61012437\",\"chain\":\"ethereum\",\"from_address\":\"0x3ff462b155011159f9afe68b0a3c509dc6f462b0\",\"to_address\":\"0x50b37a3ec6c04609968810801531f5021929eac9\",\"from_address_label\":\"[0x3ff462]\",\"to_address_label\":\"[0x50b37a]\"}],\"volume_usd\":null,\"block_timestamp\":\"2026-05-30T12:41:59\",\"transaction_hash\":\"0x71c550809ccbdd94028ea0dc0c16116adb69a29617e7aeffa9058677b3a5be57\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"ÚЅDТ\",\"token_amount\":47.057904,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0x5b40f9e45655ebf058e253444c90019a61012437\",\"chain\":\"ethereum\",\"from_address\":\"0x3ff462b155011159f9afe68b0a3c509dc6f462b0\",\"to_address\":\"0x50b37a3ec6c04609968810801531f5021929eac9\",\"from_address_label\":\"[0x3ff462]\",\"to_address_label\":\"[0x50b37a]\"}],\"volume_usd\":null,\"block_timestamp\":\"2026-05-30T12:34:35\",\"transaction_hash\":\"0xad20840b5aedfaeed4f22a02ea7ca5f68d61b30e9765195cbf43e618063541f2\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"ÚЅDТ\",\"token_amount\":47.057904,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0x5b40f9e45655ebf058e253444c90019a61012437\",\"chain\":\"ethereum\",\"from_address\":\"0x3ff462b155011159f9afe68b0a3c509dc6f462b0\",\"to_address\":\"0x50b37a3ec6c04609968810801531f5021929eac9\",\"from_address_label\":\"[0x3ff462]\",\"to_address_label\":\"[0x50b37a]\"}],\"volume_usd\":null,\"block_timestamp\":\"2026-05-30T09:22:35\",\"transaction_hash\":\"0x6c8bcbc915fb04db76527f7b936383370bdd608c83369ed98ccafb7a29806e40\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\" U5DТ \",\"token_amount\":29.0,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xd9a3679764855e03b6030db48ae36cea8a2a7526\",\"chain\":\"ethereum\",\"from_address\":\"0x0e279ea6dd81d8e53c374c4694b44b5bc6e996d0\",\"to_address\":\"0x50b37a3ec6c04609968810801531f5021929eac9\",\"from_address_label\":\"[0x0e279e]\",\"to_address_label\":\"[0x50b37a]\"}],\"volume_usd\":null,\"block_timestamp\":\"2026-03-19T23:19:23\",\"transaction_hash\":\"0x456dafebf0b28c2979af417b06eda76d03b95c452f88ba0386f78e8ea6629791\",\"source_type\":\"transfer\"}]}"
     },
     "d2ee628836eae1fc40c32266246d813c": {
-      "storedAt": "2026-09-16T14:37:53.101Z",
+      "storedAt": "2026-09-16T14:38:59.580Z",
       "ttlMs": 1800000,
       "endpoint": "transaction-with-token-transfer-lookup",
       "body": {
@@ -187,7 +187,7 @@
           "limit": 10
         },
         "credits": 0,
-        "ms": 449,
+        "ms": 462,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -197,7 +197,7 @@
         ],
         "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
         "attempts": 1,
-        "totalMs": 449,
+        "totalMs": 462,
         "ok": true
       },
       {
@@ -207,7 +207,7 @@
           "chain": "all"
         },
         "credits": 1,
-        "ms": 296,
+        "ms": 309,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -217,7 +217,7 @@
         ],
         "responseHash": "f9f6759d00a0eaf5f300c932efbc04cb8742a4f79181aa70f54ae7df48a322d1",
         "attempts": 1,
-        "totalMs": 297,
+        "totalMs": 310,
         "ok": true
       },
       {
@@ -231,7 +231,7 @@
           }
         },
         "credits": 1,
-        "ms": 512,
+        "ms": 435,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -241,7 +241,7 @@
         ],
         "responseHash": "3ac687a36059579d1c3e851d6bec931f16eb68b66f1c508bc9c8a5e10bd6b700",
         "attempts": 1,
-        "totalMs": 513,
+        "totalMs": 435,
         "ok": true
       },
       {
@@ -266,7 +266,7 @@
           ]
         },
         "credits": 1,
-        "ms": 582,
+        "ms": 638,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -278,7 +278,7 @@
         ],
         "responseHash": "0afcf0ee70859168f912615f29fec397396976f8b5f609aed9ab76967f87d1fe",
         "attempts": 1,
-        "totalMs": 582,
+        "totalMs": 638,
         "ok": true
       },
       {
@@ -304,7 +304,7 @@
           ]
         },
         "credits": 5,
-        "ms": 699,
+        "ms": 692,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -316,7 +316,7 @@
         ],
         "responseHash": "a2798bdf0b68b7a96ae6e7a3064771ecb17ae7adb2020f311a59bfc279964eaf",
         "attempts": 1,
-        "totalMs": 699,
+        "totalMs": 693,
         "ok": true
       },
       {
@@ -341,7 +341,7 @@
           ]
         },
         "credits": 1,
-        "ms": 897,
+        "ms": 1011,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -353,7 +353,7 @@
         ],
         "responseHash": "34d1a2c4f15bf6fa8d3f3eb9f4e289f65a683debcdb308e0dc81467f72e7831e",
         "attempts": 1,
-        "totalMs": 897,
+        "totalMs": 1011,
         "ok": true
       },
       {
@@ -363,7 +363,7 @@
           "transaction_hash": "0x71c550809ccbdd94028ea0dc0c16116adb69a29617e7aeffa9058677b3a5be57"
         },
         "credits": 1,
-        "ms": 1364,
+        "ms": 3375,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -373,7 +373,7 @@
         ],
         "responseHash": "d6d7143a6aadb5586a9ed13f5572b8940949510cf12716f6b9265c850e2bf368",
         "attempts": 1,
-        "totalMs": 1364,
+        "totalMs": 3375,
         "ok": true
       }
     ],
@@ -381,8 +381,8 @@
     "calls": 7,
     "cachedCalls": 0,
     "skipped": [],
-    "ms": 3294,
-    "asOf": "2026-09-16T14:37:49.809Z",
+    "ms": 5489,
+    "asOf": "2026-09-16T14:38:54.092Z",
     "hash": "402f5cf4092bf48b128b833746da178254c255f8792c7e0eee2734c734a60cfc"
   }
 }

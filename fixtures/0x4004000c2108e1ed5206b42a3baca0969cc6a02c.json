@@ -2,16 +2,16 @@
   "edge": "10 · fresh withdrawal recipient: 1 in / 0 out, first-funder EMPTY → dormant stranger",
   "address": "0x4004000c2108e1ed5206b42a3baca0969cc6a02c",
   "options": {},
-  "now": 1789569461027,
-  "recordedAt": "2026-09-16T14:37:41.027Z",
+  "now": 1789569524404,
+  "recordedAt": "2026-09-16T14:38:44.404Z",
   "live": {
     "calls": 7,
     "credits": 10,
-    "ms": 3224
+    "ms": 3759
   },
   "responses": {
     "760109a26386be1f98bd74bd75108e68": {
-      "storedAt": "2026-09-16T14:37:41.520Z",
+      "storedAt": "2026-09-16T14:38:44.971Z",
       "ttlMs": 1800000,
       "endpoint": "search/general",
       "body": {
@@ -22,7 +22,7 @@
       "text": "{\"tokens\":[],\"entities\":[],\"total_results\":0}"
     },
     "36c697361cd1ee46468063982331735e": {
-      "storedAt": "2026-09-16T14:37:41.820Z",
+      "storedAt": "2026-09-16T14:38:45.262Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/first-funder",
       "body": {
@@ -32,7 +32,7 @@
       "text": "{\"pagination\":{\"page\":1,\"per_page\":10,\"is_last_page\":true},\"data\":[]}"
     },
     "691c4bf73f4577e83cf1cdb99b2a567f": {
-      "storedAt": "2026-09-16T14:37:41.947Z",
+      "storedAt": "2026-09-16T14:38:45.375Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/related-wallets",
       "body": {
@@ -46,7 +46,7 @@
       "text": "{\"pagination\":{\"page\":1,\"per_page\":50,\"is_last_page\":true},\"data\":[]}"
     },
     "1280dc168f5a9847cf8a3123a44e801e": {
-      "storedAt": "2026-09-16T14:37:42.772Z",
+      "storedAt": "2026-09-16T14:38:45.625Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/transactions",
       "body": {
@@ -70,8 +70,33 @@
       },
       "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"USDT\",\"token_amount\":5.384023,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xdac17f958d2ee523a2206206994597c13d831ec7\",\"chain\":\"ethereum\",\"from_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"to_address\":\"0x4004000c2108e1ed5206b42a3baca0969cc6a02c\",\"from_address_label\":\"Token Billionaire [0x28c6c0]\",\"to_address_label\":\"[0x400400]\"}],\"volume_usd\":5.3785968355474845,\"block_timestamp\":\"2026-09-16T13:49:59\",\"transaction_hash\":\"0x56be434e875826ecea97e1b1141b1fc484ebfa29939afa9cdf444e330c440793\",\"source_type\":\"transfer\"}]}"
     },
+    "6ae800e8cce7b8d265abbbff16c226b0": {
+      "storedAt": "2026-09-16T14:38:46.233Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/transactions",
+      "body": {
+        "address": "0x4004000c2108e1ed5206b42a3baca0969cc6a02c",
+        "chain": "ethereum",
+        "date": {
+          "from": "2015-07-30",
+          "to": "2030-01-01"
+        },
+        "hide_spam_token": true,
+        "pagination": {
+          "page": 1,
+          "per_page": 100
+        },
+        "order_by": [
+          {
+            "field": "block_timestamp",
+            "direction": "DESC"
+          }
+        ]
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"USDT\",\"token_amount\":5.384023,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xdac17f958d2ee523a2206206994597c13d831ec7\",\"chain\":\"ethereum\",\"from_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"to_address\":\"0x4004000c2108e1ed5206b42a3baca0969cc6a02c\",\"from_address_label\":\"Token Billionaire [0x28c6c0]\",\"to_address_label\":\"[0x400400]\"}],\"volume_usd\":5.3785968355474845,\"block_timestamp\":\"2026-09-16T13:49:59\",\"transaction_hash\":\"0x56be434e875826ecea97e1b1141b1fc484ebfa29939afa9cdf444e330c440793\",\"source_type\":\"transfer\"}]}"
+    },
     "b8fe90c74c8a4e66b7a7f41af6c25dd3": {
-      "storedAt": "2026-09-16T14:37:43.101Z",
+      "storedAt": "2026-09-16T14:38:47.455Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/counterparties",
       "body": {
@@ -96,33 +121,8 @@
       },
       "text": "{\"pagination\":{\"page\":1,\"per_page\":20,\"is_last_page\":true},\"data\":[{\"counterparty_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"counterparty_address_label\":[\"Token Billionaire\"],\"interaction_count\":1,\"total_volume_usd\":5.3785968355474845,\"volume_in_usd\":5.3785968355474845,\"volume_out_usd\":0.0,\"tokens_info\":[{\"token_address\":\"0xdac17f958d2ee523a2206206994597c13d831ec7\",\"token_symbol\":\"USDT\",\"token_name\":\"Tether USD\",\"num_transfer\":\"1\",\"total_token_amount\":5.384023,\"token_in_amount\":5.384023,\"token_out_amount\":0.0}]}]}"
     },
-    "6ae800e8cce7b8d265abbbff16c226b0": {
-      "storedAt": "2026-09-16T14:37:43.512Z",
-      "ttlMs": 1800000,
-      "endpoint": "profiler/address/transactions",
-      "body": {
-        "address": "0x4004000c2108e1ed5206b42a3baca0969cc6a02c",
-        "chain": "ethereum",
-        "date": {
-          "from": "2015-07-30",
-          "to": "2030-01-01"
-        },
-        "hide_spam_token": true,
-        "pagination": {
-          "page": 1,
-          "per_page": 100
-        },
-        "order_by": [
-          {
-            "field": "block_timestamp",
-            "direction": "DESC"
-          }
-        ]
-      },
-      "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"USDT\",\"token_amount\":5.384023,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xdac17f958d2ee523a2206206994597c13d831ec7\",\"chain\":\"ethereum\",\"from_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"to_address\":\"0x4004000c2108e1ed5206b42a3baca0969cc6a02c\",\"from_address_label\":\"Token Billionaire [0x28c6c0]\",\"to_address_label\":\"[0x400400]\"}],\"volume_usd\":5.3785968355474845,\"block_timestamp\":\"2026-09-16T13:49:59\",\"transaction_hash\":\"0x56be434e875826ecea97e1b1141b1fc484ebfa29939afa9cdf444e330c440793\",\"source_type\":\"transfer\"}]}"
-    },
     "fe452d9df16fcb15e69a0b781cf88c24": {
-      "storedAt": "2026-09-16T14:37:44.251Z",
+      "storedAt": "2026-09-16T14:38:48.161Z",
       "ttlMs": 1800000,
       "endpoint": "transaction-with-token-transfer-lookup",
       "body": {
@@ -187,7 +187,7 @@
           "limit": 10
         },
         "credits": 0,
-        "ms": 492,
+        "ms": 567,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -197,7 +197,7 @@
         ],
         "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
         "attempts": 1,
-        "totalMs": 492,
+        "totalMs": 567,
         "ok": true
       },
       {
@@ -207,7 +207,7 @@
           "chain": "all"
         },
         "credits": 1,
-        "ms": 299,
+        "ms": 290,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -217,7 +217,7 @@
         ],
         "responseHash": "f9f6759d00a0eaf5f300c932efbc04cb8742a4f79181aa70f54ae7df48a322d1",
         "attempts": 1,
-        "totalMs": 299,
+        "totalMs": 291,
         "ok": true
       },
       {
@@ -231,7 +231,7 @@
           }
         },
         "credits": 1,
-        "ms": 426,
+        "ms": 404,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -241,7 +241,7 @@
         ],
         "responseHash": "3ac687a36059579d1c3e851d6bec931f16eb68b66f1c508bc9c8a5e10bd6b700",
         "attempts": 1,
-        "totalMs": 426,
+        "totalMs": 404,
         "ok": true
       },
       {
@@ -266,7 +266,7 @@
           ]
         },
         "credits": 1,
-        "ms": 1251,
+        "ms": 654,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -278,7 +278,44 @@
         ],
         "responseHash": "c7d76e99b2568fa901e81028fee69c758aa347fdbbb452f00e8b6ef10c5c4ed0",
         "attempts": 1,
-        "totalMs": 1251,
+        "totalMs": 654,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/transactions",
+        "body": {
+          "address": "0x4004000c2108e1ed5206b42a3baca0969cc6a02c",
+          "chain": "ethereum",
+          "date": {
+            "from": "2015-07-30",
+            "to": "2030-01-01"
+          },
+          "hide_spam_token": true,
+          "pagination": {
+            "page": 1,
+            "per_page": 100
+          },
+          "order_by": [
+            {
+              "field": "block_timestamp",
+              "direction": "DESC"
+            }
+          ]
+        },
+        "credits": 1,
+        "ms": 608,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].method",
+          "data[].tokens_sent[].to_address",
+          "data[].tokens_received[].from_address",
+          "data[].block_timestamp",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "c7d76e99b2568fa901e81028fee69c758aa347fdbbb452f00e8b6ef10c5c4ed0",
+        "attempts": 1,
+        "totalMs": 608,
         "ok": true
       },
       {
@@ -304,7 +341,7 @@
           ]
         },
         "credits": 5,
-        "ms": 329,
+        "ms": 1829,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -316,44 +353,7 @@
         ],
         "responseHash": "9fa2ea0355f0d893af964bb7f681de58111eb9a6dd1b459dc5133c57b3de8299",
         "attempts": 1,
-        "totalMs": 329,
-        "ok": true
-      },
-      {
-        "endpoint": "profiler/address/transactions",
-        "body": {
-          "address": "0x4004000c2108e1ed5206b42a3baca0969cc6a02c",
-          "chain": "ethereum",
-          "date": {
-            "from": "2015-07-30",
-            "to": "2030-01-01"
-          },
-          "hide_spam_token": true,
-          "pagination": {
-            "page": 1,
-            "per_page": 100
-          },
-          "order_by": [
-            {
-              "field": "block_timestamp",
-              "direction": "DESC"
-            }
-          ]
-        },
-        "credits": 1,
-        "ms": 740,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].method",
-          "data[].tokens_sent[].to_address",
-          "data[].tokens_received[].from_address",
-          "data[].block_timestamp",
-          "data[].transaction_hash"
-        ],
-        "responseHash": "c7d76e99b2568fa901e81028fee69c758aa347fdbbb452f00e8b6ef10c5c4ed0",
-        "attempts": 1,
-        "totalMs": 740,
+        "totalMs": 1830,
         "ok": true
       },
       {
@@ -363,7 +363,7 @@
           "transaction_hash": "0x56be434e875826ecea97e1b1141b1fc484ebfa29939afa9cdf444e330c440793"
         },
         "credits": 1,
-        "ms": 737,
+        "ms": 706,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -373,7 +373,7 @@
         ],
         "responseHash": "35a32d018a27a9d3f7ca659bc2f77a106768bb35caaafc6fc41a80da79bf990c",
         "attempts": 1,
-        "totalMs": 737,
+        "totalMs": 706,
         "ok": true
       }
     ],
@@ -381,8 +381,8 @@
     "calls": 7,
     "cachedCalls": 0,
     "skipped": [],
-    "ms": 3224,
-    "asOf": "2026-09-16T14:37:41.027Z",
+    "ms": 3759,
+    "asOf": "2026-09-16T14:38:44.404Z",
     "hash": "efb4b205ec54418d598d639c17fa9b538838fc61628d8f23c3d8c7172d783e71"
   }
 }
