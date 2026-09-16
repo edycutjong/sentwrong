@@ -1,0 +1,9 @@
+{
+  "name": "sentwrong-cli",
+  "version": "0.1.0",
+  "description": "sentwrong <address> — which recovery route are you on?",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "sentwrong": "./src/cli.ts" },
+  "dependencies": { "@sentwrong/core": "0.1.0" }
+}

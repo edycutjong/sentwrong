@@ -1,0 +1,26 @@
+{
+  "name": "sentwrong",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sent crypto to the wrong address? Paste it. Nansen labels decide which of four recovery routes you are on, and draft the ticket.",
+  "license": "MIT",
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "sentwrong": "tsx packages/cli/src/cli.ts",
+    "spike": "tsx scripts/spike.ts",
+    "seed": "tsx scripts/seed.ts",
+    "verify": "tsx scripts/verify.ts",
+    "bench": "tsx scripts/bench.ts",
+    "check:submission": "tsx scripts/check_submission_readiness.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": { "node": ">=20" },
+  "type": "module"
+}
