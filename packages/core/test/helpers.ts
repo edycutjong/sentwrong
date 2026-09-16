@@ -37,7 +37,7 @@ export const labels = (rows: Array<{ label: string; category?: string; kind?: st
 
 /** An empty-but-successful Lookups for `address`; override the pieces a test cares about. */
 export function lookups(over: Partial<Lookups> = {}): Lookups {
-  return { address: R, chain: "ethereum", search: ok(search()), transactions: ok(txs([])), counterparties: ok(cps([])), related: ok(related([])), firstFunder: ok(noFunder()), txLookups: [], skipped: [], ...over };
+  return { address: R, chain: "ethereum", search: ok(search()), transactions: ok(txs([])), transactionsWindow: "all", counterparties: ok(cps([])), related: ok(related([])), firstFunder: ok(noFunder()), txLookups: [], skipped: [], ...over };
 }
 
 /** The hero: Binance deposit address as recorded live — 15 sweeps to Binance 14, gas from the Binance dripper. */

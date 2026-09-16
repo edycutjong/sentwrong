@@ -2,16 +2,16 @@
   "edge": "6 · createForwarder contract funded by Binance 14, forwards to BitGo MultiSig → forwarder state",
   "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
   "options": {},
-  "now": 1789568323614,
-  "recordedAt": "2026-09-16T14:18:43.614Z",
+  "now": 1789569451406,
+  "recordedAt": "2026-09-16T14:37:31.406Z",
   "live": {
-    "calls": 7,
-    "credits": 10,
-    "ms": 5792
+    "calls": 8,
+    "credits": 11,
+    "ms": 3413
   },
   "responses": {
     "d7f1aa9ad5be22976971c201d4d35ba7": {
-      "storedAt": "2026-09-16T14:18:44.112Z",
+      "storedAt": "2026-09-16T14:37:31.790Z",
       "ttlMs": 1800000,
       "endpoint": "search/general",
       "body": {
@@ -21,8 +21,18 @@
       },
       "text": "{\"tokens\":[],\"entities\":[],\"total_results\":0}"
     },
+    "d263e6b50ad7993b7a0860afca912b6d": {
+      "storedAt": "2026-09-16T14:37:32.138Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/first-funder",
+      "body": {
+        "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
+        "chain": "all"
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":10,\"is_last_page\":true},\"data\":[{\"wallet_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"first_funder_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"first_funder_name\":\"Token Billionaire\",\"transaction_hash\":\"0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35\",\"block_timestamp\":\"2026-09-16T13:49:47Z\",\"chain\":\"ethereum\"}]}"
+    },
     "6a1d321850210c79dec120336d198207": {
-      "storedAt": "2026-09-16T14:18:44.809Z",
+      "storedAt": "2026-09-16T14:37:32.393Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/related-wallets",
       "body": {
@@ -35,18 +45,58 @@
       },
       "text": "{\"pagination\":{\"page\":1,\"per_page\":50,\"is_last_page\":true},\"data\":[{\"address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"address_label\":\"Token Billionaire\",\"relation\":\"First Funder\",\"transaction_hash\":\"0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35\",\"block_timestamp\":\"2026-09-16T13:49:47Z\",\"order\":1,\"chain\":\"ethereum\"},{\"address\":\"0x9f5c2ae82df9cf37297c5d2b7b6557317527444e\",\"address_label\":\"High Activity\",\"relation\":\"Deployed by\",\"transaction_hash\":\"0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc\",\"block_timestamp\":\"2026-09-16T13:50:59Z\",\"order\":6,\"chain\":\"ethereum\"},{\"address\":\"0xffa397285ce46fb78c588a9e993286aac68c37cd\",\"address_label\":\"High Activity\",\"relation\":\"Created by\",\"transaction_hash\":\"0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc\",\"block_timestamp\":\"2026-09-16T13:50:59Z\",\"order\":8,\"chain\":\"ethereum\"}]}"
     },
-    "d263e6b50ad7993b7a0860afca912b6d": {
-      "storedAt": "2026-09-16T14:18:45.111Z",
+    "19bbe20274eac0116d886a2dbc0a2628": {
+      "storedAt": "2026-09-16T14:37:32.686Z",
       "ttlMs": 1800000,
-      "endpoint": "profiler/address/first-funder",
+      "endpoint": "profiler/address/transactions",
       "body": {
         "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
-        "chain": "all"
+        "chain": "ethereum",
+        "date": {
+          "from": "2026-09-02",
+          "to": "2026-09-17"
+        },
+        "hide_spam_token": true,
+        "pagination": {
+          "page": 1,
+          "per_page": 100
+        },
+        "order_by": [
+          {
+            "field": "block_timestamp",
+            "direction": "DESC"
+          }
+        ]
       },
-      "text": "{\"pagination\":{\"page\":1,\"per_page\":10,\"is_last_page\":true},\"data\":[{\"wallet_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"first_funder_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"first_funder_name\":\"Token Billionaire\",\"transaction_hash\":\"0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35\",\"block_timestamp\":\"2026-09-16T13:49:47Z\",\"chain\":\"ethereum\"}]}"
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"createForwarder(address,bytes32)\",\"tokens_sent\":[{\"token_symbol\":\"ETH\",\"token_amount\":-0.24318431,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"chain\":\"ethereum\",\"from_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"to_address\":\"0x094a430a5e2f633e841180bae30d9eb82001765b\",\"from_address_label\":\"[0xfcfd07]\",\"to_address_label\":\"MultiSig [0x094a43]\"}],\"tokens_received\":[],\"volume_usd\":581.4595201109415,\"block_timestamp\":\"2026-09-16T13:50:59\",\"transaction_hash\":\"0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"received\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"ETH\",\"token_amount\":0.24318431,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"chain\":\"ethereum\",\"from_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"to_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"from_address_label\":\"Token Billionaire [0x28c6c0]\",\"to_address_label\":\"[0xfcfd07]\"}],\"volume_usd\":581.4595201109415,\"block_timestamp\":\"2026-09-16T13:49:47\",\"transaction_hash\":\"0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35\",\"source_type\":\"transfer\"}]}"
+    },
+    "3ac84200ef0fe35e60a6c8fad487c548": {
+      "storedAt": "2026-09-16T14:37:33.682Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/transactions",
+      "body": {
+        "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
+        "chain": "ethereum",
+        "date": {
+          "from": "2015-07-30",
+          "to": "2030-01-01"
+        },
+        "hide_spam_token": true,
+        "pagination": {
+          "page": 1,
+          "per_page": 100
+        },
+        "order_by": [
+          {
+            "field": "block_timestamp",
+            "direction": "DESC"
+          }
+        ]
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"createForwarder(address,bytes32)\",\"tokens_sent\":[{\"token_symbol\":\"ETH\",\"token_amount\":-0.24318431,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"chain\":\"ethereum\",\"from_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"to_address\":\"0x094a430a5e2f633e841180bae30d9eb82001765b\",\"from_address_label\":\"[0xfcfd07]\",\"to_address_label\":\"MultiSig [0x094a43]\"}],\"tokens_received\":[],\"volume_usd\":581.4595201109415,\"block_timestamp\":\"2026-09-16T13:50:59\",\"transaction_hash\":\"0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"received\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"ETH\",\"token_amount\":0.24318431,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"chain\":\"ethereum\",\"from_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"to_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"from_address_label\":\"Token Billionaire [0x28c6c0]\",\"to_address_label\":\"[0xfcfd07]\"}],\"volume_usd\":581.4595201109415,\"block_timestamp\":\"2026-09-16T13:49:47\",\"transaction_hash\":\"0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35\",\"source_type\":\"transfer\"}]}"
     },
     "88ee65545cb5bed666045caf2d4a727b": {
-      "storedAt": "2026-09-16T14:18:46.844Z",
+      "storedAt": "2026-09-16T14:37:34.081Z",
       "ttlMs": 1800000,
       "endpoint": "profiler/address/counterparties",
       "body": {
@@ -69,52 +119,27 @@
           }
         ]
       },
-      "text": "{\"pagination\":{\"page\":1,\"per_page\":20,\"is_last_page\":true},\"data\":[{\"counterparty_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"counterparty_address_label\":[\"Token Billionaire\"],\"interaction_count\":1,\"total_volume_usd\":579.5679214898277,\"volume_in_usd\":579.5679214898277,\"volume_out_usd\":0.0,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"1\",\"total_token_amount\":0.24318431,\"token_in_amount\":0.24318431,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0x094a430a5e2f633e841180bae30d9eb82001765b\",\"counterparty_address_label\":[\"MultiSig\"],\"interaction_count\":1,\"total_volume_usd\":579.5679214898277,\"volume_in_usd\":0.0,\"volume_out_usd\":579.5679214898277,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"1\",\"total_token_amount\":0.24318431,\"token_in_amount\":0.0,\"token_out_amount\":0.24318431}]}]}"
-    },
-    "3ac84200ef0fe35e60a6c8fad487c548": {
-      "storedAt": "2026-09-16T14:18:48.622Z",
-      "ttlMs": 1800000,
-      "endpoint": "profiler/address/transactions",
-      "body": {
-        "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
-        "chain": "ethereum",
-        "date": {
-          "from": "2015-07-30",
-          "to": "2030-01-01"
-        },
-        "hide_spam_token": true,
-        "pagination": {
-          "page": 1,
-          "per_page": 100
-        },
-        "order_by": [
-          {
-            "field": "block_timestamp",
-            "direction": "DESC"
-          }
-        ]
-      },
-      "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"createForwarder(address,bytes32)\",\"tokens_sent\":[{\"token_symbol\":\"ETH\",\"token_amount\":-0.24318431,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"chain\":\"ethereum\",\"from_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"to_address\":\"0x094a430a5e2f633e841180bae30d9eb82001765b\",\"from_address_label\":\"[0xfcfd07]\",\"to_address_label\":\"MultiSig [0x094a43]\"}],\"tokens_received\":[],\"volume_usd\":579.5679214898277,\"block_timestamp\":\"2026-09-16T13:50:59\",\"transaction_hash\":\"0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"received\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"ETH\",\"token_amount\":0.24318431,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"chain\":\"ethereum\",\"from_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"to_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"from_address_label\":\"Token Billionaire [0x28c6c0]\",\"to_address_label\":\"[0xfcfd07]\"}],\"volume_usd\":579.5679214898277,\"block_timestamp\":\"2026-09-16T13:49:47\",\"transaction_hash\":\"0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35\",\"source_type\":\"transfer\"}]}"
-    },
-    "1506ebfbbe3950d18a6ca20305b924a5": {
-      "storedAt": "2026-09-16T14:18:49.396Z",
-      "ttlMs": 1800000,
-      "endpoint": "transaction-with-token-transfer-lookup",
-      "body": {
-        "chain": "ethereum",
-        "transaction_hash": "0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc"
-      },
-      "text": "{\"data\":[{\"chain\":\"ethereum\",\"transaction_hash\":\"0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc\",\"from_address\":\"0x9f5c2ae82df9cf37297c5d2b7b6557317527444e\",\"from_address_label\":\"High Activity\",\"to_address\":\"0xffa397285ce46fb78c588a9e993286aac68c37cd\",\"to_address_label\":\"High Activity\",\"native_value\":0.0,\"dated_native_price\":2383.2455370571715,\"dated_native_value_usd\":0.0,\"current_native_price\":2383.2455370571715,\"current_native_value_usd\":0.0,\"receipt_status\":1,\"block_timestamp\":\"2026-09-16T13:50:59Z\",\"token_transfer_array\":[{\"from_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"from_address_label\":\"[0xfcfd07]\",\"to_address\":\"0x094a430a5e2f633e841180bae30d9eb82001765b\",\"to_address_label\":\"🤖 BitGo MultiSig [0x094a43]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.24318431,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":579.5679214898277,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":579.5679214898277,\"transfer_id\":\"trace-0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc-133_1_0_0\"}],\"nft_transfer_array\":null}]}"
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":20,\"is_last_page\":true},\"data\":[{\"counterparty_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"counterparty_address_label\":[\"Token Billionaire\"],\"interaction_count\":1,\"total_volume_usd\":581.4595201109415,\"volume_in_usd\":581.4595201109415,\"volume_out_usd\":0.0,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"1\",\"total_token_amount\":0.24318431,\"token_in_amount\":0.24318431,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0x094a430a5e2f633e841180bae30d9eb82001765b\",\"counterparty_address_label\":[\"MultiSig\"],\"interaction_count\":1,\"total_volume_usd\":581.4595201109415,\"volume_in_usd\":0.0,\"volume_out_usd\":581.4595201109415,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"1\",\"total_token_amount\":0.24318431,\"token_in_amount\":0.0,\"token_out_amount\":0.24318431}]}]}"
     },
     "0eab1919348f7a675e330ded25585430": {
-      "storedAt": "2026-09-16T14:18:49.405Z",
+      "storedAt": "2026-09-16T14:37:34.723Z",
       "ttlMs": 1800000,
       "endpoint": "transaction-with-token-transfer-lookup",
       "body": {
         "chain": "ethereum",
         "transaction_hash": "0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35"
       },
-      "text": "{\"data\":[{\"chain\":\"ethereum\",\"transaction_hash\":\"0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35\",\"from_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"from_address_label\":\"Token Billionaire\",\"to_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"to_address_label\":\"\",\"native_value\":0.24318431,\"dated_native_price\":2383.2455370571715,\"dated_native_value_usd\":579.5679214898277,\"current_native_price\":2383.2455370571715,\"current_native_value_usd\":579.5679214898277,\"receipt_status\":1,\"block_timestamp\":\"2026-09-16T13:49:47Z\",\"token_transfer_array\":[{\"from_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"from_address_label\":\"🏦 Binance 14 [0x28c6c0]\",\"to_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"to_address_label\":\"[0xfcfd07]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.24318431,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":579.5679214898277,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":579.5679214898277,\"transfer_id\":\"trace-0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35-224\"}],\"nft_transfer_array\":null}]}"
+      "text": "{\"data\":[{\"chain\":\"ethereum\",\"transaction_hash\":\"0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35\",\"from_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"from_address_label\":\"Token Billionaire\",\"to_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"to_address_label\":\"\",\"native_value\":0.24318431,\"dated_native_price\":2391.023993739323,\"dated_native_value_usd\":581.4595201109415,\"current_native_price\":2391.023993739323,\"current_native_value_usd\":581.4595201109415,\"receipt_status\":1,\"block_timestamp\":\"2026-09-16T13:49:47Z\",\"token_transfer_array\":[{\"from_address\":\"0x28c6c06298d514db089934071355e5743bf21d60\",\"from_address_label\":\"🏦 Binance 14 [0x28c6c0]\",\"to_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"to_address_label\":\"[0xfcfd07]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.24318431,\"dated_price_usd\":2391.023993739323,\"dated_value_usd\":581.4595201109415,\"current_price_usd\":2391.023993739323,\"current_value_usd\":581.4595201109415,\"transfer_id\":\"trace-0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35-224\"}],\"nft_transfer_array\":null}]}"
+    },
+    "1506ebfbbe3950d18a6ca20305b924a5": {
+      "storedAt": "2026-09-16T14:37:34.819Z",
+      "ttlMs": 1800000,
+      "endpoint": "transaction-with-token-transfer-lookup",
+      "body": {
+        "chain": "ethereum",
+        "transaction_hash": "0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc"
+      },
+      "text": "{\"data\":[{\"chain\":\"ethereum\",\"transaction_hash\":\"0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc\",\"from_address\":\"0x9f5c2ae82df9cf37297c5d2b7b6557317527444e\",\"from_address_label\":\"High Activity\",\"to_address\":\"0xffa397285ce46fb78c588a9e993286aac68c37cd\",\"to_address_label\":\"High Activity\",\"native_value\":0.0,\"dated_native_price\":2391.023993739323,\"dated_native_value_usd\":0.0,\"current_native_price\":2391.023993739323,\"current_native_value_usd\":0.0,\"receipt_status\":1,\"block_timestamp\":\"2026-09-16T13:50:59Z\",\"token_transfer_array\":[{\"from_address\":\"0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c\",\"from_address_label\":\"[0xfcfd07]\",\"to_address\":\"0x094a430a5e2f633e841180bae30d9eb82001765b\",\"to_address_label\":\"🤖 BitGo MultiSig [0x094a43]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.24318431,\"dated_price_usd\":2391.023993739323,\"dated_value_usd\":581.4595201109415,\"current_price_usd\":2391.023993739323,\"current_value_usd\":581.4595201109415,\"transfer_id\":\"trace-0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc-133_1_0_0\"}],\"nft_transfer_array\":null}]}"
     }
   },
   "verdict": {
@@ -154,7 +179,7 @@
         "label": "Token Billionaire",
         "entityLabel": "🏦 Binance 14 [0x28c6c0]",
         "interactions": 1,
-        "inUsd": 579.5679214898277,
+        "inUsd": 581.4595201109415,
         "outUsd": 0
       },
       {
@@ -163,7 +188,7 @@
         "entityLabel": "🤖 BitGo MultiSig [0x094a43]",
         "interactions": 1,
         "inUsd": 0,
-        "outUsd": 579.5679214898277
+        "outUsd": 581.4595201109415
       }
     ],
     "provenance": [
@@ -175,7 +200,7 @@
           "limit": 10
         },
         "credits": 0,
-        "ms": 498,
+        "ms": 384,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -185,7 +210,27 @@
         ],
         "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
         "attempts": 1,
-        "totalMs": 498,
+        "totalMs": 384,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/first-funder",
+        "body": {
+          "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
+          "chain": "all"
+        },
+        "credits": 1,
+        "ms": 347,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].first_funder_address",
+          "data[].first_funder_name",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "3b3ff9cca0f7766a872ebeee520132f4bb5cb5d389b49b3fa0abb69daa4a547b",
+        "attempts": 1,
+        "totalMs": 347,
         "ok": true
       },
       {
@@ -199,7 +244,7 @@
           }
         },
         "credits": 1,
-        "ms": 697,
+        "ms": 601,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -209,27 +254,81 @@
         ],
         "responseHash": "4b99430c98b21e7641b37437405d3358dbc47846b6ebee4eff92bd6c44fca128",
         "attempts": 1,
-        "totalMs": 697,
+        "totalMs": 601,
         "ok": true
       },
       {
-        "endpoint": "profiler/address/first-funder",
+        "endpoint": "profiler/address/transactions",
         "body": {
           "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
-          "chain": "all"
+          "chain": "ethereum",
+          "date": {
+            "from": "2026-09-02",
+            "to": "2026-09-17"
+          },
+          "hide_spam_token": true,
+          "pagination": {
+            "page": 1,
+            "per_page": 100
+          },
+          "order_by": [
+            {
+              "field": "block_timestamp",
+              "direction": "DESC"
+            }
+          ]
         },
         "credits": 1,
-        "ms": 999,
+        "ms": 895,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
-          "data[].first_funder_address",
-          "data[].first_funder_name",
+          "data[].method",
+          "data[].tokens_sent[].to_address",
+          "data[].tokens_received[].from_address",
+          "data[].block_timestamp",
           "data[].transaction_hash"
         ],
-        "responseHash": "3b3ff9cca0f7766a872ebeee520132f4bb5cb5d389b49b3fa0abb69daa4a547b",
+        "responseHash": "dca4752a652719f777601e5d498d1b27b97ba37de6520a9a2ff6393c0046287d",
         "attempts": 1,
-        "totalMs": 999,
+        "totalMs": 895,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/transactions",
+        "body": {
+          "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
+          "chain": "ethereum",
+          "date": {
+            "from": "2015-07-30",
+            "to": "2030-01-01"
+          },
+          "hide_spam_token": true,
+          "pagination": {
+            "page": 1,
+            "per_page": 100
+          },
+          "order_by": [
+            {
+              "field": "block_timestamp",
+              "direction": "DESC"
+            }
+          ]
+        },
+        "credits": 1,
+        "ms": 996,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].method",
+          "data[].tokens_sent[].to_address",
+          "data[].tokens_received[].from_address",
+          "data[].block_timestamp",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "dca4752a652719f777601e5d498d1b27b97ba37de6520a9a2ff6393c0046287d",
+        "attempts": 1,
+        "totalMs": 996,
         "ok": true
       },
       {
@@ -255,7 +354,7 @@
           ]
         },
         "credits": 5,
-        "ms": 2732,
+        "ms": 1394,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -265,66 +364,9 @@
           "data[].volume_in_usd",
           "data[].volume_out_usd"
         ],
-        "responseHash": "a00601ed90244ccbfcdbac33718c89f1d7f271ebe98f2204fbd8059cd99d6feb",
+        "responseHash": "c015239470bd721427dcbd450be0a52398641c82d3ab30413e58eda8eea63542",
         "attempts": 1,
-        "totalMs": 2732,
-        "ok": true
-      },
-      {
-        "endpoint": "profiler/address/transactions",
-        "body": {
-          "address": "0xfcfd07356a8e00957ea822eaf8aa43844fd3a69c",
-          "chain": "ethereum",
-          "date": {
-            "from": "2015-07-30",
-            "to": "2030-01-01"
-          },
-          "hide_spam_token": true,
-          "pagination": {
-            "page": 1,
-            "per_page": 100
-          },
-          "order_by": [
-            {
-              "field": "block_timestamp",
-              "direction": "DESC"
-            }
-          ]
-        },
-        "credits": 1,
-        "ms": 4510,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].method",
-          "data[].tokens_sent[].to_address",
-          "data[].tokens_received[].from_address",
-          "data[].block_timestamp",
-          "data[].transaction_hash"
-        ],
-        "responseHash": "3d1c8311625d1edad25d4031f6d1e7f56f85a1811d892c909c89242ab088a35c",
-        "attempts": 1,
-        "totalMs": 4510,
-        "ok": true
-      },
-      {
-        "endpoint": "transaction-with-token-transfer-lookup",
-        "body": {
-          "chain": "ethereum",
-          "transaction_hash": "0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc"
-        },
-        "credits": 1,
-        "ms": 774,
-        "cached": false,
-        "status": 200,
-        "fieldsUsed": [
-          "data[].to_address_label",
-          "data[].token_transfer_array[].to_address_label",
-          "data[].token_transfer_array[].from_address_label"
-        ],
-        "responseHash": "6ed3104e49e17d439483d4d352f98c85cf5ee334b341bc74edfd59a2939cfe3a",
-        "attempts": 1,
-        "totalMs": 774,
+        "totalMs": 1395,
         "ok": true
       },
       {
@@ -334,7 +376,7 @@
           "transaction_hash": "0xbe8863761244764eb042fd1e59480cf51c6bc7e5b0312137c22a2c0955369a35"
         },
         "credits": 1,
-        "ms": 782,
+        "ms": 641,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -342,18 +384,38 @@
           "data[].token_transfer_array[].to_address_label",
           "data[].token_transfer_array[].from_address_label"
         ],
-        "responseHash": "3e1a0e102037df806ca2933aaa2fdf47629ac3f94a2fa88fb3d895a30b12e72e",
+        "responseHash": "d55d848cd806c66c80e23b6ec7f3656f9e5932fa6f5004ae202082b571e534f6",
         "attempts": 1,
-        "totalMs": 783,
+        "totalMs": 641,
+        "ok": true
+      },
+      {
+        "endpoint": "transaction-with-token-transfer-lookup",
+        "body": {
+          "chain": "ethereum",
+          "transaction_hash": "0xa8ae5b012c0a17dc3d9dab72dc6791150132423fa1d330ddd64aa97918495fbc"
+        },
+        "credits": 1,
+        "ms": 738,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].to_address_label",
+          "data[].token_transfer_array[].to_address_label",
+          "data[].token_transfer_array[].from_address_label"
+        ],
+        "responseHash": "ac8a33d285524415d098075a716eb33aecd40f76f6f71eaaf49e99403ac86603",
+        "attempts": 1,
+        "totalMs": 738,
         "ok": true
       }
     ],
-    "credits": 10,
-    "calls": 7,
+    "credits": 11,
+    "calls": 8,
     "cachedCalls": 0,
     "skipped": [],
-    "ms": 5792,
-    "asOf": "2026-09-16T14:18:43.614Z",
+    "ms": 3413,
+    "asOf": "2026-09-16T14:37:31.406Z",
     "hash": "4f5a8b89b93e26280b06ce26962bf60216ecc6cacb105c54dbe9d82e5294a660"
   }
 }

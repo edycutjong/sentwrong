@@ -17,6 +17,23 @@ export function actionFor(d: Decision, ctx: { address: string; sender?: string; 
   switch (d.route) {
     case "exchange-deposit": {
       const ex = d.entity ?? "the exchange";
+      if (d.sub === "exchange-wallet") return {
+        kind: "ticket", title: `Support ticket for ${ex}`,
+        text: `Subject: Funds sent directly to a ${ex} wallet by mistake — recovery request
+
+Hello ${ex} support,
+
+On ${when(transfer)} I sent ${amt(transfer)} from my wallet ${ph(sender, "your address")} to ${address} on ${chain} (transaction ${ph(transfer?.hash, "transaction hash")}).
+
+This was a mistake: ${address} is one of ${ex}'s own wallets (Nansen labels it "${d.evidence[0]?.value ?? ex}"), not a deposit address tied to an account, so the transfer was not credited anywhere. Please locate the incoming transaction and return the funds to ${ph(sender, "your address")}, or credit them to my ${ex} account.
+
+Evidence (Nansen API):
+${evidence}
+
+Account email: [your ${ex} account email]
+Thank you,
+[your name]`,
+      };
       return {
         kind: "ticket", title: `Support ticket for ${ex}`,
         text: `Subject: Funds sent to a ${ex} deposit address by mistake — recovery request

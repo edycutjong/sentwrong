@@ -5,7 +5,7 @@
  *
  *   set -a; source ~/.config/nansen/meridian.env; set +a; npm run spike
  */
-import { cachedClientFromEnv, nansen, type Chain, type TxRow } from "../packages/core/src/index.js";
+import { cachedClientFromEnv, nansen, ALL_TIME, type Chain, type TxRow } from "../packages/core/src/index.js";
 
 type Probe = { address: string; kind: "exchange-deposit" | "contract-or-burn" | "eoa"; note: string };
 /** Deposit addresses were harvested live on 2026-09-16 from one USDT sweep block into Binance 14 and one into Coinbase 10:
@@ -43,8 +43,8 @@ for (const p of PROBES) {
   console.log(`\n=== ${p.kind.toUpperCase()}  ${p.address}  (${p.note})`);
   const before = client.creditsSpent;
   const [tx, cp, ff, search] = await Promise.allSettled([
-    nansen.transactions(client, a, chain, 100),
-    nansen.counterparties(client, a, chain, 10),
+    nansen.transactions(client, a, chain, ALL_TIME, 100),
+    nansen.counterparties(client, a, chain, ALL_TIME, 10),
     nansen.firstFunder(client, a),
     nansen.search(client, a),
   ]);

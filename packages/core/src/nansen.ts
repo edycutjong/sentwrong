@@ -66,15 +66,21 @@ export type SearchResponse = {
 export type LabelRow = { label: string; category?: string | null; kind?: string[] };
 export type LabelsResponse = { data: LabelRow[] };
 
-/** Wide, fixed window: the recipient's whole history that the profiler indexes. Fixed dates keep cache keys and decision hashes stable. */
+/** Wide, fixed window: the recipient's whole history that the profiler indexes. Fixed dates keep cache keys stable. */
 export const ALL_TIME: DateRange = { from: "2015-07-30", to: "2030-01-01" };
+/** The last `days` days as whole dates (cache keys change once a day, and a fixture's stored `now` reproduces its window). */
+export function recentWindow(now: number, days = 14): DateRange {
+  const day = 86_400_000;
+  const iso = (t: number) => new Date(t).toISOString().slice(0, 10);
+  return { from: iso(now - days * day), to: iso(now + day) };
+}
 
 export const nansen = {
-  transactions: (c: NansenClient, address: string, chain: Chain, perPage = 100, opts?: CallOptions) =>
-    c.post<TxResponse>("profiler/address/transactions", { address, chain, date: ALL_TIME, hide_spam_token: true, pagination: { page: 1, per_page: perPage }, order_by: [{ field: "block_timestamp", direction: "DESC" }] },
+  transactions: (c: NansenClient, address: string, chain: Chain, date: DateRange, perPage = 100, opts?: CallOptions) =>
+    c.post<TxResponse>("profiler/address/transactions", { address, chain, date, hide_spam_token: true, pagination: { page: 1, per_page: perPage }, order_by: [{ field: "block_timestamp", direction: "DESC" }] },
       ["data[].method", "data[].tokens_sent[].to_address", "data[].tokens_received[].from_address", "data[].block_timestamp", "data[].transaction_hash"], opts),
-  counterparties: (c: NansenClient, address: string, chain: Chain, perPage = 20, opts?: CallOptions) =>
-    c.post<CounterpartiesResponse>("profiler/address/counterparties", { address, chain, date: ALL_TIME, source_input: "Combined", group_by: "wallet", pagination: { page: 1, per_page: perPage }, order_by: [{ field: "interaction_count", direction: "DESC" }] },
+  counterparties: (c: NansenClient, address: string, chain: Chain, date: DateRange, perPage = 20, opts?: CallOptions) =>
+    c.post<CounterpartiesResponse>("profiler/address/counterparties", { address, chain, date, source_input: "Combined", group_by: "wallet", pagination: { page: 1, per_page: perPage }, order_by: [{ field: "interaction_count", direction: "DESC" }] },
       ["data[].counterparty_address", "data[].counterparty_address_label", "data[].interaction_count", "data[].volume_in_usd", "data[].volume_out_usd"], opts),
   firstFunder: (c: NansenClient, address: string, opts?: CallOptions) =>
     c.post<FirstFunderResponse>("profiler/address/first-funder", { address, chain: "all" },

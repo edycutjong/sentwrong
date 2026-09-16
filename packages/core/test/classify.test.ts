@@ -70,6 +70,29 @@ describe("rule 3 — '<Exchange>: Deposit' label on the address itself", () => {
   });
 });
 
+describe("rule 3b — the exchange's own wallet", () => {
+  it("'🏦 Binance 14' as the address's own label → exchange-deposit/exchange-wallet, high, with the exchange named", () => {
+    const out = txRow({ hash: "0x" + "c".repeat(64), from: HOT, to: USER, amount: 5.38 });
+    const d = classify(lookups({ address: HOT, transactions: ok(txs([out], false)), txLookups: [{ hash: out.transaction_hash, role: "outbound", result: ok(lookup(out.transaction_hash, [transfer(HOT, USER, "🏦 Binance 14 [0x28c6c0]", "[0x400400]")])) }] }), NOW);
+    expect(d).toMatchObject({ route: "exchange-deposit", sub: "exchange-wallet", confidence: "high", entity: "Binance" });
+    expect(d.evidence.map((e) => e.code)).toEqual(["OWN_EXCHANGE_LABEL", "ACTIVITY"]);
+    expect(d.headline).toMatch(/Binance's own wallet/);
+  });
+  it("REGRESSION: '🤖 🏦 Uniswap: V2 Router 2' carries the 🏦 marker but is a contract → rule 5, entity Uniswap", () => {
+    const out = txRow({ hash: "0x" + "c".repeat(64), from: R, to: USER });
+    const d = classify(lookups({ transactions: ok(txs([out], false)), related: ok(related([{ address: "0x9c33", relation: "Deployed by" }])), txLookups: [{ hash: out.transaction_hash, role: "outbound", result: ok(lookup(out.transaction_hash, [transfer(R, USER, "🤖 🏦 Uniswap: V2 Router 2 [0x7a250d]", null)])) }] }), NOW);
+    expect(d).toMatchObject({ route: "contract-or-burn", sub: "contract", entity: "Uniswap", rule: 5 });
+  });
+  it("REGRESSION: a wallet whose only outbound goes to a 🏦-marked DEX router is a person swapping, not a deposit address", () => {
+    const swap = txRow({ hash: "0x" + "e".repeat(64), from: R, to: "0x7a250d5630b4cf539739df2c5dacb4c659f2488d" });
+    const d = classify(lookups({ transactions: ok(txs([swap])), txLookups: [{ hash: swap.transaction_hash, role: "outbound", result: ok(lookup(swap.transaction_hash, [transfer(R, "0x7a250d5630b4cf539739df2c5dacb4c659f2488d", null, "🤖 🏦 Uniswap: V2 Router 2 [0x7a250d]")])) }] }), NOW);
+    expect(d.route).toBe("active-stranger");
+  });
+  it("a '<X>: Deposit' label still wins over the exchange-wallet rule", () => {
+    expect(classify(binanceDeposit(), NOW).sub).toBe("direct-label");
+  });
+});
+
 describe("rule 4 — sweep pattern for a not-yet-labelled deposit address", () => {
   const fresh = (toLabel: string, over: Partial<ReturnType<typeof lookups>> = {}) => {
     const sweep = txRow({ hash: "0x" + "4".repeat(64), from: R, to: HOT, amount: 319 });

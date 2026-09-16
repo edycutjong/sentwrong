@@ -134,9 +134,19 @@ export function classify(l: Lookups, now = Date.now()): Decision {
     if (funder?.exchange) ev.push({ code: "FUNDED_BY_EXCHANGE", field: "profiler/address/first-funder → first_funder_address (looked up)", value: funder.raw, meaning: `${funder.entity ?? "The exchange"} paid this address's first gas — exchanges do that for their deposit addresses.` });
     return { route: "exchange-deposit", sub: "direct-label", confidence: "high", entity: dep.entity, headline: `This is a ${dep.entity} deposit address. Recoverable through ${dep.entity} support.`, evidence: ev, rule: 3, warnings };
   }
+  // 3b. the address IS an exchange's own wallet ("🏦 Binance 14", "🏦 Kraken: Hot Wallet") — pooled funds, only the exchange can act
+  //     🏦 also marks DEX routers ("🤖 🏦 Uniswap: V2 Router 2"): a contract label or a deployer means rule 5, not this
+  const deployedRel = relations.find((r) => /^(Deployed by|Created by)$/i.test(r.relation));
+  const exWallet = own.find((p) => p.exchange && p.entity && !isDepositLabel(p) && !isContractLabel(p));
+  if (exWallet && !deployedRel) {
+    ev.push({ code: "OWN_EXCHANGE_LABEL", field: "transaction-with-token-transfer-lookup → token_transfer_array[].*_address_label", value: exWallet.raw, meaning: `Nansen labels this exact address as ${exWallet.entity}'s own wallet (${exWallet.role ?? "hot wallet"}).` });
+    if (act) ev.push({ code: "ACTIVITY", field: "profiler/address/transactions → data[]", value: `${act.in} in / ${act.out} out in the newest ${act.rows} rows${act.truncated ? " (busy: 14-day page full)" : ""}`, meaning: "Exchange wallets move funds constantly; yours is pooled with everyone else's." });
+    return { route: "exchange-deposit", sub: "exchange-wallet", confidence: "high", entity: exWallet.entity, headline: `This is ${exWallet.entity}'s own wallet, not a customer deposit address. Only ${exWallet.entity} support can credit or return funds sent here — quote your transaction hash.`, evidence: ev, rule: 3, warnings };
+  }
   // 4. sweep pattern: every outbound destination we looked up is an exchange's OWN wallet (hot/cold wallet, "Binance 14") —
   //    a destination labelled "<X>: Deposit" is someone depositing INTO the exchange, i.e. a user wallet, not a sweep
-  const sweepTarget = (d: { label?: ParsedLabel }) => !!d.label?.exchange && !isDepositLabel(d.label);
+  //    and a 🏦-marked DEX router ("Uniswap: V2 Router 2") is a swap, not a sweep — contract labels are excluded
+  const sweepTarget = (d: { label?: ParsedLabel }) => !!d.label?.exchange && !isDepositLabel(d.label) && !isContractLabel(d.label);
   if (dests.length && dests.every(sweepTarget)) {
     const entity = dests[0].label!.entity ?? "an exchange";
     ev.push({ code: "SWEEP_TO_EXCHANGE", field: "transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label", value: dests.map((d) => d.label!.raw).join(" · "), meaning: `Every transfer out of this address went to ${entity}'s own wallet — it is swept like a deposit address.` });
@@ -147,7 +157,7 @@ export function classify(l: Lookups, now = Date.now()): Decision {
     return { route: "exchange-deposit", sub: "sweep-pattern", confidence, entity, headline: `This looks like a ${entity} deposit address (not labelled yet, but swept into ${entity}). Recoverable through ${entity} support.`, evidence: ev, rule: 4, warnings };
   }
   // 5. contract
-  const deployed = relations.find((r) => /^(Deployed by|Created by)$/i.test(r.relation));
+  const deployed = deployedRel;
   const cl = own.find(isContractLabel);
   if (deployed || cl) {
     if (deployed) ev.push({ code: "DEPLOYED_BY", field: "profiler/address/related-wallets → relation", value: `${deployed.relation} ${short(deployed.address)}${deployed.address_label ? ` (${deployed.address_label})` : ""} on ${deployed.block_timestamp.slice(0, 10)}`, meaning: "Only contracts have a deployer: this address is code, not a person's wallet." });

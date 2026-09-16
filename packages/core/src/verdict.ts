@@ -80,7 +80,7 @@ export function findTransfer(l: Lookups): Transfer | undefined {
 export async function sentWrong(client: NansenClient, address: string, opts: VerdictOptions = {}): Promise<Verdict> {
   const t0 = Date.now();
   const before = client.calls.length;
-  const l = await gather(client, address, opts);
+  const l = await gather(client, address, { ...opts, now: opts.now ?? Date.now() });
   const decision = classify(l, opts.now ?? Date.now());
   const transfer = findTransfer(l);
   const action = actionFor(decision, { address: l.address, sender: l.sender, chain: l.chain, transfer });

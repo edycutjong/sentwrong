@@ -11,14 +11,19 @@ describe("gather() over the wire", () => {
     await expect(gather(c, R, { sender: "abc" })).rejects.toThrow(/--from is not an EVM address/);
     expect(c.calls).toHaveLength(0);
   });
-  it("the hero makes exactly the documented calls: search, 4 profiler lookups, 2 outbound + 1 inbound + 1 funding lookup = 9 calls, 12 credits", async () => {
+  it("the hero makes exactly the documented calls: search, 4 profiler lookups, the all-time transactions page, 2 outbound + 1 inbound + 1 funding lookup = 10 calls, 13 credits", async () => {
     const c = fakeClient(binanceRoutes);
-    const l = await gather(c, R);
+    const l = await gather(c, R, { now: Date.parse("2026-09-16T14:00:00Z") });
     expect(c.calls.map((x) => x.endpoint)).toEqual([
-      "search/general", "profiler/address/transactions", "profiler/address/counterparties", "profiler/address/related-wallets", "profiler/address/first-funder",
+      "search/general", "profiler/address/transactions", "profiler/address/related-wallets", "profiler/address/first-funder",
+      "profiler/address/transactions", "profiler/address/counterparties",
       "transaction-with-token-transfer-lookup", "transaction-with-token-transfer-lookup", "transaction-with-token-transfer-lookup", "transaction-with-token-transfer-lookup",
     ]);
-    expect(c.creditsSpent).toBe(12);
+    expect(c.creditsSpent).toBe(13);
+    expect(c.calls[1].body.date).toEqual({ from: "2026-09-02", to: "2026-09-17" }); // 14-day window from `now`
+    expect(c.calls[4].body.date).toEqual({ from: "2015-07-30", to: "2030-01-01" });
+    expect(c.calls[5].body.date).toEqual({ from: "2015-07-30", to: "2030-01-01" }); // counterparties all-time for a quiet address
+    expect(l.transactionsWindow).toBe("all");
     expect(l.txLookups.map((x) => x.role)).toEqual(["outbound", "outbound", "inbound", "funding"]);
     expect(l.skipped).toEqual([]);
   });
@@ -29,6 +34,36 @@ describe("gather() over the wire", () => {
     expect(c.creditsSpent).toBe(0);
     expect(l.skipped).toContain("profiler/address/transactions");
     expect(l.transactions.ok).toBe(false);
+  });
+  it("a busy address (14-day page full) never requests the all-time window", async () => {
+    const rows = Array.from({ length: 100 }, (_, i) => txRow({ from: R, to: USER, ts: `2026-09-1${i % 6}T00:00:${String(i % 60).padStart(2, "0")}`, hash: "0x" + String(i).padStart(64, "0") }));
+    const c = fakeClient((e, body) => {
+      if (e === "search/general") return search();
+      if (e === "profiler/address/transactions") { if ((body.date as { from: string }).from === "2015-07-30") throw new Error("all-time must not be requested"); return txs(rows, false); }
+      if (e === "profiler/address/counterparties") return cps([]);
+      if (e === "profiler/address/related-wallets") return related([]);
+      if (e === "profiler/address/first-funder") return noFunder();
+      if (e === "transaction-with-token-transfer-lookup") return lookup(String(body.transaction_hash), []);
+      throw new Error("unexpected " + e);
+    });
+    const l = await gather(c, R, { now: Date.parse("2026-09-16T14:00:00Z") });
+    expect(l.transactionsWindow).toBe("14d");
+    expect(c.calls.filter((x) => x.endpoint === "profiler/address/transactions")).toHaveLength(1);
+    expect(c.calls.find((x) => x.endpoint === "profiler/address/counterparties")!.body.date).toEqual({ from: "2026-09-02", to: "2026-09-17" }); // busy → 14-day counterparties too
+  });
+  it("a failed all-time page falls back to the 14-day page and says so", async () => {
+    const c = fakeClient((e, body) => {
+      if (e === "search/general") return search();
+      if (e === "profiler/address/transactions") return (body.date as { from: string }).from === "2015-07-30" ? new Response("slow", { status: 504 }) : txs([txRow({ from: R, to: USER })]);
+      if (e === "profiler/address/counterparties") return cps([]);
+      if (e === "profiler/address/related-wallets") return related([]);
+      if (e === "profiler/address/first-funder") return noFunder();
+      if (e === "transaction-with-token-transfer-lookup") return lookup(String(body.transaction_hash), []);
+      throw new Error("unexpected " + e);
+    });
+    const l = await gather(c, R);
+    expect(l.transactions.ok && l.transactions.data.data).toHaveLength(1);
+    expect(l.skipped[0]).toMatch(/all-time .* using the 14-day page/);
   });
   it("a burn address (422) skips the transaction lookups", async () => {
     const c = fakeClient((e) => {
@@ -92,18 +127,18 @@ describe("sentWrong() end to end", () => {
     const c = new CachedNansenClient(KEY, { fetchImpl, rps: 1000, store });
     const v1 = await sentWrong(c, R, { now: Date.parse("2026-09-16T14:00:00Z") });
     expect(v1.decision.route).toBe("exchange-deposit");
-    expect(v1.credits).toBe(12); expect(v1.calls).toBe(9); expect(v1.cachedCalls).toBe(0);
+    expect(v1.credits).toBe(13); expect(v1.calls).toBe(10); expect(v1.cachedCalls).toBe(0);
     expect(v1.hash).toMatch(/^[0-9a-f]{64}$/);
     expect(v1.rows[0]).toMatchObject({ address: USER, label: "High Activity" }); expect(v1.rows[0].entityLabel).toBeUndefined(); // a wealth tag is not an identity
     expect(v1.rows[1]).toMatchObject({ address: HOT, label: "Token Billionaire", entityLabel: "🏦 Binance 14 [0x28c6c0]" });
     const v2 = await sentWrong(c, R, { now: Date.parse("2026-09-16T14:00:00Z") });
-    expect(v2.credits).toBe(0); expect(v2.cachedCalls).toBe(9);
+    expect(v2.credits).toBe(0); expect(v2.cachedCalls).toBe(10);
     expect(v2.hash).toBe(v1.hash);
   });
   it("--deep adds the 100-credit labels call and reports agreement", async () => {
     const c = fakeClient(binanceRoutes);
     const v = await sentWrong(c, R, { deep: true });
-    expect(v.credits).toBe(112);
+    expect(v.credits).toBe(113);
     expect(v.deep).toMatchObject({ labels: ["Binance", "Deposit"], credits: 100, agrees: true });
   });
   it("--deep disagreement is a warning on the card, not a silent override", async () => {

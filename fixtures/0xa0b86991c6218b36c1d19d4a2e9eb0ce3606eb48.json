@@ -2,16 +2,16 @@
   "edge": "8 · USDC token contract: search/general short-circuit, 0 credits",
   "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
   "options": {},
-  "now": 1789568331044,
-  "recordedAt": "2026-09-16T14:18:51.044Z",
+  "now": 1789569456422,
+  "recordedAt": "2026-09-16T14:37:36.422Z",
   "live": {
     "calls": 1,
     "credits": 0,
-    "ms": 448
+    "ms": 476
   },
   "responses": {
     "a0c69bf1d2e73b575cc37752079a3b6e": {
-      "storedAt": "2026-09-16T14:18:51.491Z",
+      "storedAt": "2026-09-16T14:37:36.897Z",
       "ttlMs": 1800000,
       "endpoint": "search/general",
       "body": {
@@ -19,7 +19,7 @@
         "result_type": "any",
         "limit": 10
       },
-      "text": "{\"tokens\":[{\"name\":\"USD Coin\",\"symbol\":\"USDC\",\"chain\":\"ethereum\",\"address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"price\":1.00167963829842,\"volume_24h\":647847602.4328659,\"market_cap\":73626957802.662,\"rank\":597}],\"entities\":[],\"total_results\":1}"
+      "text": "{\"tokens\":[{\"name\":\"USD Coin\",\"symbol\":\"USDC\",\"chain\":\"ethereum\",\"address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"price\":1.00025734422563,\"volume_24h\":655373141.2644687,\"market_cap\":73677724898.1801,\"rank\":597}],\"entities\":[],\"total_results\":1}"
     }
   },
   "verdict": {
@@ -57,7 +57,7 @@
           "limit": 10
         },
         "credits": 0,
-        "ms": 446,
+        "ms": 475,
         "cached": false,
         "status": 200,
         "fieldsUsed": [
@@ -65,9 +65,9 @@
           "tokens[].chain",
           "entities[].name"
         ],
-        "responseHash": "b234e4d12f3e3f50ede9840e3162ef2a5ce5c0d744f31eb3358fbd0cc37b50ee",
+        "responseHash": "b11ec2aee6ec50d64a5f563ed559004d4395f4aee741c1db2dd237df34b421f7",
         "attempts": 1,
-        "totalMs": 446,
+        "totalMs": 475,
         "ok": true
       }
     ],
@@ -80,8 +80,8 @@
       "profiler/address/related-wallets",
       "profiler/address/first-funder"
     ],
-    "ms": 448,
-    "asOf": "2026-09-16T14:18:51.044Z",
+    "ms": 476,
+    "asOf": "2026-09-16T14:37:36.422Z",
     "hash": "717d638086684ac36f423dc38c8ef849c7913b5cc78618d2c94229f21432e576"
   }
 }
