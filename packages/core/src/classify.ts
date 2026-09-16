@@ -165,8 +165,10 @@ export function classify(l: Lookups, now = Date.now()): Decision {
     if (cl) ev.push({ code: "CONTRACT_LABEL", field: "transaction-with-token-transfer-lookup → token_transfer_array[].*_address_label", value: cl.raw, meaning: "Nansen's label for this address names a contract." });
     // a forwarder: a contract whose outflow goes to a named custodian (BitGo MultiSig, an exchange's cold wallet…) — whoever
     // issued the address can trace the deposit, so it is not "gone", it is "ask the service that gave you this address"
-    const custodian = dests.find((d) => d.label?.entity && !d.label.generic);
-    if (deployed && custodian && dests.every((d) => d.label?.entity === custodian.label!.entity)) {
+    // — but only a custody WALLET counts: a DEX router's outflow lands in labelled pools/routers ("Uniswap: V3 USDC-WETH
+    // Liquidity Pool"), which is a swap, not custody (live QA 2026-09-16: the V3 SwapRouter was read as a "forwarder")
+    const custodian = dests.find((d) => d.label?.entity && !d.label.generic && !isContractLabel(d.label));
+    if (deployed && custodian && dests.every((d) => d.label?.entity === custodian.label!.entity && !isContractLabel(d.label))) {
       ev.push({ code: "FORWARDS_TO_CUSTODIAN", field: "transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label", value: custodian.label!.raw, meaning: `Everything sent here is forwarded to ${custodian.label!.entity}'s custody wallet — the service that issued this address can trace it.` });
       return { route: "contract-or-burn", sub: "forwarder", confidence: "medium", entity: custodian.label!.entity, headline: `A forwarding contract that sweeps into ${custodian.label!.entity} custody. Contact the exchange or service that gave you this address — they can trace the deposit. Not a recovery service.`, evidence: ev, rule: 5, warnings };
     }
@@ -194,6 +196,12 @@ export function classify(l: Lookups, now = Date.now()): Decision {
     ev.push({ code: "LOOKUPS_FAILED", field: "profiler/address/transactions, counterparties, related-wallets", value: core.map((r) => (r.ok ? "ok" : r.error)).join(" / "), meaning: "Nansen did not answer; no verdict is possible from zero data." });
     return { route: "retry", sub: "failed", confidence: "low", headline: "Nansen did not answer for this address. Retry in a minute — no verdict was made.", evidence: ev, rule: 0, warnings };
   }
+  // retry: the stranger states (fresh / dormant / active / poisoner) are all read off the transactions page — without it
+  // "no rows" would be indistinguishable from "timed out", and "nothing on record" would be a fabricated verdict
+  if (!l.transactions.ok) {
+    ev.push({ code: "TRANSACTIONS_FAILED", field: "profiler/address/transactions", value: `${l.transactions.error}${l.transactions.status ? ` (HTTP ${l.transactions.status})` : ""}`, meaning: "The transactions lookup failed, so activity cannot be judged; no verdict was made." });
+    return { route: "retry", sub: "failed", confidence: "low", headline: "Nansen's transactions lookup failed for this address. Retry in a minute — no verdict was made.", evidence: ev, rule: 0, warnings };
+  }
   // 7–9. stranger — first, two address-poisoning signatures read straight off the transactions page
   const rows: TxRow[] = act ? l.transactions.ok ? l.transactions.data.data : [] : [];
   const inboundTransfers = rows.flatMap((r) => (r.tokens_received ?? []).filter((t) => lc(t.to_address) === l.address));
@@ -208,8 +216,10 @@ export function classify(l: Lookups, now = Date.now()): Decision {
   if (lookalikes.length >= 2) warnings.push(`${lookalikes.length} of its counterparties are look-alikes of each other (same first and last characters) — this wallet's history has been poisoned; check every character of the address you meant`);
   const inboundFromExchange = transfers(l).find(({ t }) => lc(t.to_address) === l.address && parseLabel(t.from_address_label)?.exchange);
   if (!act || act.rows === 0) {
-    ev.push({ code: "NO_HISTORY", field: "profiler/address/transactions → data", value: act ? "0 rows" : "unavailable", meaning: "Nansen has no activity on record for this address on this chain." });
-    return { route: "active-stranger", sub: "fresh", confidence: "low", headline: "Nothing on record for this address yet. If you just sent, wait a few minutes and run again.", evidence: ev, rule: 7, warnings };
+    ev.push({ code: "NO_HISTORY", field: "profiler/address/transactions → data", value: "0 rows", meaning: "Nansen has no activity on record for this address on this chain." });
+    // "0 rows" is Nansen's answer, not proof the address is new: a handful of well-known wallets return empty profiler
+    // pages (vitalik.eth did, 2026-09-16) — the headline says so instead of promising that a re-run will help
+    return { route: "active-stranger", sub: "fresh", confidence: "low", headline: `Nansen has nothing on record for this address on ${l.chain}. If you just sent, wait a few minutes and run again; if it is an old, busy address, Nansen simply does not index it — treat it as an unknown wallet.`, evidence: ev, rule: 7, warnings };
   }
   ev.push({ code: "ACTIVITY", field: "profiler/address/transactions → data[]", value: `${act.in} in / ${act.out} out${act.truncated ? " (newest 100)" : ""}, last ${act.newest?.slice(0, 10)}`, meaning: act.out ? "A wallet that receives and sends — someone operates it." : "Only ever received; never sent anything." });
   if (inboundFromExchange) ev.push({ code: "FUNDED_BY_EXCHANGE", field: "transaction-with-token-transfer-lookup → token_transfer_array[].from_address_label", value: inboundFromExchange.t.from_address_label ?? "", meaning: "It has received withdrawals from an exchange — a person's wallet, not an exchange's." });

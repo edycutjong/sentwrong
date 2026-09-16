@@ -161,6 +161,17 @@ describe("rule 5 — contracts", () => {
     expect(d).toMatchObject({ route: "contract-or-burn", sub: "forwarder", confidence: "medium", entity: "BitGo MultiSig" });
     expect(d.evidence.map((e) => e.code)).toEqual(["DEPLOYED_BY", "FORWARDS_TO_CUSTODIAN"]);
   });
+  it("REGRESSION (QA 2026-09-16): a DEX router whose outflow lands in labelled pools is a contract, NOT a forwarder", () => {
+    const swap = txRow({ hash: "0x" + "6".repeat(64), from: R, to: "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640", symbol: "WETH", amount: 1.2 });
+    const d = classify(lookups({
+      transactions: ok(txs([swap])),
+      related: ok(related([{ address: "0x6c9f", relation: "Deployed by", label: "High Activity" }])),
+      txLookups: [{ hash: swap.transaction_hash, role: "outbound", result: ok(lookup(swap.transaction_hash, [transfer(R, "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640", "🤖 🏦 Uniswap: V3 Router 2 [0xe59242]", "🤖 🏦 Uniswap: V3 USDC-WETH (0.05%) Liquidity Pool  [0x88e6a0]", "WETH", 1.2)])) }],
+    }), NOW);
+    expect(d).toMatchObject({ route: "contract-or-burn", sub: "contract", rule: 5 });
+    expect(d.evidence.map((e) => e.code)).not.toContain("FORWARDS_TO_CUSTODIAN");
+    expect(d.headline).not.toMatch(/custody/);
+  });
   it("exchange evidence outranks the contract flag (exchange-owned forwarder contracts)", () => {
     const l = binanceDeposit({ related: ok(related([{ address: "0x9f5c", relation: "Deployed by" }])) });
     expect(classify(l, NOW).route).toBe("exchange-deposit");
@@ -241,6 +252,18 @@ describe("retry — never a verdict from nothing", () => {
     expect(d).toMatchObject({ route: "retry", rule: 0 });
     expect(d.evidence[0].code).toBe("LOOKUPS_FAILED");
     expect(d.warnings).toHaveLength(3);
+  });
+  it("REGRESSION (QA 2026-09-16): transactions failed but the others answered → retry, never 'nothing on record'", () => {
+    const d = classify(lookups({ transactions: fail("timeout"), counterparties: ok(cps([{ address: USER, n: 3, in: 100 }])), related: ok(related([])) }), NOW);
+    expect(d).toMatchObject({ route: "retry", sub: "failed", rule: 0 });
+    expect(d.evidence[0].code).toBe("TRANSACTIONS_FAILED");
+    expect(d.headline).not.toMatch(/nothing on record/i);
+    expect(d.warnings).toEqual(["transactions failed: timeout"]);
+  });
+  it("0 rows from a successful transactions call is still 'fresh' — and says Nansen may simply not index it", () => {
+    const d = classify(lookups({ counterparties: ok(cps([])) }), NOW);
+    expect(d).toMatchObject({ route: "active-stranger", sub: "fresh", rule: 7 });
+    expect(d.headline).toMatch(/does not index/);
   });
   it("one surviving core lookup is enough to decide (with the failures listed)", () => {
     const d = classify(lookups({ transactions: fail("timeout"), counterparties: fail("timeout"), related: ok(related([{ address: "0x9c", relation: "Deployed by" }])) }), NOW);

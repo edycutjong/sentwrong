@@ -78,7 +78,7 @@ What to do:
 What Nansen sees:
 ${evidence}`,
       };
-      const odds = d.sub === "active" ? "The owner moves funds, so a memo can be seen. Returns do happen, but they are the exception." : d.sub === "dormant" ? "The owner has never sent anything from this address; the memo may never be read." : "There is no history at all yet; if you sent minutes ago, wait and re-run.";
+      const odds = d.sub === "active" ? "The owner moves funds, so a memo can be seen. Returns do happen, but they are the exception." : d.sub === "dormant" ? "The owner has never sent anything from this address; the memo may never be read." : "Nansen shows no history at all yet; if you sent minutes ago, wait and re-run — otherwise this is an address Nansen does not index, and the odds are the same as for any unknown wallet.";
       return {
         kind: "memo", title: "On-chain memo to the owner",
         text: `Send a 0-value transaction to ${address} on ${chain} with this message as hex-encoded input data (MetaMask: Settings → Advanced → Show hex data). Or post it wherever the address is public.
