@@ -47,6 +47,20 @@ What to do:
 3. Nothing to file, nobody to pay. Anyone offering "recovery" for a fee is a scam.`,
       };
     case "active-stranger": {
+      if (d.sub === "poisoner") return {
+        kind: "note", title: "Scam address — report it, don't chase it",
+        text: `On ${when(transfer)} ${amt(transfer)} was sent from ${ph(sender, "your address")} to ${address} on ${chain} (tx ${ph(transfer?.hash, "transaction hash")}).
+
+${address} is an address-poisoning address. It was built to look like an address you use (same first and last characters) and planted in your history with fake-token transfers; the funds you sent are with the scammer, who will not return them.
+
+What to do:
+1. Report the address to the exchange or wallet you use and to chainabuse.com, quoting the transaction hash.
+2. From now on, copy addresses only from the source (the exchange's deposit page), never from transaction history.
+3. Do NOT pay anyone offering "recovery" — that is the same scam's second act.
+
+What Nansen sees:
+${evidence}`,
+      };
       const odds = d.sub === "active" ? "The owner moves funds, so a memo can be seen. Returns do happen, but they are the exception." : d.sub === "dormant" ? "The owner has never sent anything from this address; the memo may never be read." : "There is no history at all yet; if you sent minutes ago, wait and re-run.";
       return {
         kind: "memo", title: "On-chain memo to the owner",

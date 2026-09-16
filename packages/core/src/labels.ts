@@ -52,3 +52,22 @@ export function isDepositLabel(p: ParsedLabel | undefined): p is ParsedLabel & {
 export function isContractLabel(p: ParsedLabel | undefined): boolean {
   return !!p && !p.generic && CONTRACT_WORD.test(p.text);
 }
+
+/**
+ * Address-poisoning spoof tokens mimic a real symbol with homoglyphs: "ÚЅDТ", "U5DТ", "USDС". A symbol is a spoof when
+ * it contains non-ASCII letters, or when swapping digit look-alikes (5→S, 0→O, 1→I) turns it into a different, real-looking
+ * symbol. Heuristic on Nansen's token_symbol field; the evidence line says so.
+ */
+export function isSpoofSymbol(symbol: string | null | undefined): boolean {
+  if (!symbol) return false;
+  const s = symbol.trim();
+  if (/[^\x20-\x7E]/.test(s) && /[A-Za-z]/.test(s)) return true; // mixed script — a real ticker is plain ASCII
+  const swapped = s.replace(/5/g, "S").replace(/0/g, "O").replace(/1/g, "I");
+  return swapped !== s && /^(USDT|USDC|ETH|WETH|DAI|BUSD|WBTC)$/i.test(swapped);
+}
+
+/** Two addresses with the same first 4 and last 4 hex characters — what a poisoning look-alike is built to be. */
+export function lookAlike(a: string, b: string): boolean {
+  const x = a.toLowerCase(), y = b.toLowerCase();
+  return x !== y && x.slice(0, 6) === y.slice(0, 6) && x.slice(-4) === y.slice(-4);
+}

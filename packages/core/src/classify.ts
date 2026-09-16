@@ -3,7 +3,7 @@
  * the evidence list says which field, what it said, and what that means. First matching rule wins.
  */
 import { isBurnRejection, splitDirection, type Lookups, type TxLookup } from "./lookups.js";
-import { parseLabel, isDepositLabel, isContractLabel, type ParsedLabel } from "./labels.js";
+import { parseLabel, isDepositLabel, isContractLabel, isSpoofSymbol, lookAlike, type ParsedLabel } from "./labels.js";
 import type { TokenTransfer, TxRow } from "./nansen.js";
 
 export type Route = "exchange-deposit" | "your-own-wallet" | "active-stranger" | "contract-or-burn" | "retry";
@@ -122,6 +122,8 @@ export function classify(l: Lookups, now = Date.now()): Decision {
   const act = activity(l, now);
   const relations = l.related.ok ? l.related.data.data : [];
 
+  // a user wallet that deposits into an exchange: outbound goes to "<X>: Deposit" addresses (used by rule 9's text)
+  const depositsInto = dests.filter((d) => isDepositLabel(d.label)).map((d) => d.label!.entity);
   // 3. Nansen labels the address itself as "<Exchange>: Deposit"
   const dep = own.find(isDepositLabel);
   if (dep) {
@@ -132,8 +134,10 @@ export function classify(l: Lookups, now = Date.now()): Decision {
     if (funder?.exchange) ev.push({ code: "FUNDED_BY_EXCHANGE", field: "profiler/address/first-funder → first_funder_address (looked up)", value: funder.raw, meaning: `${funder.entity ?? "The exchange"} paid this address's first gas — exchanges do that for their deposit addresses.` });
     return { route: "exchange-deposit", sub: "direct-label", confidence: "high", entity: dep.entity, headline: `This is a ${dep.entity} deposit address. Recoverable through ${dep.entity} support.`, evidence: ev, rule: 3, warnings };
   }
-  // 4. sweep pattern: every outbound destination we looked up is an exchange wallet
-  if (dests.length && dests.every((d) => d.label?.exchange)) {
+  // 4. sweep pattern: every outbound destination we looked up is an exchange's OWN wallet (hot/cold wallet, "Binance 14") —
+  //    a destination labelled "<X>: Deposit" is someone depositing INTO the exchange, i.e. a user wallet, not a sweep
+  const sweepTarget = (d: { label?: ParsedLabel }) => !!d.label?.exchange && !isDepositLabel(d.label);
+  if (dests.length && dests.every(sweepTarget)) {
     const entity = dests[0].label!.entity ?? "an exchange";
     ev.push({ code: "SWEEP_TO_EXCHANGE", field: "transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label", value: dests.map((d) => d.label!.raw).join(" · "), meaning: `Every transfer out of this address went to ${entity}'s own wallet — it is swept like a deposit address.` });
     let confidence: Confidence = "medium";
@@ -179,7 +183,18 @@ export function classify(l: Lookups, now = Date.now()): Decision {
     ev.push({ code: "LOOKUPS_FAILED", field: "profiler/address/transactions, counterparties, related-wallets", value: core.map((r) => (r.ok ? "ok" : r.error)).join(" / "), meaning: "Nansen did not answer; no verdict is possible from zero data." });
     return { route: "retry", sub: "failed", confidence: "low", headline: "Nansen did not answer for this address. Retry in a minute — no verdict was made.", evidence: ev, rule: 0, warnings };
   }
-  // 7–9. stranger
+  // 7–9. stranger — first, two address-poisoning signatures read straight off the transactions page
+  const rows: TxRow[] = act ? l.transactions.ok ? l.transactions.data.data : [] : [];
+  const inboundTransfers = rows.flatMap((r) => (r.tokens_received ?? []).filter((t) => lc(t.to_address) === l.address));
+  const spoof = inboundTransfers.filter((t) => isSpoofSymbol(t.token_symbol));
+  if (act && act.rows > 0 && spoof.length >= 2 && spoof.length >= inboundTransfers.length * 0.5 && act.out === 0) {
+    ev.push({ code: "SPOOF_TOKEN_TRANSFERS", field: "profiler/address/transactions → tokens_received[].token_symbol", value: `${spoof.length} of ${inboundTransfers.length} inbound transfers are look-alike tokens: ${[...new Set(spoof.map((t) => JSON.stringify(t.token_symbol)))].slice(0, 3).join(", ")}`, meaning: "Fake tokens with homoglyph symbols are how address-poisoning scams plant this address in a victim's history." });
+    ev.push({ code: "ACTIVITY", field: "profiler/address/transactions → data[]", value: `${act.in} in / ${act.out} out, last ${act.newest?.slice(0, 10)}`, meaning: "It has never sent anything real — it exists to be copied by mistake." });
+    return { route: "active-stranger", sub: "poisoner", confidence: "high", headline: "This is an address-poisoning scam address: it mimics an address you use and only ever 'receives' fake tokens. Anything real you sent is with a scammer.", evidence: ev, rule: 9, warnings };
+  }
+  const cps = l.counterparties.ok ? l.counterparties.data.data.map((r) => r.counterparty_address) : [];
+  const lookalikes = cps.filter((a, i) => cps.some((b, j) => j !== i && lookAlike(a, b)));
+  if (lookalikes.length >= 2) warnings.push(`${lookalikes.length} of its counterparties are look-alikes of each other (same first and last characters) — this wallet's history has been poisoned; check every character of the address you meant`);
   const inboundFromExchange = transfers(l).find(({ t }) => lc(t.to_address) === l.address && parseLabel(t.from_address_label)?.exchange);
   if (!act || act.rows === 0) {
     ev.push({ code: "NO_HISTORY", field: "profiler/address/transactions → data", value: act ? "0 rows" : "unavailable", meaning: "Nansen has no activity on record for this address on this chain." });
@@ -192,6 +207,7 @@ export function classify(l: Lookups, now = Date.now()): Decision {
   if (act.out === 0) {
     return { route: "active-stranger", sub: "dormant", confidence: "low", headline: "An unlabelled wallet that has never sent anything. Odds of a return are low; a memo costs nothing.", evidence: ev, rule: 8, warnings };
   }
+  if (depositsInto.length) ev.push({ code: "DEPOSITS_INTO_EXCHANGE", field: "transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label", value: dests.filter((d) => isDepositLabel(d.label)).map((d) => d.label!.raw).join(" · "), meaning: `Its owner deposits into ${[...new Set(depositsInto)].join(", ")} — a person with an exchange account.` });
   const recent = act.daysSinceLastOut !== undefined && act.daysSinceLastOut <= 90;
   return { route: "active-stranger", sub: "active", confidence: recent ? "medium" : "low", headline: `An active, unlabelled wallet (last sent ${act.daysSinceLastOut ?? "?"} days ago). Not an exchange, not a contract — a person. Odds are low but the owner can read a memo.`, evidence: ev, rule: 9, warnings };
 }

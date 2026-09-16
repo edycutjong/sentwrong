@@ -52,17 +52,19 @@ function labelIndex(l: Lookups): Map<string, string> {
   return m;
 }
 
+/** Nansen returns one counterparty row per (address, token); the table merges them per address (sums are derived, and say so). */
 export function rowsFor(l: Lookups): Row[] {
   if (!l.counterparties.ok) return [];
   const idx = labelIndex(l);
-  return l.counterparties.data.data.slice(0, 8).map((r) => ({
-    address: r.counterparty_address.toLowerCase(),
-    label: (r.counterparty_address_label ?? []).join(" / ") || "—",
-    entityLabel: idx.get(r.counterparty_address.toLowerCase()),
-    interactions: r.interaction_count,
-    inUsd: r.volume_in_usd ?? 0,
-    outUsd: r.volume_out_usd ?? 0,
-  }));
+  const merged = new Map<string, Row>();
+  for (const r of l.counterparties.data.data) {
+    const address = r.counterparty_address.toLowerCase();
+    const row = merged.get(address) ?? { address, label: (r.counterparty_address_label ?? []).join(" / ") || "—", entityLabel: idx.get(address), interactions: 0, inUsd: 0, outUsd: 0 };
+    row.interactions += r.interaction_count; row.inUsd += r.volume_in_usd ?? 0; row.outUsd += r.volume_out_usd ?? 0;
+    if (row.label === "—" && r.counterparty_address_label?.length) row.label = r.counterparty_address_label.join(" / ");
+    merged.set(address, row);
+  }
+  return [...merged.values()].sort((a, b) => b.interactions - a.interactions).slice(0, 8);
 }
 
 /** The transfer from the sender to the recipient, if the transactions page shows it. */
