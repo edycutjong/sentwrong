@@ -1,8 +1,9 @@
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { NansenClient, sha256, CREDITS, type ClientOptions, type CallOptions } from "./client.js";
+import { NansenClient, NansenError, sha256, CREDITS, type ClientOptions, type CallOptions } from "./client.js";
 
-export type CacheEntry = { storedAt: string; ttlMs: number; endpoint: string; body: Record<string, unknown>; text: string };
+/** `status` is set only for cached 4xx rejections (e.g. 422 "Burn address not allowed") — a deterministic answer worth replaying. */
+export type CacheEntry = { storedAt: string; ttlMs: number; endpoint: string; body: Record<string, unknown>; text: string; status?: number };
 
 /** Storage for cached responses. Disk for CLI/dev; the web app can plug in KV with the same three methods. */
 export interface CacheStore {
@@ -77,15 +78,26 @@ export class CachedNansenClient extends NansenClient {
     const hit = this.ttlMs > 0 || this.offline ? this.store.get(key) : undefined;
     const fresh = hit && Date.now() - Date.parse(hit.storedAt) < this.ttlMs;
     if (hit && (fresh || this.offline)) {
-      this.calls.push({ endpoint, body, credits: 0, ms: 0, cached: true, status: 200, fieldsUsed, responseHash: sha256(hit.text), attempts: 0, totalMs: 0, ok: true });
       if (!this.oldestHit || hit.storedAt < this.oldestHit) this.oldestHit = hit.storedAt;
+      if (hit.status && hit.status >= 400) {
+        // a replayed rejection: recorded as a failed call (0 credits), thrown exactly like the live one
+        const err = new NansenError(endpoint, hit.status, hit.text);
+        this.calls.push({ endpoint, body, credits: 0, ms: 0, cached: true, status: hit.status, fieldsUsed, responseHash: sha256(hit.text), attempts: 0, totalMs: 0, ok: false, error: err.message.slice(0, 120) });
+        throw err;
+      }
+      this.calls.push({ endpoint, body, credits: 0, ms: 0, cached: true, status: 200, fieldsUsed, responseHash: sha256(hit.text), attempts: 0, totalMs: 0, ok: true });
       return JSON.parse(hit.text) as T;
     }
     if (this.offline) throw new Error(`NANSEN_OFFLINE=1 and no cached response for ${endpoint} ${JSON.stringify(body)}`);
     const t0 = Date.now();
     let raw: Awaited<ReturnType<NansenClient["postRaw"]>>;
     try { raw = await this.postRaw(endpoint, body, opts); }
-    catch (e) { this.recordFailure(endpoint, body, fieldsUsed, e, Date.now() - t0); throw e; }
+    catch (e) {
+      this.recordFailure(endpoint, body, fieldsUsed, e, Date.now() - t0);
+      // 4xx other than 429 is Nansen's deterministic answer about the input (422 burn address, 400 bad chain): cache it too
+      if (e instanceof NansenError && e.status >= 400 && e.status < 500 && e.status !== 429) this.store.set(key, { storedAt: new Date().toISOString(), ttlMs: this.ttlMs, endpoint, body, text: e.bodyText, status: e.status });
+      throw e;
+    }
     const { text, ms, status, attempts, totalMs } = raw;
     this.calls.push({ endpoint, body, credits: CREDITS[endpoint] ?? 1, ms, cached: false, status, fieldsUsed, responseHash: sha256(text), attempts, totalMs, ok: true });
     this.store.set(key, { storedAt: new Date().toISOString(), ttlMs: this.ttlMs, endpoint, body, text });

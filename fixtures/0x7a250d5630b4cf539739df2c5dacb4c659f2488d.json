@@ -1,0 +1,349 @@
+{
+  "edge": "9 · Uniswap V2 router: non-token contract via related-wallets 'Deployed by'; transactions times out (shown)",
+  "address": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+  "options": {},
+  "now": 1789568430718,
+  "recordedAt": "2026-09-16T14:20:30.718Z",
+  "live": {
+    "calls": 5,
+    "credits": 8,
+    "ms": 22377
+  },
+  "responses": {
+    "f852cf4d08c5b01e6f1631a6b2e3fdd2": {
+      "storedAt": "2026-09-16T14:20:31.228Z",
+      "ttlMs": 1800000,
+      "endpoint": "search/general",
+      "body": {
+        "search_query": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+        "result_type": "any",
+        "limit": 10
+      },
+      "text": "{\"tokens\":[],\"entities\":[],\"total_results\":0}"
+    },
+    "40699d3392773995d936ca0de0a90795": {
+      "storedAt": "2026-09-16T14:20:31.654Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/counterparties",
+      "body": {
+        "address": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+        "chain": "ethereum",
+        "date": {
+          "from": "2015-07-30",
+          "to": "2030-01-01"
+        },
+        "source_input": "Combined",
+        "group_by": "wallet",
+        "pagination": {
+          "page": 1,
+          "per_page": 20
+        },
+        "order_by": [
+          {
+            "field": "interaction_count",
+            "direction": "DESC"
+          }
+        ]
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":20,\"is_last_page\":false},\"data\":[{\"counterparty_address\":\"0x0000000000000000000000000000000000000000\",\"counterparty_address_label\":null,\"interaction_count\":78072841,\"total_volume_usd\":366140161227.54333,\"volume_in_usd\":180772258464.4548,\"volume_out_usd\":185367902763.08856,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"78044047\",\"total_token_amount\":236073705.75020224,\"token_in_amount\":118731901.23953971,\"token_out_amount\":117341804.51066253},{\"token_address\":\"0xcf8335727b776d190f9d15a54e6b9b9348439eee\",\"token_symbol\":\"WHACKD\",\"token_name\":\"Whackd\",\"num_transfer\":\"14435\",\"total_token_amount\":77190230.63941528,\"token_in_amount\":0.0,\"token_out_amount\":77190230.63941528},{\"token_address\":\"0xd04785c4d8195e4a54d9dec3a9043872875ae9e2\",\"token_symbol\":\"ROT\",\"token_name\":\"RottenToken\",\"num_transfer\":\"1786\",\"total_token_amount\":2479075.069599607,\"token_in_amount\":0.0,\"token_out_amount\":2479075.069599607},{\"token_address\":\"0xa7de087329bfcda5639247f96140f9dabe3deed1\",\"token_symbol\":\"STA\",\"token_name\":\"Statera\",\"num_transfer\":\"1082\",\"total_token_amount\":281676.53122955,\"token_in_amount\":0.0,\"token_out_amount\":281676.53122955},{\"token_address\":\"0x12d102f06da35cc0111eb58017fd2cd28537d0e1\",\"token_symbol\":\"VOX\",\"token_name\":\"Vox.Finance\",\"num_transfer\":\"894\",\"total_token_amount\":1124.2540851197639,\"token_in_amount\":0.0,\"token_out_amount\":1124.2540851197639},{\"token_address\":\"0x69692d3345010a207b759a7d1af6fc7f38b35c5e\",\"token_symbol\":\"CHADS\",\"token_name\":\"chads.vc\",\"num_transfer\":\"834\",\"total_token_amount\":1656322.6377977312,\"token_in_amount\":0.0,\"token_out_amount\":1656322.6377977312},{\"token_address\":\"0x54499154ed336adb163bba88feb461102dff456d\",\"token_symbol\":\"HHOG\",\"token_name\":\"HedgeHog\",\"num_transfer\":\"727\",\"total_token_amount\":204950639.58703414,\"token_in_amount\":0.0,\"token_out_amount\":204950639.58703414},{\"token_address\":\"0x892f5a0b08bb7b1eecccc63ef3916ff201c93664\",\"token_symbol\":\"BLOODY\",\"token_name\":\"BloodyToken\",\"num_transfer\":\"609\",\"total_token_amount\":32707.41569774806,\"token_in_amount\":0.0,\"token_out_amount\":32707.41569774806},{\"token_address\":\"0xbd753a8d3be45f4772145d75e28014a333b705fb\",\"token_symbol\":\"GEAR\",\"token_name\":\"GearProtocol\",\"num_transfer\":\"513\",\"total_token_amount\":20361.440987315273,\"token_in_amount\":0.0,\"token_out_amount\":20361.440987315273},{\"token_address\":\"0x53f64be99da00fec224eaf9f8ce2012149d2fc88\",\"token_symbol\":\"NICE\",\"token_name\":\"NiceToken\",\"num_transfer\":\"463\",\"total_token_amount\":9.024640659830872,\"token_in_amount\":0.0,\"token_out_amount\":9.024640659830872},{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"343\",\"total_token_amount\":6.8536378564531875,\"token_in_amount\":0.0,\"token_out_amount\":6.8536378564531875},{\"token_address\":\"0x62e3cdf35c8f04d58186418f096a85d0c4fb2d5e\",\"token_symbol\":\"CEV3\",\"token_name\":\"CoreFinanceV3\",\"num_transfer\":\"320\",\"total_token_amount\":368.64,\"token_in_amount\":0.0,\"token_out_amount\":368.64},{\"token_address\":\"0x54b8c98268da0055971652a95f2bfd3a9349a38c\",\"token_symbol\":\"PRINT\",\"token_name\":\"Printer.Finance\",\"num_transfer\":\"317\",\"total_token_amount\":38.8750722338968,\"token_in_amount\":0.0,\"token_out_amount\":38.8750722338968},{\"token_address\":\"0x4bae380b5d762d543d426331b8437926443ae9ec\",\"token_symbol\":\"XVIX\",\"token_name\":\"XVIX\",\"num_transfer\":\"290\",\"total_token_amount\":357.72483183898936,\"token_in_amount\":0.0,\"token_out_amount\":357.72483183898936},{\"token_address\":\"0x16756ec1deb89a2106c35e0b586a799d0a61837d\",\"token_symbol\":\"CHEDDA\",\"token_name\":\"Chedda Token\",\"num_transfer\":\"288\",\"total_token_amount\":10269846.882276641,\"token_in_amount\":0.0,\"token_out_amount\":10269846.882276641},{\"token_address\":\"0x7ff4169a6b5122b664c51c95727d87750ec07c84\",\"token_symbol\":\"10SET\",\"token_name\":\"10Set Token\",\"num_transfer\":\"266\",\"total_token_amount\":31807.08421596638,\"token_in_amount\":0.0,\"token_out_amount\":31807.08421596638},{\"token_address\":\"0x298d492e8c1d909d3f63bc4a36c66c64acb3d695\",\"token_symbol\":\"PBR\",\"token_name\":\"PolkaBridge\",\"num_transfer\":\"253\",\"total_token_amount\":3307.7715982787236,\"token_in_amount\":0.0,\"token_out_amount\":3307.7715982787236},{\"token_address\":\"0xb9871cb10738eada636432e86fc0cb920dc3de24\",\"token_symbol\":\"PRIA\",\"token_name\":\"PRIA\",\"num_transfer\":\"213\",\"total_token_amount\":2717.306040121558,\"token_in_amount\":0.0,\"token_out_amount\":2717.306040121558},{\"token_address\":\"0x821144518dfe9e7b44fcf4d0824e15e8390d4637\",\"token_symbol\":\"ATIS\",\"token_name\":\"ATIS Token\",\"num_transfer\":\"210\",\"total_token_amount\":15512.378782981543,\"token_in_amount\":0.0,\"token_out_amount\":15512.378782981543},{\"token_address\":\"0xb6ee603933e024d8d53dde3faa0bf98fe2a3d6f1\",\"token_symbol\":\"DFT\",\"token_name\":\"DeFiat\",\"num_transfer\":\"172\",\"total_token_amount\":427.48508240651637,\"token_in_amount\":0.0,\"token_out_amount\":427.48508240651637}]},{\"counterparty_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"counterparty_address_label\":[\"wraps.eth\"],\"interaction_count\":78044047,\"total_volume_usd\":366137359177.9107,\"volume_in_usd\":185366431016.80634,\"volume_out_usd\":180770928161.10437,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"78044047\",\"total_token_amount\":236073705.75020224,\"token_in_amount\":117341804.51066253,\"token_out_amount\":118731901.23953971}]},{\"counterparty_address\":\"0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc\",\"counterparty_address_label\":[\"UniswapV2\"],\"interaction_count\":1295020,\"total_volume_usd\":18028461600.273342,\"volume_in_usd\":10406082531.27871,\"volume_out_usd\":7622379068.994634,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"1273054\",\"total_token_amount\":18260749.110376295,\"token_in_amount\":8958723.98068777,\"token_out_amount\":9302025.129688524},{\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"token_symbol\":\"USDC\",\"token_name\":\"USD Coin\",\"num_transfer\":\"21965\",\"total_token_amount\":3288595067.753487,\"token_in_amount\":3288595067.753487,\"token_out_amount\":0.0},{\"token_address\":\"0xfd04a35069d49623c6e7f90483db6872177275e1\",\"token_symbol\":\"UЅDС\",\"token_name\":\"UЅDС\",\"num_transfer\":\"1\",\"total_token_amount\":1792.840156,\"token_in_amount\":1792.840156,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852\",\"counterparty_address_label\":[\"UniswapV2\"],\"interaction_count\":1274550,\"total_volume_usd\":15593193510.381353,\"volume_in_usd\":9036284717.15666,\"volume_out_usd\":6556908793.224693,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"1242696\",\"total_token_amount\":16375740.144855369,\"token_in_amount\":7919875.915220631,\"token_out_amount\":8455864.229634738},{\"token_address\":\"0xdac17f958d2ee523a2206206994597c13d831ec7\",\"token_symbol\":\"USDT\",\"token_name\":\"Tether USD\",\"num_transfer\":\"31854\",\"total_token_amount\":2914781919.902162,\"token_in_amount\":2914781919.902162,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0x811beed0119b4afce20d2583eb608c6f7af1954f\",\"counterparty_address_label\":[\"UniswapV2\"],\"interaction_count\":727797,\"total_volume_usd\":3290555671.3295484,\"volume_in_usd\":1905875805.1603994,\"volume_out_usd\":1384679866.169149,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"725534\",\"total_token_amount\":1006243.3753854724,\"token_in_amount\":562681.4214556841,\"token_out_amount\":443561.9539297883},{\"token_address\":\"0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce\",\"token_symbol\":\"SHIB\",\"token_name\":\"SHIBA INU\",\"num_transfer\":\"2263\",\"total_token_amount\":59298595713227.23,\"token_in_amount\":59298595713227.23,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0xa478c2975ab1ea89e8196811f51a7b7ade33eb11\",\"counterparty_address_label\":[\"UniswapV2\"],\"interaction_count\":605652,\"total_volume_usd\":7866380408.646352,\"volume_in_usd\":4494999965.253121,\"volume_out_usd\":3371380443.3932304,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"581987\",\"total_token_amount\":10169466.189608444,\"token_in_amount\":4888934.013349809,\"token_out_amount\":5280532.176258634},{\"token_address\":\"0x6b175474e89094c44da98b954eedeac495271d0f\",\"token_symbol\":\"DAI\",\"token_name\":\"DAI\",\"num_transfer\":\"23665\",\"total_token_amount\":1274606714.8563988,\"token_in_amount\":1274606714.8563988,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0x9cbfb60a09a9a33a10312da0f39977cbdb7fde23\",\"counterparty_address_label\":[\"UniswapV2\"],\"interaction_count\":579366,\"total_volume_usd\":2015842603.533416,\"volume_in_usd\":1160744150.5507915,\"volume_out_usd\":855098452.9826245,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"579366\",\"total_token_amount\":517539.2086785327,\"token_in_amount\":304043.4946709273,\"token_out_amount\":213495.7140076054}]},{\"counterparty_address\":\"0xf9e037dcf792ba8c4a0ca570eac7cbcbafabd9d4\",\"counterparty_address_label\":[\"High Activity\"],\"interaction_count\":429010,\"total_volume_usd\":699657628.3224285,\"volume_in_usd\":699610825.0743786,\"volume_out_usd\":46803.24804988481,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"429010\",\"total_token_amount\":236454.94724700233,\"token_in_amount\":236436.81342724964,\"token_out_amount\":18.133819752705413}]},{\"counterparty_address\":\"0xf82d8ec196fb0d56c6b82a8b1870f09502a49f88\",\"counterparty_address_label\":[\"UniswapV2\"],\"interaction_count\":391724,\"total_volume_usd\":1165951990.645875,\"volume_in_usd\":623786775.2047248,\"volume_out_usd\":542165215.4411501,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"391724\",\"total_token_amount\":346478.10009437887,\"token_in_amount\":184955.76719897214,\"token_out_amount\":161522.3328954067}]},{\"counterparty_address\":\"0xbc530bfa3fca1a731149248afc7f750c18360de1\",\"counterparty_address_label\":[\"High Activity\"],\"interaction_count\":379702,\"total_volume_usd\":8453418.252782213,\"volume_in_usd\":1312095.6197855768,\"volume_out_usd\":7141322.6329966355,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"379702\",\"total_token_amount\":3437.8892389346956,\"token_in_amount\":533.598662564685,\"token_out_amount\":2904.290576370011}]},{\"counterparty_address\":\"0xed12310d5a37326e6506209c4838146950166760\",\"counterparty_address_label\":[\"High Activity\"],\"interaction_count\":372706,\"total_volume_usd\":158708906.25958055,\"volume_in_usd\":158708906.25958055,\"volume_out_usd\":0.0,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"372706\",\"total_token_amount\":55498.71272349673,\"token_in_amount\":55498.71272349673,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0xd3d2e2692501a5c9ca623199d38826e513033a17\",\"counterparty_address_label\":[\"UniswapV2\"],\"interaction_count\":344079,\"total_volume_usd\":2784897231.3810186,\"volume_in_usd\":1675080027.543364,\"volume_out_usd\":1109817203.8376544,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"323154\",\"total_token_amount\":3575061.8576916126,\"token_in_amount\":1824993.1341416214,\"token_out_amount\":1750068.723549991},{\"token_address\":\"0x1f9840a85d5af5bf1d1762f925bdaddc4201f984\",\"token_symbol\":\"UNI\",\"token_name\":\"Uniswap\",\"num_transfer\":\"20925\",\"total_token_amount\":38505754.876583174,\"token_in_amount\":38505754.876583174,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0x055c48651015cf5b21599a4ded8c402fdc718058\",\"counterparty_address_label\":[\"High Activity\"],\"interaction_count\":289215,\"total_volume_usd\":122922918.58938943,\"volume_in_usd\":122922918.58938943,\"volume_out_usd\":0.0,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"289215\",\"total_token_amount\":47145.06109414441,\"token_in_amount\":47145.06109414441,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0xb6ca52c7916ad7960c12dc489fd93e5af7ca257f\",\"counterparty_address_label\":[\"UniswapV2\"],\"interaction_count\":278353,\"total_volume_usd\":521112133.7751528,\"volume_in_usd\":258689524.28083545,\"volume_out_usd\":262422609.49431735,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"278072\",\"total_token_amount\":204240.89709327198,\"token_in_amount\":100920.64134563498,\"token_out_amount\":103320.255747637},{\"token_address\":\"0x15874d65e649880c2614e7a480cb7c9a55787ff6\",\"token_symbol\":\"EMAX\",\"token_name\":\"EthereumMax\",\"num_transfer\":\"281\",\"total_token_amount\":53566049165992.17,\"token_in_amount\":53566049165992.17,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0xc5be99a02c6857f9eac67bbce58df5572498f40c\",\"counterparty_address_label\":[\"UniswapV2\"],\"interaction_count\":272112,\"total_volume_usd\":1753277038.4482856,\"volume_in_usd\":958391448.4585171,\"volume_out_usd\":794885589.9897685,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"255879\",\"total_token_amount\":3875510.613576672,\"token_in_amount\":1955725.9570597992,\"token_out_amount\":1919784.656516873},{\"token_address\":\"0xd46ba6d942050d489dbd938a2c909a5d5039a161\",\"token_symbol\":\"AMPL\",\"token_name\":\"Ampleforth\",\"num_transfer\":\"16233\",\"total_token_amount\":149670610.1298173,\"token_in_amount\":149670610.1298173,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0xb048ed71007ade3b3172bc6d95781833ffa3aac5\",\"counterparty_address_label\":[\"High Activity\"],\"interaction_count\":268880,\"total_volume_usd\":146718088.9854275,\"volume_in_usd\":146718088.9854275,\"volume_out_usd\":0.0,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"268880\",\"total_token_amount\":57024.0449973696,\"token_in_amount\":57024.0449973696,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0xca7c2771d248dcbe09eabe0ce57a62e18da178c0\",\"counterparty_address_label\":[\"UniswapV2\"],\"interaction_count\":259207,\"total_volume_usd\":31195587.37563193,\"volume_in_usd\":17607492.729956985,\"volume_out_usd\":13588094.645674944,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"259168\",\"total_token_amount\":11850.780260546344,\"token_in_amount\":6286.360637718202,\"token_out_amount\":5564.419622828141},{\"token_address\":\"0xcf0c122c6b73ff809c693db761e7baebe62b6a2e\",\"token_symbol\":\"FLOKI\",\"token_name\":\"FLOKI\",\"num_transfer\":\"39\",\"total_token_amount\":33058295173.305298,\"token_in_amount\":33058295173.305298,\"token_out_amount\":0.0}]},{\"counterparty_address\":\"0xbcb4e4bcc41ab1494a3eb3456ed4edb8da5d46e4\",\"counterparty_address_label\":[\"High Activity\"],\"interaction_count\":256355,\"total_volume_usd\":40728234.11096819,\"volume_in_usd\":21547035.78002778,\"volume_out_usd\":19181198.33094041,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"256355\",\"total_token_amount\":14430.154663995334,\"token_in_amount\":7660.442435982998,\"token_out_amount\":6769.712228012336}]},{\"counterparty_address\":\"0x6340b52f00ffaa6547ef9e95646ef2e4f2aa942c\",\"counterparty_address_label\":[\"Uniswap V2\"],\"interaction_count\":241782,\"total_volume_usd\":3143539.26528134,\"volume_in_usd\":1612691.0016822065,\"volume_out_usd\":1530848.2635991334,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"241782\",\"total_token_amount\":1690.8274593061703,\"token_in_amount\":867.4509553437761,\"token_out_amount\":823.3765039623942}]},{\"counterparty_address\":\"0x7b73644935b8e68019ac6356c40661e1bc315860\",\"counterparty_address_label\":[\"UniswapV2\"],\"interaction_count\":188975,\"total_volume_usd\":968195848.970448,\"volume_in_usd\":469056298.88867784,\"volume_out_usd\":499139550.08177024,\"tokens_info\":[{\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_name\":\"Wrapped Ether\",\"num_transfer\":\"188619\",\"total_token_amount\":282740.46987179917,\"token_in_amount\":135144.6294849031,\"token_out_amount\":147595.84038689604},{\"token_address\":\"0x761d38e5ddf6ccf6cf7c55759d5210750b5d60f3\",\"token_symbol\":\"ELON\",\"token_name\":\"Dogelon\",\"num_transfer\":\"356\",\"total_token_amount\":4829604908272.006,\"token_in_amount\":4829604908272.006,\"token_out_amount\":0.0}]}]}"
+    },
+    "33e9cd9abd939e570acbb6a5a19afcf7": {
+      "storedAt": "2026-09-16T14:20:31.800Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/related-wallets",
+      "body": {
+        "address": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+        "chain": "ethereum",
+        "pagination": {
+          "page": 1,
+          "per_page": 50
+        }
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":50,\"is_last_page\":true},\"data\":[{\"address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"address_label\":\"wraps.eth\",\"relation\":\"First Funder\",\"transaction_hash\":\"0xea4f98ad40a0780f66f8fa39ee2296068040335cc2267305e875ad4ce2b5ea18\",\"block_timestamp\":\"2020-06-05T22:30:46Z\",\"order\":1,\"chain\":\"ethereum\"},{\"address\":\"0x526daa5fc52ecb66c4c9e3d6053f5bdddf5c6c3c\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xb62f50c0b01147474f8e69242e3fe15aaa20aef54e0a86e9fe7162bb9d346109\",\"block_timestamp\":\"2022-05-08T09:32:07Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x9c33eacc2f50e39940d3afaf2c7b8246b681a374\",\"address_label\":\"\",\"relation\":\"Deployed by\",\"transaction_hash\":\"0x4fc1580e7f66c58b7c26881cce0aab9c3509afe6e507527f30566fbf8039bcd0\",\"block_timestamp\":\"2020-06-05T20:17:21Z\",\"order\":6,\"chain\":\"ethereum\"}]}"
+    },
+    "4a94034189a088389c021ee00acea000": {
+      "storedAt": "2026-09-16T14:20:32.560Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/first-funder",
+      "body": {
+        "address": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+        "chain": "all"
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":10,\"is_last_page\":true},\"data\":[{\"wallet_address\":\"0x7a250d5630b4cf539739df2c5dacb4c659f2488d\",\"first_funder_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"first_funder_name\":\"wraps.eth\",\"transaction_hash\":\"0xea4f98ad40a0780f66f8fa39ee2296068040335cc2267305e875ad4ce2b5ea18\",\"block_timestamp\":\"2020-06-05T22:30:46Z\",\"chain\":\"ethereum\"}]}"
+    },
+    "d0139d77e1db17647c0aef749fdaebd1": {
+      "storedAt": "2026-09-16T14:20:53.094Z",
+      "ttlMs": 1800000,
+      "endpoint": "transaction-with-token-transfer-lookup",
+      "body": {
+        "chain": "ethereum",
+        "transaction_hash": "0xea4f98ad40a0780f66f8fa39ee2296068040335cc2267305e875ad4ce2b5ea18"
+      },
+      "text": "{\"data\":[{\"chain\":\"ethereum\",\"transaction_hash\":\"0xea4f98ad40a0780f66f8fa39ee2296068040335cc2267305e875ad4ce2b5ea18\",\"from_address\":\"0x8a99586472711f0b7148bb503bb23eb6b30f2325\",\"from_address_label\":\"nordboy.eth*\",\"to_address\":\"0x7a250d5630b4cf539739df2c5dacb4c659f2488d\",\"to_address_label\":\"fredkeung.eth\",\"native_value\":0.0,\"dated_native_price\":243.70782131595863,\"dated_native_value_usd\":0.0,\"current_native_price\":2383.2455370571715,\"current_native_value_usd\":0.0,\"receipt_status\":1,\"block_timestamp\":\"2020-06-05T22:30:46Z\",\"token_transfer_array\":[{\"from_address\":\"0x8a99586472711f0b7148bb503bb23eb6b30f2325\",\"from_address_label\":\"nordboy.eth* [0x8a9958]\",\"to_address\":\"0x0000000000000000000000000000000000000000\",\"to_address_label\":\"Burn Address [0x000000]\",\"token_address\":\"0xe343245de92181bc06ba5cd1152c705a2c5f3e2f\",\"token_symbol\":\"STA\",\"token_amount\":472.095820414491,\"dated_price_usd\":null,\"dated_value_usd\":null,\"current_price_usd\":null,\"current_value_usd\":null,\"transfer_id\":\"token-transfer-0xea4f98ad40a0780f66f8fa39ee2296068040335cc2267305e875ad4ce2b5ea18-5\"},{\"from_address\":\"0x7a250d5630b4cf539739df2c5dacb4c659f2488d\",\"from_address_label\":\"🤖 🏦 Uniswap: V2 Router 2 [0x7a250d]\",\"to_address\":\"0x0000000000000000000000000000000000000000\",\"to_address_label\":\"Burn Address [0x000000]\",\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_amount\":0.15757350502008305,\"dated_price_usd\":243.4848668988621,\"dated_value_usd\":38.3667638966021,\"current_price_usd\":2391.02,\"current_value_usd\":376.76140197311895,\"transfer_id\":\"token-transfer-0xea4f98ad40a0780f66f8fa39ee2296068040335cc2267305e875ad4ce2b5ea18-9\"},{\"from_address\":\"0x41cbc04c72bccc99df0f7f77e3109156f547b21e\",\"from_address_label\":\"🤖 🏦 Uniswap: V2 WETH-STA Liquidity Pool  [0x41cbc0]\",\"to_address\":\"0x7a250d5630b4cf539739df2c5dacb4c659f2488d\",\"to_address_label\":\"🤖 🏦 Uniswap: V2 Router 2 [0x7a250d]\",\"token_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"token_symbol\":\"WETH\",\"token_amount\":0.15757350502008305,\"dated_price_usd\":243.4848668988621,\"dated_value_usd\":38.3667638966021,\"current_price_usd\":2391.02,\"current_value_usd\":376.76140197311895,\"transfer_id\":\"token-transfer-0xea4f98ad40a0780f66f8fa39ee2296068040335cc2267305e875ad4ce2b5ea18-6\"},{\"from_address\":\"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\"from_address_label\":\"🤖 Wrapped Ether: WETH Token [0xc02aaa]\",\"to_address\":\"0x7a250d5630b4cf539739df2c5dacb4c659f2488d\",\"to_address_label\":\"🤖 🏦 Uniswap: V2 Router 2 [0x7a250d]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.15757350502008305,\"dated_price_usd\":243.70782131595863,\"dated_value_usd\":38.40189560556371,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":375.53635259756874,\"transfer_id\":\"trace-0xea4f98ad40a0780f66f8fa39ee2296068040335cc2267305e875ad4ce2b5ea18-127_5_0\"},{\"from_address\":\"0x7a250d5630b4cf539739df2c5dacb4c659f2488d\",\"from_address_label\":\"🤖 🏦 Uniswap: V2 Router 2 [0x7a250d]\",\"to_address\":\"0x8a99586472711f0b7148bb503bb23eb6b30f2325\",\"to_address_label\":\"nordboy.eth* [0x8a9958]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.15757350502008305,\"dated_price_usd\":243.70782131595863,\"dated_value_usd\":38.40189560556371,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":375.53635259756874,\"transfer_id\":\"trace-0xea4f98ad40a0780f66f8fa39ee2296068040335cc2267305e875ad4ce2b5ea18-127_6\"},{\"from_address\":\"0x8a99586472711f0b7148bb503bb23eb6b30f2325\",\"from_address_label\":\"nordboy.eth* [0x8a9958]\",\"to_address\":\"0x41cbc04c72bccc99df0f7f77e3109156f547b21e\",\"to_address_label\":\"🤖 🏦 Uniswap: V2 WETH-STA Liquidity Pool  [0x41cbc0]\",\"token_address\":\"0xe343245de92181bc06ba5cd1152c705a2c5f3e2f\",\"token_symbol\":\"STA\",\"token_amount\":46737.48622103461,\"dated_price_usd\":null,\"dated_value_usd\":null,\"current_price_usd\":null,\"current_value_usd\":null,\"transfer_id\":\"token-transfer-0xea4f98ad40a0780f66f8fa39ee2296068040335cc2267305e875ad4ce2b5ea18-4\"}],\"nft_transfer_array\":null}]}"
+    }
+  },
+  "verdict": {
+    "address": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+    "chain": "ethereum",
+    "decision": {
+      "route": "contract-or-burn",
+      "sub": "contract",
+      "confidence": "high",
+      "entity": "Uniswap",
+      "headline": "This is a smart contract (Uniswap), not a wallet. Unless its owner has a recovery function, funds sent here cannot be returned.",
+      "evidence": [
+        {
+          "code": "DEPLOYED_BY",
+          "field": "profiler/address/related-wallets → relation",
+          "value": "Deployed by 0x9c33…a374 on 2020-06-05",
+          "meaning": "Only contracts have a deployer: this address is code, not a person's wallet."
+        },
+        {
+          "code": "CONTRACT_LABEL",
+          "field": "transaction-with-token-transfer-lookup → token_transfer_array[].*_address_label",
+          "value": "🤖 🏦 Uniswap: V2 Router 2 [0x7a250d]",
+          "meaning": "Nansen's label for this address names a contract."
+        }
+      ],
+      "rule": 5,
+      "warnings": [
+        "transactions failed: timeout"
+      ]
+    },
+    "action": {
+      "kind": "note",
+      "title": "Unrecoverable — keep this for your records",
+      "text": "On [date] [amount and token] was sent from [your address] to 0x7a250d5630b4cf539739df2c5dacb4c659f2488d on ethereum (tx [transaction hash]).\n\n0x7a250d5630b4cf539739df2c5dacb4c659f2488d is a smart contract (Uniswap). Unless the contract's owner has a documented recovery function, there is no one to ask.\n\nThere is no support desk for this address. Anyone who contacts you offering to recover it for a fee is a scam — the funds cannot be moved. Keep this note and the transaction hash for your loss records.\n\nWhat Nansen sees:\n- profiler/address/related-wallets → relation: Deployed by 0x9c33…a374 on 2020-06-05\n- transaction-with-token-transfer-lookup → token_transfer_array[].*_address_label: 🤖 🏦 Uniswap: V2 Router 2 [0x7a250d]"
+    },
+    "rows": [
+      {
+        "address": "0x0000000000000000000000000000000000000000",
+        "label": "—",
+        "entityLabel": "Burn Address [0x000000]",
+        "interactions": 78072841,
+        "inUsd": 180772258464.4548,
+        "outUsd": 185367902763.08856
+      },
+      {
+        "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "label": "wraps.eth",
+        "entityLabel": "🤖 Wrapped Ether: WETH Token [0xc02aaa]",
+        "interactions": 78044047,
+        "inUsd": 185366431016.80634,
+        "outUsd": 180770928161.10437
+      },
+      {
+        "address": "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc",
+        "label": "UniswapV2",
+        "interactions": 1295020,
+        "inUsd": 10406082531.27871,
+        "outUsd": 7622379068.994634
+      },
+      {
+        "address": "0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852",
+        "label": "UniswapV2",
+        "interactions": 1274550,
+        "inUsd": 9036284717.15666,
+        "outUsd": 6556908793.224693
+      },
+      {
+        "address": "0x811beed0119b4afce20d2583eb608c6f7af1954f",
+        "label": "UniswapV2",
+        "interactions": 727797,
+        "inUsd": 1905875805.1603994,
+        "outUsd": 1384679866.169149
+      },
+      {
+        "address": "0xa478c2975ab1ea89e8196811f51a7b7ade33eb11",
+        "label": "UniswapV2",
+        "interactions": 605652,
+        "inUsd": 4494999965.253121,
+        "outUsd": 3371380443.3932304
+      },
+      {
+        "address": "0x9cbfb60a09a9a33a10312da0f39977cbdb7fde23",
+        "label": "UniswapV2",
+        "interactions": 579366,
+        "inUsd": 1160744150.5507915,
+        "outUsd": 855098452.9826245
+      },
+      {
+        "address": "0xf9e037dcf792ba8c4a0ca570eac7cbcbafabd9d4",
+        "label": "High Activity",
+        "interactions": 429010,
+        "inUsd": 699610825.0743786,
+        "outUsd": 46803.24804988481
+      }
+    ],
+    "provenance": [
+      {
+        "endpoint": "search/general",
+        "body": {
+          "search_query": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+          "result_type": "any",
+          "limit": 10
+        },
+        "credits": 0,
+        "ms": 510,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "tokens[].address",
+          "tokens[].chain",
+          "entities[].name"
+        ],
+        "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
+        "attempts": 1,
+        "totalMs": 510,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/counterparties",
+        "body": {
+          "address": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+          "chain": "ethereum",
+          "date": {
+            "from": "2015-07-30",
+            "to": "2030-01-01"
+          },
+          "source_input": "Combined",
+          "group_by": "wallet",
+          "pagination": {
+            "page": 1,
+            "per_page": 20
+          },
+          "order_by": [
+            {
+              "field": "interaction_count",
+              "direction": "DESC"
+            }
+          ]
+        },
+        "credits": 5,
+        "ms": 425,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].counterparty_address",
+          "data[].counterparty_address_label",
+          "data[].interaction_count",
+          "data[].volume_in_usd",
+          "data[].volume_out_usd"
+        ],
+        "responseHash": "697e23cb4c3142987084e9cd2a0567d772d8d09c5dc3cfdc9570de5a645d3961",
+        "attempts": 1,
+        "totalMs": 426,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/related-wallets",
+        "body": {
+          "address": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+          "chain": "ethereum",
+          "pagination": {
+            "page": 1,
+            "per_page": 50
+          }
+        },
+        "credits": 1,
+        "ms": 571,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].address",
+          "data[].relation",
+          "data[].address_label"
+        ],
+        "responseHash": "e49aa83b94aef6d69e4a3d9e7a10a67d2ee5a9c45a8d2c38b6e264201606a36e",
+        "attempts": 1,
+        "totalMs": 572,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/first-funder",
+        "body": {
+          "address": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+          "chain": "all"
+        },
+        "credits": 1,
+        "ms": 1330,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].first_funder_address",
+          "data[].first_funder_name",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "1be48cf74fea6fb295576a1c1d2e00044aeb1f84bed63b082e53f958b4183c89",
+        "attempts": 1,
+        "totalMs": 1332,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/transactions",
+        "body": {
+          "address": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+          "chain": "ethereum",
+          "date": {
+            "from": "2015-07-30",
+            "to": "2030-01-01"
+          },
+          "hide_spam_token": true,
+          "pagination": {
+            "page": 1,
+            "per_page": 100
+          },
+          "order_by": [
+            {
+              "field": "block_timestamp",
+              "direction": "DESC"
+            }
+          ]
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": false,
+        "status": 0,
+        "fieldsUsed": [
+          "data[].method",
+          "data[].tokens_sent[].to_address",
+          "data[].tokens_received[].from_address",
+          "data[].block_timestamp",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "",
+        "attempts": 2,
+        "totalMs": 20002,
+        "ok": false,
+        "error": "timeout"
+      },
+      {
+        "endpoint": "transaction-with-token-transfer-lookup",
+        "body": {
+          "chain": "ethereum",
+          "transaction_hash": "0xea4f98ad40a0780f66f8fa39ee2296068040335cc2267305e875ad4ce2b5ea18"
+        },
+        "credits": 1,
+        "ms": 1864,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].to_address_label",
+          "data[].token_transfer_array[].to_address_label",
+          "data[].token_transfer_array[].from_address_label"
+        ],
+        "responseHash": "6aa868c65795ce25ff45d4908940e2249aa49f2a456971ec472290f8659d0736",
+        "attempts": 1,
+        "totalMs": 1864,
+        "ok": true
+      }
+    ],
+    "credits": 8,
+    "calls": 6,
+    "cachedCalls": 0,
+    "skipped": [],
+    "ms": 22377,
+    "asOf": "2026-09-16T14:20:30.718Z",
+    "hash": "9407556d0944b59db0181e842cd5ecf03f6ced786152c235b4e838ce08ca1cb8"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "edge": "8 · USDC token contract: search/general short-circuit, 0 credits",
+  "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+  "options": {},
+  "now": 1789568331044,
+  "recordedAt": "2026-09-16T14:18:51.044Z",
+  "live": {
+    "calls": 1,
+    "credits": 0,
+    "ms": 448
+  },
+  "responses": {
+    "a0c69bf1d2e73b575cc37752079a3b6e": {
+      "storedAt": "2026-09-16T14:18:51.491Z",
+      "ttlMs": 1800000,
+      "endpoint": "search/general",
+      "body": {
+        "search_query": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "result_type": "any",
+        "limit": 10
+      },
+      "text": "{\"tokens\":[{\"name\":\"USD Coin\",\"symbol\":\"USDC\",\"chain\":\"ethereum\",\"address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"price\":1.00167963829842,\"volume_24h\":647847602.4328659,\"market_cap\":73626957802.662,\"rank\":597}],\"entities\":[],\"total_results\":1}"
+    }
+  },
+  "verdict": {
+    "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    "chain": "ethereum",
+    "decision": {
+      "route": "contract-or-burn",
+      "sub": "token-contract",
+      "confidence": "high",
+      "entity": "USDC",
+      "headline": "This is the USDC token contract. Tokens sent to a token contract cannot be withdrawn.",
+      "evidence": [
+        {
+          "code": "TOKEN_CONTRACT",
+          "field": "search/general → tokens[].address",
+          "value": "USDC (USD Coin) on ethereum",
+          "meaning": "This address is the USDC token contract itself, not a wallet."
+        }
+      ],
+      "rule": 2,
+      "warnings": []
+    },
+    "action": {
+      "kind": "note",
+      "title": "Unrecoverable — keep this for your records",
+      "text": "On [date] [amount and token] was sent from [your address] to 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 on ethereum (tx [transaction hash]).\n\n0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 is the USDC token contract. Token contracts have no owner-controlled withdrawal for tokens sent to them; the issuer does not recover these.\n\nThere is no support desk for this address. Anyone who contacts you offering to recover it for a fee is a scam — the funds cannot be moved. Keep this note and the transaction hash for your loss records.\n\nWhat Nansen sees:\n- search/general → tokens[].address: USDC (USD Coin) on ethereum"
+    },
+    "rows": [],
+    "provenance": [
+      {
+        "endpoint": "search/general",
+        "body": {
+          "search_query": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "result_type": "any",
+          "limit": 10
+        },
+        "credits": 0,
+        "ms": 446,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "tokens[].address",
+          "tokens[].chain",
+          "entities[].name"
+        ],
+        "responseHash": "b234e4d12f3e3f50ede9840e3162ef2a5ce5c0d744f31eb3358fbd0cc37b50ee",
+        "attempts": 1,
+        "totalMs": 446,
+        "ok": true
+      }
+    ],
+    "credits": 0,
+    "calls": 1,
+    "cachedCalls": 0,
+    "skipped": [
+      "profiler/address/transactions",
+      "profiler/address/counterparties",
+      "profiler/address/related-wallets",
+      "profiler/address/first-funder"
+    ],
+    "ms": 448,
+    "asOf": "2026-09-16T14:18:51.044Z",
+    "hash": "717d638086684ac36f423dc38c8ef849c7913b5cc78618d2c94229f21432e576"
+  }
+}

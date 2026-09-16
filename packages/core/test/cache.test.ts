@@ -80,3 +80,23 @@ describe("review round 2: creditsSpent on the cached client", () => {
     expect(c.creditsSpent).toBe(0);
   });
 });
+
+describe("4xx rejections are cached and replayed (burn addresses are deterministic)", () => {
+  it("a 422 is stored with its status and replayed as the same NansenError at 0 credits, offline too", async () => {
+    const store = new MemoryCache();
+    let hits = 0;
+    const fetchImpl: typeof fetch = async () => { hits++; return new Response('{"error":"Burn address not allowed"}', { status: 422 }); };
+    const c = new CachedNansenClient(KEY, { fetchImpl, rps: 1000, store });
+    await expect(c.post("profiler/address/transactions", { address: "0xdead" })).rejects.toThrow(/HTTP 422/);
+    const off = new CachedNansenClient(KEY, { fetchImpl: async () => { throw new Error("network!"); }, store, offline: true });
+    await expect(off.post("profiler/address/transactions", { address: "0xdead" })).rejects.toThrow(/HTTP 422.*Burn address/);
+    expect(hits).toBe(1);
+    expect(off.calls[0]).toMatchObject({ cached: true, ok: false, status: 422, credits: 0 });
+  });
+  it("429 and 5xx are never cached", async () => {
+    const store = new MemoryCache();
+    const c = new CachedNansenClient(KEY, { fetchImpl: async () => new Response("slow", { status: 429 }), rps: 1000, store });
+    await expect(c.post("profiler/address/transactions", { a: 1 })).rejects.toThrow();
+    expect(store.get(cacheKey("profiler/address/transactions", { a: 1 }))).toBeUndefined();
+  });
+});

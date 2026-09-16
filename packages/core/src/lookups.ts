@@ -73,8 +73,9 @@ export async function gather(client: NansenClient, address: string, opts: Gather
         { ok: false, error: "skipped: token contract", status: 0 } as LookupResult<FirstFunderResponse>,
         undefined]; })()
     : await Promise.all([
-        // transactions on a high-traffic contract can hang: hard 8 s cap, no retry — a timeout is shown, not hidden
-        settle(nansen.transactions(client, a, chain, 100, { timeoutMs: 8000, retries: 0 })),
+        // transactions normally answers in ~1 s but has 8 s+ outliers (seed run 2026-09-16) and hangs on high-traffic contracts:
+        // 10 s cap with one retry — a contract is still decided by related-wallets, and the timeout is shown, never hidden
+        settle(nansen.transactions(client, a, chain, 100, { timeoutMs: 10_000, retries: 1 })),
         settle(nansen.counterparties(client, a, chain, 20, { timeoutMs: 8000, retries: 1 })),
         settle(nansen.relatedWallets(client, a, chain)),
         settle(nansen.firstFunder(client, a)),

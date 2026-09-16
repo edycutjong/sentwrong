@@ -1,0 +1,360 @@
+{
+  "edge": "4 · Coinbase deposit address created minutes before the spike: no own label yet → sweep-pattern rule",
+  "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+  "options": {},
+  "now": 1789568307343,
+  "recordedAt": "2026-09-16T14:18:27.343Z",
+  "live": {
+    "calls": 7,
+    "credits": 10,
+    "ms": 4868
+  },
+  "responses": {
+    "caefc5db38b539dc65940c27209df5e9": {
+      "storedAt": "2026-09-16T14:18:27.834Z",
+      "ttlMs": 1800000,
+      "endpoint": "search/general",
+      "body": {
+        "search_query": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+        "result_type": "any",
+        "limit": 10
+      },
+      "text": "{\"tokens\":[],\"entities\":[],\"total_results\":0}"
+    },
+    "2a89aea111d3b1ef6749a8c8d0e72f56": {
+      "storedAt": "2026-09-16T14:18:28.566Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/related-wallets",
+      "body": {
+        "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+        "chain": "ethereum",
+        "pagination": {
+          "page": 1,
+          "per_page": 50
+        }
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":50,\"is_last_page\":true},\"data\":[{\"address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"address_label\":\"High Activity\",\"relation\":\"First Funder\",\"transaction_hash\":\"0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec\",\"block_timestamp\":\"2026-09-16T13:52:11Z\",\"order\":1,\"chain\":\"ethereum\"}]}"
+    },
+    "92de1db985b6f9289538f19253e5ee3a": {
+      "storedAt": "2026-09-16T14:18:29.593Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/counterparties",
+      "body": {
+        "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+        "chain": "ethereum",
+        "date": {
+          "from": "2015-07-30",
+          "to": "2030-01-01"
+        },
+        "source_input": "Combined",
+        "group_by": "wallet",
+        "pagination": {
+          "page": 1,
+          "per_page": 20
+        },
+        "order_by": [
+          {
+            "field": "interaction_count",
+            "direction": "DESC"
+          }
+        ]
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":20,\"is_last_page\":true},\"data\":[{\"counterparty_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"counterparty_address_label\":[\"High Activity\"],\"interaction_count\":2,\"total_volume_usd\":318.71722414763906,\"volume_in_usd\":0.10905254928466206,\"volume_out_usd\":318.6081715983544,\"tokens_info\":[{\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_name\":\"Ethereum\",\"num_transfer\":\"1\",\"total_token_amount\":0.000045758,\"token_in_amount\":0.000045758,\"token_out_amount\":0.0},{\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"token_symbol\":\"USDC\",\"token_name\":\"USD Coin\",\"num_transfer\":\"1\",\"total_token_amount\":319.068482,\"token_in_amount\":0.0,\"token_out_amount\":319.068482}]},{\"counterparty_address\":\"0x445f16314284b43dfa1fd3cd77b9dea4a1bebd97\",\"counterparty_address_label\":[\"Token Millionaire\"],\"interaction_count\":1,\"total_volume_usd\":318.6081715983544,\"volume_in_usd\":318.6081715983544,\"volume_out_usd\":0.0,\"tokens_info\":[{\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"token_symbol\":\"USDC\",\"token_name\":\"USD Coin\",\"num_transfer\":\"1\",\"total_token_amount\":319.068482,\"token_in_amount\":319.068482,\"token_out_amount\":0.0}]}]}"
+    },
+    "ded74edc5cfa7a95999542e9ba0894b1": {
+      "storedAt": "2026-09-16T14:18:30.961Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/first-funder",
+      "body": {
+        "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+        "chain": "all"
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":10,\"is_last_page\":true},\"data\":[{\"wallet_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"first_funder_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"first_funder_name\":\"High Activity\",\"transaction_hash\":\"0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec\",\"block_timestamp\":\"2026-09-16T13:52:11Z\",\"chain\":\"ethereum\"}]}"
+    },
+    "c51243ab531586a1484b706dacee429e": {
+      "storedAt": "2026-09-16T14:18:31.487Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/transactions",
+      "body": {
+        "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+        "chain": "ethereum",
+        "date": {
+          "from": "2015-07-30",
+          "to": "2030-01-01"
+        },
+        "hide_spam_token": true,
+        "pagination": {
+          "page": 1,
+          "per_page": 100
+        },
+        "order_by": [
+          {
+            "field": "block_timestamp",
+            "direction": "DESC"
+          }
+        ]
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":100,\"is_last_page\":true},\"data\":[{\"chain\":\"ethereum\",\"method\":\"transfer(address,uint256)\",\"tokens_sent\":[{\"token_symbol\":\"USDC\",\"token_amount\":-319.068482,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"chain\":\"ethereum\",\"from_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"to_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"[0x6465f3]\",\"to_address_label\":\"High Activity [0xa9d1e0]\"}],\"tokens_received\":[],\"volume_usd\":318.6081715983544,\"block_timestamp\":\"2026-09-16T13:54:11\",\"transaction_hash\":\"0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"received\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"ETH\",\"token_amount\":0.000045758,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"chain\":\"ethereum\",\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"to_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"High Activity [0xa9d1e0]\",\"to_address_label\":\"[0x6465f3]\"}],\"volume_usd\":0.10905254928466206,\"block_timestamp\":\"2026-09-16T13:52:11\",\"transaction_hash\":\"0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec\",\"source_type\":\"transfer\"},{\"chain\":\"ethereum\",\"method\":\"execute(address,uint256,bytes)\",\"tokens_sent\":[],\"tokens_received\":[{\"token_symbol\":\"USDC\",\"token_amount\":319.068482,\"price_usd\":null,\"value_usd\":null,\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"chain\":\"ethereum\",\"from_address\":\"0x445f16314284b43dfa1fd3cd77b9dea4a1bebd97\",\"to_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"Token Millionaire [0x445f16]\",\"to_address_label\":\"[0x6465f3]\"}],\"volume_usd\":318.6081715983544,\"block_timestamp\":\"2026-09-16T13:49:35\",\"transaction_hash\":\"0xe3d110491055c0e55de60daaf8a172691aca132149183c9709719d950c60a6f1\",\"source_type\":\"transfer\"}]}"
+    },
+    "0f6aee2f08de0eafc66b04b1990a4a97": {
+      "storedAt": "2026-09-16T14:18:32.191Z",
+      "ttlMs": 1800000,
+      "endpoint": "transaction-with-token-transfer-lookup",
+      "body": {
+        "chain": "ethereum",
+        "transaction_hash": "0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec"
+      },
+      "text": "{\"data\":[{\"chain\":\"ethereum\",\"transaction_hash\":\"0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec\",\"from_address\":\"0x7830c87c02e56aff27fa8ab1241711331fa86f43\",\"from_address_label\":\"Token Millionaire\",\"to_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"to_address_label\":\"High Activity\",\"native_value\":0.0,\"dated_native_price\":2383.2455370571715,\"dated_native_value_usd\":0.0,\"current_native_price\":2383.2455370571715,\"current_native_value_usd\":0.0,\"receipt_status\":1,\"block_timestamp\":\"2026-09-16T13:52:11Z\",\"token_transfer_array\":[{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0x0510b1a8b756836e0563358737d445aa8589cfe7\",\"to_address_label\":\"🏦 Coinbase: Deposit [0x0510b1]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.000045172,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":0.10765596739994655,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":0.10765596739994655,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_4\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0x18113e85ff503191a5b40f93971f5d0e84e72c25\",\"to_address_label\":\"[0x18113e]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":122.264,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":291385.132342758,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":291385.132342758,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_17\"},{\"from_address\":\"0x18113e85ff503191a5b40f93971f5d0e84e72c25\",\"from_address_label\":\"[0x18113e]\",\"to_address\":\"0x9cbdbd7fa768ad6e9546ff57238722fa9b925329\",\"to_address_label\":\"🤖 ETH Millionaire [0x9cbdbd]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":122.264,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":291385.132342758,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":291385.132342758,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_17_0\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0x24e97f28c759e6ca058539c643fe8385d967d586\",\"to_address_label\":\"[0x24e97f]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.026614,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":63.42769672323956,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":63.42769672323956,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_13\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0x32145dab291d7c37cd77efaa19a2a743ae6d1cc6\",\"to_address_label\":\"🏦 Coinbase: Deposit [0x32145d]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.000029726,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":0.07084435683456149,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":0.07084435683456149,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_12\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0x4fdf56eb266fe3dd9366eb37650c6f6e3f954f60\",\"to_address_label\":\"🏦 Coinbase: Deposit [0x4fdf56]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.000040347,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":0.09615680768364569,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":0.09615680768364569,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_2\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0x5523aec7e0a5d5a02a80adbb5a8823732729c691\",\"to_address_label\":\"🏦 Coinbase: Deposit [0x5523ae]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.000040348,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":0.09615919092918276,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":0.09615919092918276,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_0\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"to_address_label\":\"[0x6465f3]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.000045758,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":0.10905254928466206,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":0.10905254928466206,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_3\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0x64f926cb19adfb27b7d5ba49bb6b3262a4e6653a\",\"to_address_label\":\"🏦 Coinbase: Deposit [0x64f926]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.000040372,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":0.09621638882207213,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":0.09621638882207213,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_5\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0x6a565dbd4316093a206c4959eeacc4c8061532d9\",\"to_address_label\":\"[0x6a565d]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.01032571,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":24.608702274446607,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":24.608702274446607,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_14\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0x9e4463ed2f18644f3707bcf97fc2e4951876f92c\",\"to_address_label\":\"[0x9e4463]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.01777974,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":42.373486005036874,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":42.373486005036874,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_7\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0xa3ea83accc043ce148bf36e2f9ea69cdf5d0b2d3\",\"to_address_label\":\"[0xa3ea83]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.01958888,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":46.685110835948485,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":46.685110835948485,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_8\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0xa59cc773f4f8179196b914aea45696f18cbb154e\",\"to_address_label\":\"[0xa59cc7]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.11466063,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":273.2644347236636,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":273.2644347236636,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_11\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0xa5cd68cb373a7df0597952505f209e3d0a54780a\",\"to_address_label\":\"🏦 Coinbase: Deposit [0xa5cd68]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.000034329,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":0.08181443604163564,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":0.08181443604163564,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_15\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0xbe5906566f82c6e5921d68492e92f3594ac6b7c3\",\"to_address_label\":\"🏦 Coinbase: Deposit [0xbe5906]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.000040348,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":0.09615919092918276,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":0.09615919092918276,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_1\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0xdc667272a40fd284565f32c8753d4b40ef9e67a1\",\"to_address_label\":\"[0xdc6672]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.00864724,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":20.608496137862257,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":20.608496137862257,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_10\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0xc385317e70d00a06f101662502169e0dd76b4066\",\"to_address_label\":\"[0xc38531]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.00878456,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":20.935763415010946,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":20.935763415010946,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_16\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0xf5c035b50c090107f3ddcfccc0d5d88c728fd9d8\",\"to_address_label\":\"[0xf5c035]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.00077948,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":1.8576922312253241,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":1.8576922312253241,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_6\"},{\"from_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"from_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"to_address\":\"0xe5a2eb96d71d9a0d228859291ea1993d79d0bc9c\",\"to_address_label\":\"[0xe5a2eb]\",\"token_address\":\"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"token_symbol\":\"ETH\",\"token_amount\":0.08042496,\"dated_price_usd\":2383.2455370571715,\"dated_value_usd\":191.67242698800155,\"current_price_usd\":2383.2455370571715,\"current_value_usd\":191.67242698800155,\"transfer_id\":\"trace-0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec-24_9\"}],\"nft_transfer_array\":null}]}"
+    },
+    "d97c72bccf816dbc0949dc8057fc3206": {
+      "storedAt": "2026-09-16T14:18:32.210Z",
+      "ttlMs": 1800000,
+      "endpoint": "transaction-with-token-transfer-lookup",
+      "body": {
+        "chain": "ethereum",
+        "transaction_hash": "0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec"
+      },
+      "text": "{\"data\":[{\"chain\":\"ethereum\",\"transaction_hash\":\"0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec\",\"from_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"\",\"to_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"to_address_label\":\"usdc.eth*\",\"native_value\":0.0,\"dated_native_price\":2383.2455370571715,\"dated_native_value_usd\":0.0,\"current_native_price\":2383.2455370571715,\"current_native_value_usd\":0.0,\"receipt_status\":1,\"block_timestamp\":\"2026-09-16T13:54:11Z\",\"token_transfer_array\":[{\"from_address\":\"0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2\",\"from_address_label\":\"[0x6465f3]\",\"to_address\":\"0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43\",\"to_address_label\":\"🤖 🏦 Coinbase [0xa9d1e0]\",\"token_address\":\"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\"token_symbol\":\"USDC\",\"token_amount\":319.068482,\"dated_price_usd\":0.998557330392647,\"dated_value_usd\":318.6081715983544,\"current_price_usd\":0.998557330392647,\"current_value_usd\":318.6081715983544,\"transfer_id\":\"token-transfer-0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec-282\"}],\"nft_transfer_array\":null}]}"
+    }
+  },
+  "verdict": {
+    "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+    "chain": "ethereum",
+    "decision": {
+      "route": "exchange-deposit",
+      "sub": "sweep-pattern",
+      "confidence": "high",
+      "entity": "Coinbase",
+      "headline": "This looks like a Coinbase deposit address (not labelled yet, but swept into Coinbase). Recoverable through Coinbase support.",
+      "evidence": [
+        {
+          "code": "SWEEP_TO_EXCHANGE",
+          "field": "transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label",
+          "value": "🤖 🏦 Coinbase [0xa9d1e0]",
+          "meaning": "Every transfer out of this address went to Coinbase's own wallet — it is swept like a deposit address."
+        },
+        {
+          "code": "OUTFLOW_CONCENTRATED",
+          "field": "profiler/address/counterparties → volume_out_usd",
+          "value": "100% of $319 to 0xa9d1…3e43",
+          "meaning": "All outflow goes to one counterparty."
+        }
+      ],
+      "rule": 4,
+      "warnings": [
+        "only one sweep seen so far — the address is new; the pattern is consistent but thin"
+      ]
+    },
+    "action": {
+      "kind": "ticket",
+      "title": "Support ticket for Coinbase",
+      "text": "Subject: Funds sent to a Coinbase deposit address by mistake — recovery request\n\nHello Coinbase support,\n\nOn [date] I sent [amount and token] from my wallet [your address] to 0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2 on ethereum (transaction [transaction hash]).\n\nThis was a mistake. 0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2 is a Coinbase customer deposit address — Nansen labels it \"🤖 🏦 Coinbase [0xa9d1e0]\" and its transfers are swept into Coinbase's own wallets. It may belong to another Coinbase customer, or to an old account of mine. Please locate the account that owns this deposit address and either credit the funds to it (if it is mine) or return them to [your address].\n\nEvidence (Nansen API):\n- transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label: 🤖 🏦 Coinbase [0xa9d1e0]\n- profiler/address/counterparties → volume_out_usd: 100% of $319 to 0xa9d1…3e43\n\nAccount email: [your Coinbase account email]\nThank you,\n[your name]"
+    },
+    "rows": [
+      {
+        "address": "0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43",
+        "label": "High Activity",
+        "entityLabel": "🤖 🏦 Coinbase [0xa9d1e0]",
+        "interactions": 2,
+        "inUsd": 0.10905254928466206,
+        "outUsd": 318.6081715983544
+      },
+      {
+        "address": "0x445f16314284b43dfa1fd3cd77b9dea4a1bebd97",
+        "label": "Token Millionaire",
+        "interactions": 1,
+        "inUsd": 318.6081715983544,
+        "outUsd": 0
+      }
+    ],
+    "provenance": [
+      {
+        "endpoint": "search/general",
+        "body": {
+          "search_query": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+          "result_type": "any",
+          "limit": 10
+        },
+        "credits": 0,
+        "ms": 491,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "tokens[].address",
+          "tokens[].chain",
+          "entities[].name"
+        ],
+        "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
+        "attempts": 1,
+        "totalMs": 491,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/related-wallets",
+        "body": {
+          "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+          "chain": "ethereum",
+          "pagination": {
+            "page": 1,
+            "per_page": 50
+          }
+        },
+        "credits": 1,
+        "ms": 731,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].address",
+          "data[].relation",
+          "data[].address_label"
+        ],
+        "responseHash": "f2df9f3c9cbd9bedf48a3df869b242dfa6bf647f8e8f52b2a91870a2432094df",
+        "attempts": 1,
+        "totalMs": 732,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/counterparties",
+        "body": {
+          "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+          "chain": "ethereum",
+          "date": {
+            "from": "2015-07-30",
+            "to": "2030-01-01"
+          },
+          "source_input": "Combined",
+          "group_by": "wallet",
+          "pagination": {
+            "page": 1,
+            "per_page": 20
+          },
+          "order_by": [
+            {
+              "field": "interaction_count",
+              "direction": "DESC"
+            }
+          ]
+        },
+        "credits": 5,
+        "ms": 1759,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].counterparty_address",
+          "data[].counterparty_address_label",
+          "data[].interaction_count",
+          "data[].volume_in_usd",
+          "data[].volume_out_usd"
+        ],
+        "responseHash": "249a582cb8598a786ca8243da44df951bfae00e29270fb7f289350d08486f27e",
+        "attempts": 1,
+        "totalMs": 1759,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/first-funder",
+        "body": {
+          "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+          "chain": "all"
+        },
+        "credits": 1,
+        "ms": 3126,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].first_funder_address",
+          "data[].first_funder_name",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "9bab477ad9b5e06f0665315ade5a6a7ba0a96b6484a45fbb960ae0fa2524a15f",
+        "attempts": 1,
+        "totalMs": 3127,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/transactions",
+        "body": {
+          "address": "0x6465f379a78ad605a9a3f6d3d2abda2ce1bde0e2",
+          "chain": "ethereum",
+          "date": {
+            "from": "2015-07-30",
+            "to": "2030-01-01"
+          },
+          "hide_spam_token": true,
+          "pagination": {
+            "page": 1,
+            "per_page": 100
+          },
+          "order_by": [
+            {
+              "field": "block_timestamp",
+              "direction": "DESC"
+            }
+          ]
+        },
+        "credits": 1,
+        "ms": 3653,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].method",
+          "data[].tokens_sent[].to_address",
+          "data[].tokens_received[].from_address",
+          "data[].block_timestamp",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "77bd2e4d15dd1d83cb2aa6cfa273af2e59449cbdaca762255f38809c748badcf",
+        "attempts": 1,
+        "totalMs": 3653,
+        "ok": true
+      },
+      {
+        "endpoint": "transaction-with-token-transfer-lookup",
+        "body": {
+          "chain": "ethereum",
+          "transaction_hash": "0x2f93d7f3693e1eafc267b7dffd267e78fc7283716d8766b00c62da6948029eec"
+        },
+        "credits": 1,
+        "ms": 703,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].to_address_label",
+          "data[].token_transfer_array[].to_address_label",
+          "data[].token_transfer_array[].from_address_label"
+        ],
+        "responseHash": "dfc97337bf65c4b5d21f29320c05fdd3c1d8c3f9eb256e2cc545a4cb477b7b70",
+        "attempts": 1,
+        "totalMs": 704,
+        "ok": true
+      },
+      {
+        "endpoint": "transaction-with-token-transfer-lookup",
+        "body": {
+          "chain": "ethereum",
+          "transaction_hash": "0xa63714eceec5d2b03890c2262c635e1f1834429bc0c733fc8efcff7dc56e63ec"
+        },
+        "credits": 1,
+        "ms": 723,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].to_address_label",
+          "data[].token_transfer_array[].to_address_label",
+          "data[].token_transfer_array[].from_address_label"
+        ],
+        "responseHash": "d9b7a9ada1ea5c24b6f6edb0c38a03e668df41c9c34457bb11c88ae0090f5d82",
+        "attempts": 1,
+        "totalMs": 723,
+        "ok": true
+      }
+    ],
+    "credits": 10,
+    "calls": 7,
+    "cachedCalls": 0,
+    "skipped": [],
+    "ms": 4868,
+    "asOf": "2026-09-16T14:18:27.343Z",
+    "hash": "65339ad6844da45e010c6065e1ac81321b30be96fb517686c1cc4c2547e614ec"
+  }
+}

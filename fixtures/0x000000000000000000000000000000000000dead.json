@@ -1,0 +1,281 @@
+{
+  "edge": "7 · burn address: Nansen HTTP 422 'Burn address not allowed'",
+  "address": "0x000000000000000000000000000000000000dead",
+  "options": {},
+  "now": 1789568482910,
+  "recordedAt": "2026-09-16T14:21:22.910Z",
+  "live": {
+    "calls": 3,
+    "credits": 2,
+    "ms": 1376
+  },
+  "responses": {
+    "7871b2f622639d1ad4f6c14c651e84d6": {
+      "storedAt": "2026-09-16T14:21:23.510Z",
+      "ttlMs": 1800000,
+      "endpoint": "search/general",
+      "body": {
+        "search_query": "0x000000000000000000000000000000000000dead",
+        "result_type": "any",
+        "limit": 10
+      },
+      "text": "{\"tokens\":[],\"entities\":[],\"total_results\":0}"
+    },
+    "6e0ed782a2b4707af90b33fbb99e6bcd": {
+      "storedAt": "2026-09-16T14:21:23.820Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/counterparties",
+      "body": {
+        "address": "0x000000000000000000000000000000000000dead",
+        "chain": "ethereum",
+        "date": {
+          "from": "2015-07-30",
+          "to": "2030-01-01"
+        },
+        "source_input": "Combined",
+        "group_by": "wallet",
+        "pagination": {
+          "page": 1,
+          "per_page": 20
+        },
+        "order_by": [
+          {
+            "field": "interaction_count",
+            "direction": "DESC"
+          }
+        ]
+      },
+      "text": "{\"error\":\"Burn address not allowed\",\"message\":\"Burn address '0x000000000000000000000000000000000000dead' is not supported for this endpoint. Please provide a valid non-zero address for the ethereum chain.\",\"code\":\"invalid_field_value\",\"status\":422,\"request_id\":\"cff6f9784801494bda935228a2826213\",\"doc_url\":\"https://docs.nansen.ai/getting-started/error-handling#invalid_field_value\",\"errors\":[{\"field\":\"body\",\"message\":\"Burn address '0x000000000000000000000000000000000000dead' is not supported for this endpoint. Please provide a valid non-zero address for the ethereum chain.\",\"code\":\"invalid_field_value\"}]}",
+      "status": 422
+    },
+    "7eb256e6c53de82f91bdb57a7a0c0e1f": {
+      "storedAt": "2026-09-16T14:21:23.830Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/transactions",
+      "body": {
+        "address": "0x000000000000000000000000000000000000dead",
+        "chain": "ethereum",
+        "date": {
+          "from": "2015-07-30",
+          "to": "2030-01-01"
+        },
+        "hide_spam_token": true,
+        "pagination": {
+          "page": 1,
+          "per_page": 100
+        },
+        "order_by": [
+          {
+            "field": "block_timestamp",
+            "direction": "DESC"
+          }
+        ]
+      },
+      "text": "{\"error\":\"Burn address not allowed\",\"message\":\"Burn address '0x000000000000000000000000000000000000dead' is not supported for this endpoint. Please provide a valid non-zero address for the ethereum chain.\",\"code\":\"invalid_field_value\",\"status\":422,\"request_id\":\"c7eac027574c99351f17654ff795246d\",\"doc_url\":\"https://docs.nansen.ai/getting-started/error-handling#invalid_field_value\",\"errors\":[{\"field\":\"body\",\"message\":\"Burn address '0x000000000000000000000000000000000000dead' is not supported for this endpoint. Please provide a valid non-zero address for the ethereum chain.\",\"code\":\"invalid_field_value\"}]}",
+      "status": 422
+    },
+    "3f01f605ba98a5e3742a0013c707f522": {
+      "storedAt": "2026-09-16T14:21:24.102Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/related-wallets",
+      "body": {
+        "address": "0x000000000000000000000000000000000000dead",
+        "chain": "ethereum",
+        "pagination": {
+          "page": 1,
+          "per_page": 50
+        }
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":50,\"is_last_page\":false},\"data\":[{\"address\":\"0x54243df971d406f0976caa05268af3777aac38a5\",\"address_label\":\"\",\"relation\":\"First Funder\",\"transaction_hash\":\"0x4e8caeb4504abe1811e03c0f231cfb6edd9c1b29c81ea0a4d88ce494e5a67ecd\",\"block_timestamp\":\"2016-09-15T11:11:32Z\",\"order\":1,\"chain\":\"ethereum\"},{\"address\":\"0xe7b65ed3194f2fff1d51b6d47660e6aa54670abc\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xce3dc456d85d5f9af41f726b1202dc59faa0b7d864a5a4de4802227589f36aac\",\"block_timestamp\":\"2020-12-31T17:23:59Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xff10b15e44d65a7c00441a7f3132d23d84d765eb\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x74dc511c690b155df301ea9fc27eec66b86da126781f987617c52c73fc3d82a5\",\"block_timestamp\":\"2021-09-29T21:39:27Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x238d58dd4e08a448fcdf946cfd1b20c850eb8ba5\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x807aaba05b978341c6f311e8428c8fd13abf6b8d0db98f793ebdf26a45e38849\",\"block_timestamp\":\"2021-09-30T19:15:18Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x256bfefdb0cf9acb14bde0ef307337cb2a71e1be\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xb25160b4f0323f06f22e524b8d9d1a95c56fb1491b22cc558933cc88b81dc0f2\",\"block_timestamp\":\"2021-10-06T19:13:46Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xf1be618011fb09a04e2c50aef7a4532a3722e545\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x77ab712a9f4ba1db215503f25a7f45d00dfe15f8ca11bdbb54cca0bcac1f5a22\",\"block_timestamp\":\"2021-10-07T14:18:54Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xe1676101f4f149e87cec042362be681dd8851e43\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x58548580d1e64ec09b7556300bac9f53367f1e50a20600114e90732e1d7d2c76\",\"block_timestamp\":\"2021-10-13T14:16:40Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xef6ece7fb2e9bb03f353dbcf2c95950516eb21f4\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x46b1f39f645e93bb71c35739b1261a53f23c18748e7d317d57fe5fe6d122575b\",\"block_timestamp\":\"2021-11-15T18:23:36Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x5a7c0ff8cdf14230d80371c633de8f34fee4bf9c\",\"address_label\":\"testingtrashdao.eth\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x58bd7deff9f5986bab40780c25a3bd03a835c51b21f8e0c149e200d04f938395\",\"block_timestamp\":\"2022-02-16T22:53:40Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xe3e24b2febabcc3c02d6b2170f59d3731845d89f\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x27a40054be88458bc8f73c2329759ba06b7e3f990c439b70aa543ef52a531e41\",\"block_timestamp\":\"2022-03-28T18:29:57Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x0eaab6e012b899df48d048f50e178882f0d673bf\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x8559936053f0639631e601a9523c5ea6f0a03714e81bf6ce30830e43885dd2c8\",\"block_timestamp\":\"2022-03-28T23:55:57Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xf306380a6b7b22036c4c0065aab1874fca0ff53e\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xed281cbb1d7969908bc08f3bed252b09a3a8a228c1428a170c34510da60c31ce\",\"block_timestamp\":\"2022-03-31T18:06:03Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x8dcb6ca0fff9efb42a589f54fc7e53e54ed376e6\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x6353545eac1a0938fac0e41ad56eb3720ccb63d55cfcef731b8f9c358ecdd5d1\",\"block_timestamp\":\"2022-04-15T18:03:23Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xfbcafaf27e33dfdf477af04347d3a2ba6ed749f0\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xebc9db839993fd71481c4dbacf375be35009bed11564c6e5e28a9fb8883d22e5\",\"block_timestamp\":\"2022-06-07T22:17:44Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x5b903603281beaf84af8ded0e83fde74e1348c18\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xbc319be6c34293b6d18cd278b6a32e0afb0ea17ff523e407221bea2eff78386d\",\"block_timestamp\":\"2022-08-19T17:05:01Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x160cf3c2ce2faf723a50a616d334a0ce92630398\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x59bd9106b91404709c1bb8a2dce6eb238c3dff15a0f6718d75a3bf6fc22d90e2\",\"block_timestamp\":\"2022-09-10T00:45:08Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x3b8d3402375b017e52cb5d53a3113a24d253ac57\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x2fef9dd2d872c475ed30141c67f74d86f44b88afe59837671319554530de4f54\",\"block_timestamp\":\"2022-09-15T23:46:11Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x20993c8946e31e8b15db22a2da98ff9dffc1c8fb\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x731016733e59d29fbb15d11f157b91d395608c504e4d915b2bab3922f1651cb9\",\"block_timestamp\":\"2022-09-15T23:46:47Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x473d2afd053621bb5f1358f5bb185c7a9280eba4\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x2c016b0525367eee810bc3bc410bf317c76b2f8f47ec5ec5bb4dd84fbf579f5e\",\"block_timestamp\":\"2022-09-19T19:52:35Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x83480298d4c378df652948755396ac60e6fdb7eb\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xee70bd161301d2fffd4132f8145f16f005e8700620d23a89b719191df45e6e7a\",\"block_timestamp\":\"2022-09-19T19:52:59Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x8a5e00e5c58517eb6795b071778cd1e6d179b8ef\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x692a00f75d6912062e714a117c7e4668d8a080bbf91f6f2f6e91e48dc66cce8c\",\"block_timestamp\":\"2022-09-19T23:19:59Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xe928f1444a3df2118fa0b9d1c8171b6539b2ff1c\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x703ed41021c8a809058a0712e2bc74a3cb876518186633f1b2aca87b7c809589\",\"block_timestamp\":\"2022-09-19T23:19:59Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x85d190bf83897f42b119bd78b42773cfa3802084\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xf2abd4add3c9aad9dbcc67c431c4be7e69eabec11d1a4a868dcbabf4d3ca526e\",\"block_timestamp\":\"2022-09-25T22:17:23Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x859ff92d51ea273e50dda09fb564b7ebe0711712\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xa02ae4f66a72d00e0ae74f777c3b798e9ff1c873169ef071ee177c6a8552ecdc\",\"block_timestamp\":\"2022-09-25T23:45:23Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x1de11f32b7c63ca2d18bc313ca87695bea107668\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xa1de3e34cbc71404f033735cc4fee075b1920428fb7450686a62076828a5f779\",\"block_timestamp\":\"2022-09-29T00:57:59Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x5542c4f5a7e8abf620a8a99748fd18c320edb870\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xc84a53dbafd1381e5529bb9552da37f4481ce7e9e0c40d731a4d3f346f5cc6b7\",\"block_timestamp\":\"2022-10-06T12:51:35Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x2236b4630066962e8d0239fad30965131a48d739\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x498f8d3f30df72b476fda59d04be6090a1b45173fb09952391e8ffca92d0b8d3\",\"block_timestamp\":\"2022-10-11T20:41:11Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x60edf59aba1ed5ff3e8167c8d834e2241f34b54a\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x0a7d65a186b1acd9869c0eed58293c1b1a39aa196ee494bca187c706c66f753c\",\"block_timestamp\":\"2022-10-21T08:54:47Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xeb81d902cf2f28081e0afda03e0c7880ab473681\",\"address_label\":\"guildofmfers.eth*\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x29b7d088af3dbc33ddecda5c3d1e977fa21cb6a3c0af613256c2fd69ca6bda45\",\"block_timestamp\":\"2022-11-22T00:40:35Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x0f7384cfd0f5acbb35dd39f6f97b766354185020\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x1d5f273af795ee043f88054ea55de681ec2a1d38a208dbe17aeff2e34183b533\",\"block_timestamp\":\"2023-03-19T00:25:23Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xde50fb295549eda934d222e7a24d5a8dd132444f\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x1b0630245b0be7a4f07324a69ada9993cd50ff302b7cd6963a9a23fb33d5bf78\",\"block_timestamp\":\"2023-04-19T11:36:23Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x9bc6bcf5b00b925748acfa4f5436d12edfba3332\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xcff1460e2bb1b10c145a65b2ae66bdcd89cb88763fd89d16e618ae00c1a1b688\",\"block_timestamp\":\"2023-06-20T22:24:47Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x6f519285c4d1ec62be1b182fdafc4dcc2dd01464\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x5a0679ad9cd9c321e082bf7d4e85f3a2acfdda5b882bb9fad8076ee06bc99cf3\",\"block_timestamp\":\"2023-06-20T22:32:59Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x2f68465732852e53ce623770f8ce652b3124c541\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x876a1c56971de194aaade7eb8a2fbf34472e3d14ce27b6a3e1a26aad43104791\",\"block_timestamp\":\"2023-06-20T22:50:59Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x028495e8f8abdf8d5e6161a910c380ec9c5d4321\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x40fb15b9501d5bda894c8f9e48fffbd9b6e6bbe83fdc0b663821d5234086e550\",\"block_timestamp\":\"2023-06-20T23:06:23Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x6c01b963c1f206d76b55cc4ac6bcbb5b4105835b\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x84c6414d14737481f6dbc676ee13222c114ae61a995f9173e7d47f6f4c3dc5c1\",\"block_timestamp\":\"2023-06-20T23:18:47Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x42d137bac08cfc937a0bc185e61e0115693e3977\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x78fa30c8f96a64c8ebbea69b7d0068e723295a543ae958b688bfa1579979fd59\",\"block_timestamp\":\"2023-06-21T02:17:59Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x3f6de8fc680962179a0336071d0b8ba8073b8627\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xe0c9dc6dd894ff881d3a9a528ca424cf2ae5faba9ffe8c45fcb05b6bdd552fec\",\"block_timestamp\":\"2023-06-21T02:19:59Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xb8e4a219d829a29e7fa5a361640c76c0c9614a4d\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x8d79ac65c808204960096a611cec49720a8626584e8fece3af914e678cefd0ea\",\"block_timestamp\":\"2023-06-21T02:37:11Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x1d529403a00d880f3206e9532debfb8206f34a50\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x5701d160932a170863aad6de9d0950fb80d70b78d840a556a45470097fa9e488\",\"block_timestamp\":\"2023-06-21T02:40:11Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x62c62a8f5191d98176530873f991de5cd35f9ed1\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x62e73c7ff70fda84e14c6eff5ff755d9aabdcbeaab36bc93c1085f6f430c5e9d\",\"block_timestamp\":\"2023-07-07T13:32:59Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xaf044f3fc3a7c04660b432c1418d81c133aa174a\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x77db3f464171230f496564e479f265b60c273a3b787f33ba35d433917cec585a\",\"block_timestamp\":\"2023-07-07T13:42:47Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x4eb19abffee6505b1191955020a2d1430fbdad57\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xc0eb184813165d9922b9180de617c819bd0c0b26f93a061a8bc4201b41c29cbf\",\"block_timestamp\":\"2023-07-07T15:15:11Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xfb6e25d596ef6cead141c78f82082856b9d6c4a7\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xafeccd98c27a5856e1a4804ed43a0a09de4c8d31af82f3522ae01d5fa231a793\",\"block_timestamp\":\"2023-08-05T04:49:23Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xb81fdc24908c0dd17bbe1f62a64decc9752783cd\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x36f4992666f20d60c7d4ef28cff68f8245651b7460af4a096b95ae02c2de093d\",\"block_timestamp\":\"2024-05-10T04:19:35Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x36fdcc6e509540f00c4c3584e152af354123afa3\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x54467176dc63e92f64eeab9424e4c935da73e004bb05385c0c4486de577c79b8\",\"block_timestamp\":\"2024-06-07T21:55:59Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x5cb6cadbcc5213e8b9775432c710c54bb329050f\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x880ec5deb486107d2f16fb204e500226d7c96c5943d5faa044ff15d23633bf46\",\"block_timestamp\":\"2024-11-25T02:09:11Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x1019922d987e3f5c889979c40ec7348ccc90e0f8\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0xa684add8e88130cfe8bece096c064ca214f8776f256d28080a45de6608022e47\",\"block_timestamp\":\"2024-12-16T16:31:47Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0xfcba063a7c1935f349e376d4d1d3bd6dbce5f983\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x12c2eac9f29106af18291568a329368a192fcae0f37f3de0c7cae0fd1229517c\",\"block_timestamp\":\"2024-12-17T23:04:47Z\",\"order\":3,\"chain\":\"ethereum\"},{\"address\":\"0x7168713d0a87099002a7e30e39946066b4926796\",\"address_label\":\"Proxy\",\"relation\":\"Multisig Signer of\",\"transaction_hash\":\"0x8fb046a0ed7c5786d320405f66ca4e1244a96861924d1432b68177a6752eafc8\",\"block_timestamp\":\"2024-12-18T04:43:35Z\",\"order\":3,\"chain\":\"ethereum\"}]}"
+    },
+    "d4a319b1af530114867e78ab5fbbcdc6": {
+      "storedAt": "2026-09-16T14:21:24.283Z",
+      "ttlMs": 1800000,
+      "endpoint": "profiler/address/first-funder",
+      "body": {
+        "address": "0x000000000000000000000000000000000000dead",
+        "chain": "all"
+      },
+      "text": "{\"pagination\":{\"page\":1,\"per_page\":10,\"is_last_page\":true},\"data\":[{\"wallet_address\":\"0x000000000000000000000000000000000000dead\",\"first_funder_address\":\"0x54243df971d406f0976caa05268af3777aac38a5\",\"first_funder_name\":\"\",\"transaction_hash\":\"0x4e8caeb4504abe1811e03c0f231cfb6edd9c1b29c81ea0a4d88ce494e5a67ecd\",\"block_timestamp\":\"2016-09-15T11:11:32Z\",\"chain\":\"ethereum\"}]}"
+    }
+  },
+  "verdict": {
+    "address": "0x000000000000000000000000000000000000dead",
+    "chain": "ethereum",
+    "decision": {
+      "route": "contract-or-burn",
+      "sub": "burn",
+      "confidence": "high",
+      "headline": "This is a burn address. Funds sent here are gone.",
+      "evidence": [
+        {
+          "code": "BURN_422",
+          "field": "profiler/address/transactions → HTTP 422",
+          "value": "Burn address not allowed",
+          "meaning": "Nansen classifies this as a burn address: nothing sent here can be moved by anyone."
+        }
+      ],
+      "rule": 1,
+      "warnings": []
+    },
+    "action": {
+      "kind": "note",
+      "title": "Unrecoverable — keep this for your records",
+      "text": "On [date] [amount and token] was sent from [your address] to 0x000000000000000000000000000000000000dead on ethereum (tx [transaction hash]).\n\n0x000000000000000000000000000000000000dead is a burn address. Nothing sent to a burn address can be moved by anyone, including its creator.\n\nThere is no support desk for this address. Anyone who contacts you offering to recover it for a fee is a scam — the funds cannot be moved. Keep this note and the transaction hash for your loss records.\n\nWhat Nansen sees:\n- profiler/address/transactions → HTTP 422: Burn address not allowed"
+    },
+    "rows": [],
+    "provenance": [
+      {
+        "endpoint": "search/general",
+        "body": {
+          "search_query": "0x000000000000000000000000000000000000dead",
+          "result_type": "any",
+          "limit": 10
+        },
+        "credits": 0,
+        "ms": 600,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "tokens[].address",
+          "tokens[].chain",
+          "entities[].name"
+        ],
+        "responseHash": "7b618709926104ef1e68ea865edbf638e1e0ab6511ad44e6943ad98f4a73c1ec",
+        "attempts": 1,
+        "totalMs": 600,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/counterparties",
+        "body": {
+          "address": "0x000000000000000000000000000000000000dead",
+          "chain": "ethereum",
+          "date": {
+            "from": "2015-07-30",
+            "to": "2030-01-01"
+          },
+          "source_input": "Combined",
+          "group_by": "wallet",
+          "pagination": {
+            "page": 1,
+            "per_page": 20
+          },
+          "order_by": [
+            {
+              "field": "interaction_count",
+              "direction": "DESC"
+            }
+          ]
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": false,
+        "status": 422,
+        "fieldsUsed": [
+          "data[].counterparty_address",
+          "data[].counterparty_address_label",
+          "data[].interaction_count",
+          "data[].volume_in_usd",
+          "data[].volume_out_usd"
+        ],
+        "responseHash": "",
+        "attempts": 1,
+        "totalMs": 307,
+        "ok": false,
+        "error": "Nansen profiler/address/counterparties → HTTP 422: {\"error\":\"Burn address not allowed\",\"message\":\"Burn address '0x000000"
+      },
+      {
+        "endpoint": "profiler/address/transactions",
+        "body": {
+          "address": "0x000000000000000000000000000000000000dead",
+          "chain": "ethereum",
+          "date": {
+            "from": "2015-07-30",
+            "to": "2030-01-01"
+          },
+          "hide_spam_token": true,
+          "pagination": {
+            "page": 1,
+            "per_page": 100
+          },
+          "order_by": [
+            {
+              "field": "block_timestamp",
+              "direction": "DESC"
+            }
+          ]
+        },
+        "credits": 0,
+        "ms": 0,
+        "cached": false,
+        "status": 422,
+        "fieldsUsed": [
+          "data[].method",
+          "data[].tokens_sent[].to_address",
+          "data[].tokens_received[].from_address",
+          "data[].block_timestamp",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "",
+        "attempts": 1,
+        "totalMs": 317,
+        "ok": false,
+        "error": "Nansen profiler/address/transactions → HTTP 422: {\"error\":\"Burn address not allowed\",\"message\":\"Burn address '0x00000000"
+      },
+      {
+        "endpoint": "profiler/address/related-wallets",
+        "body": {
+          "address": "0x000000000000000000000000000000000000dead",
+          "chain": "ethereum",
+          "pagination": {
+            "page": 1,
+            "per_page": 50
+          }
+        },
+        "credits": 1,
+        "ms": 587,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].address",
+          "data[].relation",
+          "data[].address_label"
+        ],
+        "responseHash": "f344c407e247e3ef395fa2d25c1837a46fbdcee8bebc1692e97469e9adb6f676",
+        "attempts": 1,
+        "totalMs": 589,
+        "ok": true
+      },
+      {
+        "endpoint": "profiler/address/first-funder",
+        "body": {
+          "address": "0x000000000000000000000000000000000000dead",
+          "chain": "all"
+        },
+        "credits": 1,
+        "ms": 767,
+        "cached": false,
+        "status": 200,
+        "fieldsUsed": [
+          "data[].first_funder_address",
+          "data[].first_funder_name",
+          "data[].transaction_hash"
+        ],
+        "responseHash": "b9b02100386477924b555514f98bb7d099c7e1efc023fcad4a35f2c181015009",
+        "attempts": 1,
+        "totalMs": 770,
+        "ok": true
+      }
+    ],
+    "credits": 2,
+    "calls": 5,
+    "cachedCalls": 0,
+    "skipped": [
+      "transaction-with-token-transfer-lookup (burn address)"
+    ],
+    "ms": 1376,
+    "asOf": "2026-09-16T14:21:22.910Z",
+    "hash": "1a31c96f33f22bd35fe6033f75edc3f374a4d2d4f43a80c99f9d5e8a6fbadd45"
+  }
+}
