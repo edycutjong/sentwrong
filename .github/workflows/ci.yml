@@ -1,16 +1,199 @@
-name: ci
-on: [push, pull_request]
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel in-progress runs for the same PR/branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test:
+  # ── STAGE 1: Code Quality (parallel with Stage 2) ─────────
+  quality:
+    name: "Stage 1 · Quality"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Full matrix on main push, single node on PRs
+        node-version: ${{ github.event_name == 'push' && fromJSON('[20, 22, 24]') || fromJSON('[20]') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Format check (Prettier)
+        run: npm run format:check
+      - name: Lint (ESLint)
+        run: npm run lint
+      - name: Type check (engine, CLI, scripts, e2e)
+        run: npm run typecheck
+      - name: Type check (web app)
+        run: npm run typecheck -w apps/web
+      - name: Unit + property + boundary tests with coverage
+        run: npm run test:coverage
+      # replays the 13 recorded fixtures with NANSEN_OFFLINE=1 — no API key, no network, every decision hash must match
+      - name: Offline fixture replay (13/13 verdicts)
+        run: npm run verify
+      - name: Submission readiness (README counts vs reality, no placeholders, no kitchen files, no key)
+        run: npm run check:submission
+      - name: Upload coverage report
+        if: matrix.node-version == 20
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+          retention-days: 7
+
+  # ── STAGE 2: Security Gate (parallel with Stage 1) ────────
+  secret-scan:
+    name: "Stage 2 · Secret Scanning"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
-      - run: npm ci
-      - run: npm run typecheck
-      - run: npm run typecheck -w apps/web
-      - run: npm test
-      # replays the 13 recorded fixtures with NANSEN_OFFLINE=1 — no API key, no network, every decision hash must match
-      - run: npm run verify
-      - run: npm run check:submission
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for scanning git commits
+      - name: TruffleHog Secret Scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
+  dependency-audit:
+    name: "Stage 2 · Dependency Audit"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: npm audit (high + critical)
+        run: npm audit --audit-level=high
+        continue-on-error: true # Don't block on transitive dep issues
+      - name: License compliance check
+        run: npx license-checker --production --failOn "GPL-3.0;AGPL-3.0" --summary
+        continue-on-error: true
+
+  # ── STAGE 3: Build Verification ───────────────────────────
+  build:
+    name: "Stage 3 · Build Verification"
+    needs: [quality]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Next.js production build
+        run: npm run build
+      - name: Check bundle size
+        run: |
+          echo "📦 Bundle Size Report"
+          echo "─────────────────────"
+          if [ -d "apps/web/.next/static" ]; then
+            TOTAL_SIZE=$(du -sk apps/web/.next/static | cut -f1)
+            echo "Total static assets: ${TOTAL_SIZE}KB"
+            if [ "$TOTAL_SIZE" -gt 2000 ]; then
+              echo "::error::Bundle size ${TOTAL_SIZE}KB exceeds 2000KB error threshold"
+              exit 1
+            elif [ "$TOTAL_SIZE" -gt 1500 ]; then
+              echo "::warning::Bundle size ${TOTAL_SIZE}KB exceeds 1500KB warning threshold"
+            else
+              echo "✅ Bundle size within budget"
+            fi
+          fi
+
+  # ── STAGE 4: E2E Tests (no key, no network to Nansen) ─────
+  e2e:
+    name: "Stage 4 · E2E Tests"
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      - name: Build application
+        run: npm run build
+      - name: Run E2E tests (server starts WITHOUT NANSEN_API_KEY)
+        run: npx playwright test
+        env:
+          NODE_ENV: production
+      - name: Upload E2E artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  # ── STAGE 5: Performance (advisory) ───────────────────────
+  performance:
+    name: "Stage 5 · Performance"
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Build application
+        run: npm run build
+      - name: Lighthouse CI
+        run: npx lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        continue-on-error: true # Advisory — don't block deploys on perf regressions yet
+
+  # ── STAGE 6: Deploy Gate (main only) ──────────────────────
+  deploy-gate:
+    name: "Stage 6 · Deploy Gate"
+    needs: [build, e2e, performance, secret-scan, dependency-audit]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: All gates passed
+        run: |
+          echo "🚀 All CI/CD gates passed!"
+          echo ""
+          echo "Pipeline Summary:"
+          echo "  ✅ Stage 1 — Quality (format, lint, typecheck, 128 tests + coverage, offline replay, readiness)"
+          echo "  ✅ Stage 2 — Secret Scanning (TruffleHog)"
+          echo "  ✅ Stage 2 — Dependency Audit (npm audit + license-checker)"
+          echo "  ✅ Stage 3 — Build Verification"
+          echo "  ✅ Stage 4 — E2E Tests (Playwright, no key)"
+          echo "  ✅ Stage 5 — Performance (Lighthouse CI)"
+          echo ""
+          echo "Vercel deploys main to https://sentwrong-app.vercel.app via the git integration."

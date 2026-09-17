@@ -9,3 +9,15 @@ coverage/
 .cache/
 *.tsbuildinfo
 .vercel/
+
+# Environment variables (the key lives in ~/.config/nansen/, never in the tree)
+!.env.example
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Lighthouse
+.lighthouseci/
