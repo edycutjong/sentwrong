@@ -54,7 +54,7 @@ jobs:
         run: |
           set -euo pipefail
           V="${{ steps.ver.outputs.next }}"; V="${V#v}"
-          node scripts/bump-version.cjs "$V"
+          node scripts/bump-version.mjs "$V"
           npm ci --ignore-scripts --no-audit --no-fund >/dev/null   # proves the lockfile still satisfies npm ci
           git diff --stat -- package.json package-lock.json 'apps/*/package.json' 'packages/*/package.json'
 
