@@ -7,7 +7,7 @@ const HERO_HEADLINE = "This is a Binance deposit address. Recoverable through Bi
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "https://sentwrong.edycu.dev"),
   title: "Sent Wrong — where your transfer went, decided by Nansen labels",
-  description: "Sent crypto to the wrong address? Paste it. Nansen labels say if it is an exchange deposit, your wallet, a stranger or a contract, then draft the ticket.",
+  description: "Sent crypto to the wrong address? Paste it. Nansen labels decide: exchange deposit, your own wallet, a stranger or a contract. Then the ticket is drafted.",
   openGraph: {
     type: "website",
     url: "/",
