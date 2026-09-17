@@ -83,7 +83,7 @@ flowchart LR
 | Cache / replay | read-through cache keyed by sha256(endpoint + body), 24 h TTL, `NANSEN_OFFLINE=1` replay of recorded fixtures | `packages/core/src/cache.ts`, `fixtures/` |
 | CLI | `tsx` — `sentwrong <address> [--from] [--chain] [--json] [--explain] [--deep] [--no-cache]` | `packages/cli` |
 | Web | Next.js 15 — live-streaming call rows, verdict card, copy button, share page, route-coloured OG card; key stays server-side | `apps/web` |
-| Tests / CI | vitest (196 tests: unit, 40,000-case property, key-boundary), Playwright (5 suites, no key), offline fixture replay, 6-stage GitHub Actions pipeline + CodeQL + gitleaks + Dependabot | `.github/workflows/` |
+| Tests / CI | vitest (196 tests: unit, 40,000-case property, key-boundary), Playwright (5 suites, no key), offline fixture replay, 7-stage GitHub Actions pipeline (gates → Vercel production deploy) + CodeQL + gitleaks + Dependabot | `.github/workflows/` |
 | Hosting | Vercel — production domain tracks `main` | https://sentwrong.edycu.dev |
 
 ## 🏆 Nansen Integration
@@ -203,7 +203,7 @@ Timed with `date` around each step on a fresh clone into an empty directory (mac
 
 ## 🧪 Testing & CI
 
-**6-stage pipeline** (`.github/workflows/ci.yml`): Quality → Security → Build → E2E → Performance → Deploy Gate, with concurrency control and a Node 20/22/24 matrix on `main`.
+**7-stage pipeline** (`.github/workflows/ci.yml`): Quality → Security → Build → E2E → Performance → Deploy Gate → Production Deploy (prebuilt `vercel deploy` to sentwrong.edycu.dev, `main` only, after every gate; Vercel's git auto-deploy is off), with concurrency control and a Node 20/22/24 matrix on `main`.
 
 ```bash
 # ── Code quality ────────────────────────────
@@ -244,7 +244,7 @@ npm run audit             # npm audit --audit-level=high
 - **40,000-case property verification** (`packages/core/test/classify.property.test.ts`): fast-check generates whole Nansen response sets — real label strings, 422 refusals, timeouts, spoof tokens, deployer relations, senders — and `classify()` must give exactly one enumerated route with at least one evidence line every time, never turn a failed `transactions` lookup into a stranger verdict, keep the decision hash invariant to USD prices, and stay pure.
 - **Key-boundary tests** (`packages/core/test/boundary.test.ts`, `e2e/key-boundary.spec.ts`): the server key never appears in the verdict JSON, the streamed provenance, an error, the fixtures, the page HTML, the JS bundles or the OG route; malformed input is rejected before any network call. This is the concrete claim in [SECURITY.md](.github/SECURITY.md).
 - **E2E** (`e2e/`, Playwright): the built app runs **without** a key — the home page, `/judge` (200, no cookies, claim present), the validation path (400 before any lookup), the honest "no key" banner instead of a fabricated verdict, and 375/768/1440 px layouts.
-- CI (`.github/workflows/`): the 6-stage pipeline above, CodeQL, gitleaks (full history), Dependabot, and `release.yml` — no key needed anywhere.
+- CI (`.github/workflows/`): the 7-stage pipeline above, CodeQL, gitleaks (full history), Dependabot, and `release.yml` — no Nansen key needed anywhere; the one secret is `VERCEL_TOKEN` for the deploy stage.
 
 ## 📁 Project Structure
 
@@ -257,7 +257,7 @@ e2e/                Playwright suites (run against the built app with no key) ·
 scripts             spike.ts · seed.ts · verify.ts · bench.ts · check_submission_readiness.ts
 fixtures/           13 recorded live runs (real Nansen responses, byte-for-byte, no key material)
 docs/               SCORING.md (the decision table) · DX-REPORT.md (Nansen API friction log) · screenshots/
-.github/            ci.yml (6 stages) · codeql.yml · gitleaks.yml · release.yml · dependabot.yml · community files
+.github/            ci.yml (7 stages) · codeql.yml · gitleaks.yml · release.yml · dependabot.yml · community files
 ARCHITECTURE.md · DEMO.md · JUDGE.md (mirror of /judge) · LICENSE
 ```
 
