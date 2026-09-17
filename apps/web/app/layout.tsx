@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="wrap">
           <header className="top">
             <h1>Sent Wrong <span>· recovery-route triage on Nansen</span></h1>
-            <nav><a href="/">Check</a><a href="https://github.com/edycutjong/sentwrong" target="_blank" rel="noreferrer">GitHub</a></nav>
+            <nav><a href="/">Check</a><a href="/judge">For the judge</a><a href="https://github.com/edycutjong/sentwrong" target="_blank" rel="noreferrer">GitHub</a></nav>
           </header>
           {children}
           <footer className="foot">
