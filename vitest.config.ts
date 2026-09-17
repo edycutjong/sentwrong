@@ -7,5 +7,11 @@ export default defineConfig({
     environment: "node",
     coverage: { provider: "v8", include: ["packages/core/src/**", "apps/web/lib/**"], reporter: ["text", "lcov"], reportsDirectory: "coverage" },
   },
-  resolve: { alias: { "@sentwrong/core": new URL("./packages/core/src/index.ts", import.meta.url).pathname } },
+  resolve: {
+    alias: {
+      "@sentwrong/core": new URL("./packages/core/src/index.ts", import.meta.url).pathname,
+      // guard.test.ts drives the web route handler directly (apps/web uses `@/` for its own root)
+      "@": new URL("./apps/web", import.meta.url).pathname,
+    },
+  },
 });

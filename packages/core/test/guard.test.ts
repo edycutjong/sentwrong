@@ -1,0 +1,107 @@
+/**
+ * Spend guard on POST /api/verdict (apps/web/lib/guard.ts): the server key spends real credits — and `deep` adds the
+ * 100-credit labels call from a button — so past the per-IP rate the route answers 429 + Retry-After, and past the
+ * day's credit ceiling an honest 503, both before `verdictFor` runs. `@/lib/engine` is mocked so no client or
+ * network call is ever constructed; `parseInput` stays the real one.
+ */
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { POST } from "@/app/api/verdict/route";
+import { ipAllowed, creditsLeft, recordSpend, budgetExhausted, resetGuard, clientIp, IP_PER_MIN, DAILY_CREDITS, MAX_REQUEST_CREDITS, BUDGET_MESSAGE } from "@/lib/guard";
+
+const { verdictForMock } = vi.hoisted(() => ({ verdictForMock: vi.fn() }));
+vi.mock("@/lib/engine", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/engine")>();
+  return { ...actual, verdictFor: verdictForMock };
+});
+
+const BODY = { address: "0x" + "a".repeat(40), chain: "ethereum" };
+const post = (ip = "203.0.113.7") =>
+  POST(new Request("http://localhost/api/verdict", { method: "POST", headers: { "content-type": "application/json", "x-forwarded-for": ip }, body: JSON.stringify(BODY) }) as never);
+const lastLine = async (res: Response) => JSON.parse((await res.text()).trim().split("\n").at(-1)!);
+
+describe("guard counters", () => {
+  beforeEach(resetGuard);
+
+  it("clientIp prefers the first x-forwarded-for hop, then x-real-ip, then 'unknown'", () => {
+    expect(clientIp(new Headers({ "x-forwarded-for": "1.1.1.1, 10.0.0.1" }))).toBe("1.1.1.1");
+    expect(clientIp(new Headers({ "x-real-ip": "2.2.2.2" }))).toBe("2.2.2.2");
+    expect(clientIp(new Headers())).toBe("unknown");
+  });
+
+  it(`an address gets ${IP_PER_MIN} requests a minute, then a Retry-After, then the window slides`, () => {
+    const t0 = 1_000_000;
+    for (let i = 0; i < IP_PER_MIN; i++) expect(ipAllowed("a", t0 + i)).toEqual({ ok: true });
+    const blocked = ipAllowed("a", t0 + 10_000);
+    expect(blocked.ok).toBe(false);
+    if (!blocked.ok) expect(blocked.retryAfter).toBe(50);
+    expect(ipAllowed("b", t0 + 10_000)).toEqual({ ok: true });
+    expect(ipAllowed("a", t0 + 60_001)).toEqual({ ok: true });
+  });
+
+  it("the table is bounded: 5,000 distinct addresses clear it rather than growing forever", () => {
+    for (let i = 0; i < IP_PER_MIN; i++) ipAllowed("late");
+    expect(ipAllowed("late").ok).toBe(false);
+    for (let i = 0; i < 5_000; i++) ipAllowed(`ip-${i}`);
+    expect(ipAllowed("late").ok).toBe(true);
+  });
+
+  it("the daily ceiling counts recorded spend, never refunds, keeps room for one deep request, and rolls over at UTC midnight", () => {
+    const day1 = Date.parse("2026-09-20T12:00:00Z");
+    expect(MAX_REQUEST_CREDITS).toBeGreaterThan(100); // a deep verdict is 100 credits of labels + the base calls
+    expect(creditsLeft(day1)).toBe(DAILY_CREDITS);
+    recordSpend(DAILY_CREDITS - MAX_REQUEST_CREDITS, day1);
+    expect(budgetExhausted(day1)).toBe(false);
+    recordSpend(1, day1);
+    expect(budgetExhausted(day1)).toBe(true);
+    recordSpend(-50, day1);
+    expect(budgetExhausted(day1)).toBe(true);
+    expect(budgetExhausted(Date.parse("2026-09-21T00:00:01Z"))).toBe(false);
+  });
+});
+
+describe("POST /api/verdict under the guard", () => {
+  let realKey: string | undefined;
+  beforeEach(() => {
+    resetGuard();
+    realKey = process.env.NANSEN_API_KEY;
+    process.env.NANSEN_API_KEY = "nsn_guard_test_key_0000000000000000000000";
+    verdictForMock.mockReset();
+    verdictForMock.mockResolvedValue({ credits: 9, calls: [] });
+  });
+  afterEach(() => {
+    if (realKey == null) delete process.env.NANSEN_API_KEY;
+    else process.env.NANSEN_API_KEY = realKey;
+  });
+
+  it("a successful verdict streams as before and records its credits against the day", async () => {
+    const res = await post();
+    expect(res.status).toBe(200);
+    expect((await lastLine(res)).type).toBe("verdict");
+    expect(creditsLeft()).toBe(DAILY_CREDITS - 9);
+  });
+
+  it("malformed input is still a 400 before the guard counts anything", async () => {
+    const res = await POST(new Request("http://localhost/api/verdict", { method: "POST", headers: { "x-forwarded-for": "203.0.113.9" }, body: JSON.stringify({ address: "nope" }) }) as never);
+    expect(res.status).toBe(400);
+    expect(ipAllowed("203.0.113.9").ok).toBe(true);
+  });
+
+  it("past the per-IP rate: 429 + Retry-After, verdictFor never runs; another address still gets through", async () => {
+    for (let i = 0; i < IP_PER_MIN; i++) ipAllowed("203.0.113.7");
+    const res = await post();
+    expect(res.status).toBe(429);
+    expect(Number(res.headers.get("retry-after"))).toBeGreaterThan(0);
+    expect((await res.json()).message).toMatch(/try again/);
+    expect(verdictForMock).not.toHaveBeenCalled();
+    expect((await post("203.0.113.8")).status).toBe(200);
+  });
+
+  it("past the daily ceiling: an honest 503 naming the reset time, verdictFor never runs", async () => {
+    recordSpend(DAILY_CREDITS);
+    const res = await post();
+    expect(res.status).toBe(503);
+    expect(res.headers.get("retry-after")).toBe("3600");
+    expect((await res.json()).message).toBe(BUDGET_MESSAGE);
+    expect(verdictForMock).not.toHaveBeenCalled();
+  });
+});

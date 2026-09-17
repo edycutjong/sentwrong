@@ -23,6 +23,11 @@ browser or a reader sees**:
 Two scanners back this up: `gitleaks` over the full git history and TruffleHog (verified secrets only) in CI, and the
 readiness check greps the tree for key-shaped strings on every run.
 
+**The key cannot be drained through the public route** (`apps/web/lib/guard.ts`, `packages/core/test/guard.test.ts`):
+6 requests per minute per address (**429** + `Retry-After`) and 3,000 live credits per UTC day counted from each
+verdict's own total, after which the route answers an honest **503** before any Nansen call. Counters are per
+instance — a ceiling, not accounting. Tunable with `GUARD_IP_PER_MIN` / `GUARD_DAILY_CREDITS`.
+
 ## Reporting a Vulnerability
 Please **do not** open a public issue for security vulnerabilities. Instead,
 report them privately:
