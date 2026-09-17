@@ -7,17 +7,21 @@ const HERO = "0xe460774c849089ee3edf0fb06da14c066caabbef";
  * reaches the server and comes back with the honest "no key" error — never a fabricated verdict, never a crash.
  */
 test.describe("verdict flow (no key)", () => {
-  test("the submit button stays disabled until the address is a well-formed EVM address", async ({ page }) => {
+  test("submitting a malformed address shows what to paste instead of a disabled button — no network call", async ({ page }) => {
     await page.goto("/");
     const input = page.getByLabel("The address you sent to");
     const go = page.getByRole("button", { name: "Check" });
-    await expect(go).toBeDisabled();
-    for (const bad of ["0x123", "vitalik.eth", "TN3W4H6rK2ce4vX9YnFQHwKENnHjoxb3m9", HERO.slice(0, 41)]) {
-      await input.fill(bad);
-      await expect(go).toBeDisabled();
-    }
-    await input.fill(HERO);
     await expect(go).toBeEnabled();
+    let requests = 0;
+    page.on("request", (r) => {
+      if (r.url().includes("/api/verdict")) requests++;
+    });
+    for (const bad of ["", "0x123", "vitalik.eth", "TN3W4H6rK2ce4vX9YnFQHwKENnHjoxb3m9", HERO.slice(0, 41)]) {
+      await input.fill(bad);
+      await go.click();
+      await expect(page.locator(".banner.err")).toContainText(/paste the 0x… address/);
+    }
+    expect(requests).toBe(0);
   });
 
   test("POST /api/verdict rejects a malformed address with 400 and an actionable message, before any lookup", async ({ request }) => {

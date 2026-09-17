@@ -143,7 +143,12 @@ export function Sentwrong({
   const run = useCallback(
     (a: string, s: string | undefined, ch: string, deep = false) => {
       const addr = a.trim();
-      if (!EVM.test(addr)) return;
+      if (!EVM.test(addr)) {
+        // family rule: the primary button is never disabled on an empty form — say what to paste instead
+        setError(addr ? `${addr.slice(0, 10)}… is not an EVM address — paste the 0x… address you sent to (42 characters)` : "paste the 0x… address you sent to");
+        setPhase("error");
+        return;
+      }
       const from = s?.trim() || undefined;
       setError(undefined);
       setCalls([]);
@@ -234,7 +239,7 @@ export function Sentwrong({
               </option>
             ))}
           </select>
-          <button type="submit" disabled={busy || !EVM.test(address.trim())}>
+          <button type="submit" disabled={busy}>
             Check
           </button>
         </form>
