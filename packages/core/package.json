@@ -1,6 +1,6 @@
 {
   "name": "@sentwrong/core",
-  "version": "1.1.0",
+  "version": "1.6.4",
   "description": "Classifies a recipient address into one of four recovery routes using Nansen profiler data.",
   "license": "MIT",
   "type": "module",
