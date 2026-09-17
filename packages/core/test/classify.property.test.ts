@@ -16,6 +16,8 @@ import type { CounterpartiesResponse, SearchResponse, TxResponse, RelatedWallets
 import { ok, fail, burn422, txs, txRow, cps, related, funder, noFunder, lookup, transfer, search, R, HOT, GAS, USER, SENDER } from "./helpers.js";
 
 export const NUM_RUNS = 10_000;
+/** 10,000 runs take ~2 s on a laptop and 5–8 s on a CI runner under coverage — well past vitest's 5 s default */
+const TIMEOUT_MS = 120_000;
 const NOW = Date.parse("2026-09-16T14:00:00Z");
 
 const ROUTES: Route[] = ["exchange-deposit", "your-own-wallet", "active-stranger", "contract-or-burn", "retry"];
@@ -148,84 +150,100 @@ const ctx = (l: Lookups) => ({ address: l.address, sender: l.sender, chain: l.ch
 
 // ── properties ─────────────────────────────────────────────────────────────────────────────────────────────────────
 describe(`classify() — property-based, ${NUM_RUNS.toLocaleString("en-US")} generated Lookups per property`, () => {
-  it("P1: every input gets exactly one of the five enumerated routes, a sub-state that belongs to that route, and at least one evidence line naming a Nansen field", () => {
-    const reached = new Map<Route, number>();
-    fc.assert(
-      fc.property(arbLookups, (l) => {
-        const d = classify(l, NOW);
-        reached.set(d.route, (reached.get(d.route) ?? 0) + 1);
-        expect(ROUTES.filter((r) => r === d.route)).toHaveLength(1);
-        expect(SUBS[d.route]).toContain(d.sub);
-        expect(["high", "medium", "low"]).toContain(d.confidence);
-        expect(d.evidence.length).toBeGreaterThan(0);
-        for (const e of d.evidence) expect(e.field).toMatch(/search\/general|profiler\/address\/|transaction-with-token-transfer-lookup/);
-        expect(d.rule).toBeGreaterThanOrEqual(0);
-        expect(d.rule).toBeLessThanOrEqual(9);
-        // and the action text always exists — the copy button is never empty
-        expect(actionFor(d, ctx(l)).text.length).toBeGreaterThan(20);
-      }),
-      { numRuns: NUM_RUNS },
-    );
-    // the generator covers the whole decision space, not one corner of it (measured: all 14 route/sub-state pairs in 10,000 runs)
-    for (const r of ROUTES) expect(reached.get(r) ?? 0, `route ${r} never reached`).toBeGreaterThan(50);
-  });
+  it(
+    "P1: every input gets exactly one of the five enumerated routes, a sub-state that belongs to that route, and at least one evidence line naming a Nansen field",
+    () => {
+      const reached = new Map<Route, number>();
+      fc.assert(
+        fc.property(arbLookups, (l) => {
+          const d = classify(l, NOW);
+          reached.set(d.route, (reached.get(d.route) ?? 0) + 1);
+          expect(ROUTES.filter((r) => r === d.route)).toHaveLength(1);
+          expect(SUBS[d.route]).toContain(d.sub);
+          expect(["high", "medium", "low"]).toContain(d.confidence);
+          expect(d.evidence.length).toBeGreaterThan(0);
+          for (const e of d.evidence) expect(e.field).toMatch(/search\/general|profiler\/address\/|transaction-with-token-transfer-lookup/);
+          expect(d.rule).toBeGreaterThanOrEqual(0);
+          expect(d.rule).toBeLessThanOrEqual(9);
+          // and the action text always exists — the copy button is never empty
+          expect(actionFor(d, ctx(l)).text.length).toBeGreaterThan(20);
+        }),
+        { numRuns: NUM_RUNS },
+      );
+      // the generator covers the whole decision space, not one corner of it (measured: all 14 route/sub-state pairs in 10,000 runs)
+      for (const r of ROUTES) expect(reached.get(r) ?? 0, `route ${r} never reached`).toBeGreaterThan(50);
+    },
+    TIMEOUT_MS,
+  );
 
-  it("P2: a failed transactions lookup never yields a stranger verdict — with no positive label, deployer or sender evidence it is `retry`, and it is never fresh/dormant/active/poisoner", () => {
-    fc.assert(
-      fc.property(arbLookups, (l) => {
-        if (l.transactions.ok || isBurnRejection(l.transactions)) return; // burn is Nansen's answer, not a failure
-        const d = classify(l, NOW);
-        // the four stranger states are all read off the transactions page: without it they would be fabricated
-        expect(d.route).not.toBe("active-stranger");
-        const tokenHit = l.search.ok && l.search.data.tokens.some((t) => t.address.toLowerCase() === l.address);
-        const deployer = l.related.ok && l.related.data.data.some((r) => /^(Deployed by|Created by)$/i.test(r.relation));
-        const labelled = l.txLookups.some((x) => x.result.ok);
-        if (!tokenHit && !deployer && !labelled && !l.sender && !isBurnRejection(l.counterparties)) {
-          expect(d.route).toBe("retry");
-          expect(d.rule).toBe(0);
-          expect(d.evidence.map((e) => e.code)).toEqual(expect.arrayContaining([expect.stringMatching(/^(LOOKUPS_FAILED|TRANSACTIONS_FAILED)$/)]));
-        }
-      }),
-      { numRuns: NUM_RUNS },
-    );
-  });
+  it(
+    "P2: a failed transactions lookup never yields a stranger verdict — with no positive label, deployer or sender evidence it is `retry`, and it is never fresh/dormant/active/poisoner",
+    () => {
+      fc.assert(
+        fc.property(arbLookups, (l) => {
+          if (l.transactions.ok || isBurnRejection(l.transactions)) return; // burn is Nansen's answer, not a failure
+          const d = classify(l, NOW);
+          // the four stranger states are all read off the transactions page: without it they would be fabricated
+          expect(d.route).not.toBe("active-stranger");
+          const tokenHit = l.search.ok && l.search.data.tokens.some((t) => t.address.toLowerCase() === l.address);
+          const deployer = l.related.ok && l.related.data.data.some((r) => /^(Deployed by|Created by)$/i.test(r.relation));
+          const labelled = l.txLookups.some((x) => x.result.ok);
+          if (!tokenHit && !deployer && !labelled && !l.sender && !isBurnRejection(l.counterparties)) {
+            expect(d.route).toBe("retry");
+            expect(d.rule).toBe(0);
+            expect(d.evidence.map((e) => e.code)).toEqual(expect.arrayContaining([expect.stringMatching(/^(LOOKUPS_FAILED|TRANSACTIONS_FAILED)$/)]));
+          }
+        }),
+        { numRuns: NUM_RUNS },
+      );
+    },
+    TIMEOUT_MS,
+  );
 
-  it("P3: the decision hash is invariant to USD-price fields (every volume scaled by the same factor) and to warnings — dollars are display, the share is the evidence", () => {
-    fc.assert(
-      fc.property(arbLookups, fc.constantFrom(0.25, 0.5, 2, 4, 8), (l, k) => {
-        if (!l.counterparties.ok) return;
-        const scaled: Lookups = {
-          ...l,
-          counterparties: ok<CounterpartiesResponse>({
-            ...l.counterparties.data,
-            data: l.counterparties.data.data.map((r) => ({
-              ...r,
-              volume_in_usd: (r.volume_in_usd ?? 0) * k,
-              volume_out_usd: (r.volume_out_usd ?? 0) * k,
-              total_volume_usd: (r.total_volume_usd ?? 0) * k,
-            })),
-          }),
-        };
-        const a = classify(l, NOW),
-          b = classify(scaled, NOW);
-        b.warnings.push("a transient note that must not move the hash");
-        expect(decisionHash(b, actionFor(b, ctx(scaled)))).toBe(decisionHash(a, actionFor(a, ctx(l))));
-      }),
-      { numRuns: NUM_RUNS },
-    );
-  });
+  it(
+    "P3: the decision hash is invariant to USD-price fields (every volume scaled by the same factor) and to warnings — dollars are display, the share is the evidence",
+    () => {
+      fc.assert(
+        fc.property(arbLookups, fc.constantFrom(0.25, 0.5, 2, 4, 8), (l, k) => {
+          if (!l.counterparties.ok) return;
+          const scaled: Lookups = {
+            ...l,
+            counterparties: ok<CounterpartiesResponse>({
+              ...l.counterparties.data,
+              data: l.counterparties.data.data.map((r) => ({
+                ...r,
+                volume_in_usd: (r.volume_in_usd ?? 0) * k,
+                volume_out_usd: (r.volume_out_usd ?? 0) * k,
+                total_volume_usd: (r.total_volume_usd ?? 0) * k,
+              })),
+            }),
+          };
+          const a = classify(l, NOW),
+            b = classify(scaled, NOW);
+          b.warnings.push("a transient note that must not move the hash");
+          expect(decisionHash(b, actionFor(b, ctx(scaled)))).toBe(decisionHash(a, actionFor(a, ctx(l))));
+        }),
+        { numRuns: NUM_RUNS },
+      );
+    },
+    TIMEOUT_MS,
+  );
 
-  it("P4: classify() is pure — the same Lookups always gives the same route, sub-state and hash, and the input is not mutated", () => {
-    fc.assert(
-      fc.property(arbLookups, (l) => {
-        const before = JSON.stringify(l);
-        const a = classify(l, NOW),
-          b = classify(l, NOW);
-        expect(JSON.stringify(l)).toBe(before);
-        expect([b.route, b.sub, b.confidence, b.entity ?? null]).toEqual([a.route, a.sub, a.confidence, a.entity ?? null]);
-        expect(decisionHash(b, actionFor(b, ctx(l)))).toBe(decisionHash(a, actionFor(a, ctx(l))));
-      }),
-      { numRuns: NUM_RUNS },
-    );
-  });
+  it(
+    "P4: classify() is pure — the same Lookups always gives the same route, sub-state and hash, and the input is not mutated",
+    () => {
+      fc.assert(
+        fc.property(arbLookups, (l) => {
+          const before = JSON.stringify(l);
+          const a = classify(l, NOW),
+            b = classify(l, NOW);
+          expect(JSON.stringify(l)).toBe(before);
+          expect([b.route, b.sub, b.confidence, b.entity ?? null]).toEqual([a.route, a.sub, a.confidence, a.entity ?? null]);
+          expect(decisionHash(b, actionFor(b, ctx(l)))).toBe(decisionHash(a, actionFor(a, ctx(l))));
+        }),
+        { numRuns: NUM_RUNS },
+      );
+    },
+    TIMEOUT_MS,
+  );
 });
