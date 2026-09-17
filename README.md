@@ -10,13 +10,13 @@
 
   [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://sentwrong.edycu.dev)
   [![For the Judge](https://img.shields.io/badge/⚖️_For_the-Judge-22c55e?style=for-the-badge)](https://sentwrong.edycu.dev/judge)
-  [![Built for Nansen Meridian](https://img.shields.io/badge/Nansen-Meridian_Buildathon-8b5cf6?style=for-the-badge)](https://nansen.ai/campaigns/meridian-buildathon)
+  [![Built for Nansen Meridian](https://img.shields.io/badge/Nansen-Meridian_Buildathon-00FFA8?style=for-the-badge&labelColor=0a0e13&logoColor=0a0e13)](https://nansen.ai/campaigns/meridian-buildathon)
 
   <br/>
 
   ![Next.js](https://img.shields.io/badge/Next.js_15-black?style=flat&logo=next.js)
   ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
-  ![Nansen API](https://img.shields.io/badge/Nansen_API-7_endpoints-1c1c1c?style=flat)
+  ![Nansen API](https://img.shields.io/badge/Nansen_API-7_endpoints-00FFA8?style=flat&labelColor=0a0e13)
   [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat)](https://opensource.org/licenses/MIT)
   [![CI](https://github.com/edycutjong/sentwrong/actions/workflows/ci.yml/badge.svg)](https://github.com/edycutjong/sentwrong/actions/workflows/ci.yml)
   [![Release](https://img.shields.io/github/v/release/edycutjong/sentwrong?sort=semver&style=flat)](https://github.com/edycutjong/sentwrong/releases/latest)

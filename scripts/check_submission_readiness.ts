@@ -3,7 +3,9 @@
  * fixture counts match reality, the links resolve. Exit 1 on any failure. Runs in CI (no key, no network for the counts;
  * link checks are skipped when offline).
  */
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync, unlinkSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { execSync } from "node:child_process";
 
 const fails: string[] = [];
@@ -16,7 +18,19 @@ for (const p of ["TODO", "TBD", "lorem", "XXX", "<insert", "coming soon", "PLACE
 for (const h of ["## 💡 The Problem & Solution", "### The four routes", "## 🏗️ Architecture & Tech Stack", "## 🏆 Nansen Integration", "### Why only Nansen", "## 📊 Engineering Rigor", "### Honest limits (", "## 🚀 Getting Started", "### Runs in under 10 minutes", "## 🧪 Testing & CI", "### Benchmark", "## 📽️ Demo Materials", "## 📄 License"]) ok(readme.includes(h), `README missing section "${h}"`);
 // 3. counts match
 const testCount = Number(/(\d+) vitest tests/.exec(readme)?.[1] ?? 0);
-const real = (() => { try { const out = execSync("npx vitest run --reporter=json 2>/dev/null", { encoding: "utf8" }); const j = JSON.parse(out.slice(out.indexOf("{"))); return j.numTotalTests as number; } catch { return -1; } })();
+// vitest ≥ 4 no longer guarantees clean JSON on stdout — ask for a file instead (works on every version)
+const real = (() => {
+  const file = join(tmpdir(), `sentwrong-vitest-${process.pid}.json`);
+  try {
+    execSync(`npx vitest run --reporter=json --outputFile=${file}`, { encoding: "utf8", stdio: "pipe" });
+    const j = JSON.parse(readFileSync(file, "utf8"));
+    return j.numTotalTests as number;
+  } catch {
+    return -1;
+  } finally {
+    try { unlinkSync(file); } catch { /* not written */ }
+  }
+})();
 ok(real === testCount, `README says ${testCount} tests, vitest reports ${real === -1 ? "nothing (could not run vitest --reporter=json)" : real}`);
 const fixtures = existsSync("fixtures") ? readdirSync("fixtures").filter((f) => f.endsWith(".json")).length : 0;
 ok(readme.includes(`${fixtures} fixtures`) || readme.includes(`${fixtures}/${fixtures}`), `README fixture count does not match ${fixtures} files`);
