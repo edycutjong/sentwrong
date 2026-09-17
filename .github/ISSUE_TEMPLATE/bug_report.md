@@ -17,4 +17,4 @@ What you expected to happen.
 **Environment**
 - OS:
 - Node version:
-- CLI or web app (local / https://sentwrong-app.vercel.app):
+- CLI or web app (local / https://sentwrong.edycu.dev):

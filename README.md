@@ -7,8 +7,8 @@
 
   <br/>
 
-  [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://sentwrong-app.vercel.app)
-  [![For the Judge](https://img.shields.io/badge/⚖️_For_the-Judge-22c55e?style=for-the-badge)](https://sentwrong-app.vercel.app/judge)
+  [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://sentwrong.edycu.dev)
+  [![For the Judge](https://img.shields.io/badge/⚖️_For_the-Judge-22c55e?style=for-the-badge)](https://sentwrong.edycu.dev/judge)
   [![Built for Nansen Meridian](https://img.shields.io/badge/Nansen-Meridian_Buildathon-8b5cf6?style=for-the-badge)](https://nansen.ai/campaigns/meridian-buildathon)
 
   <br/>
@@ -84,7 +84,7 @@ flowchart LR
 | CLI | `tsx` — `sentwrong <address> [--from] [--chain] [--json] [--explain] [--deep] [--no-cache]` | `packages/cli` |
 | Web | Next.js 15 — live-streaming call rows, verdict card, copy button, share page, route-coloured OG card; key stays server-side | `apps/web` |
 | Tests / CI | vitest (196 tests: unit, 40,000-case property, key-boundary), Playwright (5 suites, no key), offline fixture replay, 6-stage GitHub Actions pipeline + CodeQL + gitleaks + Dependabot | `.github/workflows/` |
-| Hosting | Vercel — production domain tracks `main` | https://sentwrong-app.vercel.app |
+| Hosting | Vercel — production domain tracks `main` | https://sentwrong.edycu.dev |
 
 ## 🏆 Nansen Integration
 
@@ -263,8 +263,8 @@ ARCHITECTURE.md · DEMO.md · JUDGE.md (mirror of /judge) · LICENSE
 
 ## 📽️ Demo Materials
 
-- **For the judge:** https://sentwrong-app.vercel.app/judge — the claim, the 30-second click path with live links, the real-run receipts, the reproduce command, three honest limitations. Mirrored in [JUDGE.md](JUDGE.md).
-- **Live app:** https://sentwrong-app.vercel.app — same engine as the CLI, key server-side, rows stream as each Nansen call lands.
+- **For the judge:** https://sentwrong.edycu.dev/judge — the claim, the 30-second click path with live links, the real-run receipts, the reproduce command, three honest limitations. Mirrored in [JUDGE.md](JUDGE.md).
+- **Live app:** https://sentwrong.edycu.dev — same engine as the CLI, key server-side, rows stream as each Nansen call lands.
 - **[30-second demo](DEMO.md):** the shot list, the hero query's verbatim `--explain --no-cache` output, and the full benchmark table with reproduce steps.
 - **[How it decides](docs/SCORING.md)** · **[Architecture](ARCHITECTURE.md)** · **[Nansen API friction log](docs/DX-REPORT.md)**
 

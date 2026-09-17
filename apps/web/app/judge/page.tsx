@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 export const dynamic = "force-static";
 
-const APP = "https://sentwrong-app.vercel.app";
+const APP = "https://sentwrong.edycu.dev";
 const REPO = "https://github.com/edycutjong/sentwrong";
 const HERO = "0xe460774c849089ee3edf0fb06da14c066caabbef";
 

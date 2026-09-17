@@ -30,7 +30,7 @@ test.describe("/judge", () => {
     await expect(page.getByRole("heading", { name: /Honest limitations/ })).toBeVisible();
     const links = page.locator(".judge a");
     expect(await links.count()).toBeGreaterThanOrEqual(8);
-    await expect(links.filter({ hasText: /^https:\/\/sentwrong-app\.vercel\.app$/ }).first()).toHaveAttribute("href", "https://sentwrong-app.vercel.app");
+    await expect(links.filter({ hasText: /^https:\/\/sentwrong-app\.vercel\.app$/ }).first()).toHaveAttribute("href", "https://sentwrong.edycu.dev");
   });
 
   test("the raw HTML is served without a script-gated body (curl-able)", async ({ request }) => {

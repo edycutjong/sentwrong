@@ -3,7 +3,7 @@ import pkg from "../package.json";
 
 export const VERSION = `v${pkg.version}`;
 export const REPO = "https://github.com/edycutjong/sentwrong";
-export const SITE = "https://sentwrong-app.vercel.app";
+export const SITE = "https://sentwrong.edycu.dev";
 
 /** The family mark: one green bar over two grey ones — the answer among the rest, in 24px. */
 export function Mark({ size = 24 }: { size?: number }) {

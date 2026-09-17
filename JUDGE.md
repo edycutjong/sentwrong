@@ -1,15 +1,15 @@
 # For the judge
 
-Live version of this page: **https://sentwrong-app.vercel.app/judge** (no auth, no cookies, no key).
+Live version of this page: **https://sentwrong.edycu.dev/judge** (no auth, no cookies, no key).
 
 > **Sent crypto to the wrong address? Paste it. Nansen tells you which of four recovery routes you're on — and drafts the ticket.**
 
 ## The 30-second path — no setup, no key, no clone
 
-1. Open https://sentwrong-app.vercel.app/q/0xe460774c849089ee3edf0fb06da14c066caabbef — a live verdict on a real Binance deposit address: **EXCHANGE DEPOSIT · high**, four evidence lines, each naming the Nansen endpoint and field it came from, and the prefilled Binance support ticket under **Copy**.
-2. Open https://sentwrong-app.vercel.app/q/0x000000000000000000000000000000000000dEaD — red **CONTRACT OR BURN**: Nansen refused the address with HTTP 422 "Burn address not allowed", and the card says not to pay anyone who promises recovery.
-3. Open https://sentwrong-app.vercel.app/q/0x50b37a3ec6c04609968810801531f5021929eac9 — amber **ACTIVE STRANGER · poisoner**: an address-poisoning look-alike that only ever "receives" homoglyph tokens.
-4. Go to https://sentwrong-app.vercel.app, click the **Binance deposit address** example and watch the ten Nansen calls land one row at a time; then **Every Nansen call (10)** opens the provenance drawer: endpoint · fields · credits · ms for every call.
+1. Open https://sentwrong.edycu.dev/q/0xe460774c849089ee3edf0fb06da14c066caabbef — a live verdict on a real Binance deposit address: **EXCHANGE DEPOSIT · high**, four evidence lines, each naming the Nansen endpoint and field it came from, and the prefilled Binance support ticket under **Copy**.
+2. Open https://sentwrong.edycu.dev/q/0x000000000000000000000000000000000000dEaD — red **CONTRACT OR BURN**: Nansen refused the address with HTTP 422 "Burn address not allowed", and the card says not to pay anyone who promises recovery.
+3. Open https://sentwrong.edycu.dev/q/0x50b37a3ec6c04609968810801531f5021929eac9 — amber **ACTIVE STRANGER · poisoner**: an address-poisoning look-alike that only ever "receives" homoglyph tokens.
+4. Go to https://sentwrong.edycu.dev, click the **Binance deposit address** example and watch the ten Nansen calls land one row at a time; then **Every Nansen call (10)** opens the provenance drawer: endpoint · fields · credits · ms for every call.
 
 Every verdict above is computed live on the server from Nansen's API when you open the link (the key stays on the server). Expect 4–13 s on a cold Vercel instance — Nansen's per-call latency varies by the minute.
 
@@ -45,7 +45,7 @@ You get the verdict, the four evidence lines with their Nansen fields, the ticke
 
 ## Links
 
-- Live app: https://sentwrong-app.vercel.app · this page live: https://sentwrong-app.vercel.app/judge
+- Live app: https://sentwrong.edycu.dev · this page live: https://sentwrong.edycu.dev/judge
 - Repository: https://github.com/edycutjong/sentwrong — [DEMO.md](DEMO.md) (verbatim hero output + bench) · [docs/SCORING.md](docs/SCORING.md) (the decision table) · [ARCHITECTURE.md](ARCHITECTURE.md) · [docs/DX-REPORT.md](docs/DX-REPORT.md) (Nansen API friction log)
 - Latest release: https://github.com/edycutjong/sentwrong/releases/latest · CI: https://github.com/edycutjong/sentwrong/actions
 - Demo recording: the X post from @edycutjong tagging @nansen_ai (published at submission).

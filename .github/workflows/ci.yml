@@ -196,4 +196,4 @@ jobs:
           echo "  ✅ Stage 4 — E2E Tests (Playwright, no key)"
           echo "  ✅ Stage 5 — Performance (Lighthouse CI)"
           echo ""
-          echo "Vercel deploys main to https://sentwrong-app.vercel.app via the git integration."
+          echo "Vercel deploys main to https://sentwrong.edycu.dev via the git integration."
