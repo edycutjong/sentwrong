@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { classify } from "../src/classify.js";
 import { decisionHash } from "../src/verdict.js";
 import { actionFor } from "../src/text.js";
+import { stripLabel } from "../src/labels.js";
 import { lookups, binanceDeposit, ok, fail, burn422, txs, txRow, cps, related, funder, noFunder, lookup, transfer, search, R, HOT, GAS, USER, SENDER } from "./helpers.js";
 
 const NOW = Date.parse("2026-09-16T14:00:00Z");
@@ -297,5 +298,14 @@ describe("decision hash", () => {
     b.warnings.push("a transient note");
     const ctx = { address: R, chain: "ethereum" };
     expect(decisionHash(a, actionFor(a, ctx))).toBe(decisionHash(b, actionFor(b, ctx)));
+  });
+});
+
+describe("stripLabel is linear on hostile whitespace (CodeQL js/polynomial-redos)", () => {
+  it("50k spaces before a bracketed address strip in well under a second", () => {
+    const t0 = Date.now();
+    expect(stripLabel(`Binance${" ".repeat(50_000)}[0xabc]`)).toBe("Binance");
+    expect(stripLabel(`Binance 14${" ".repeat(50_000)}`)).toBe("Binance 14");
+    expect(Date.now() - t0).toBeLessThan(1000);
   });
 });

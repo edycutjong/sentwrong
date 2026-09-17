@@ -21,12 +21,14 @@ const ENS = /\.(eth|sol)\*?$/i;
 const CONTRACT_WORD = /\b(Contract|Router|Proxy|Pool|Bridge|Vault|Factory|Forwarder)\b|\bToken$/;
 
 export function stripLabel(raw: string): string {
-  return raw
+  // whitespace is collapsed FIRST so every later pattern sees single spaces — the anchored patterns below are then
+  // linear (no `\s*…$` backtracking on long runs of spaces, which CodeQL flags as polynomial ReDoS on library input)
+  const text = raw
     .replace(/[\u200B-\u200D\uFEFF\uFFF0-\uFFFF]/g, "")
-    .replace(/\s*\[0x[0-9a-fA-F]+\]\s*$/, "")
     .replace(/[\p{Extended_Pictographic}\uFE0F]/gu, "")
     .replace(/\s+/g, " ")
     .trim();
+  return text.replace(/ ?\[0x[0-9a-fA-F]+\]$/, "").trim();
 }
 
 export function parseLabel(raw: string | null | undefined): ParsedLabel | undefined {
@@ -38,7 +40,7 @@ export function parseLabel(raw: string | null | undefined): ParsedLabel | undefi
   let entity: string | undefined, role: string | undefined;
   const colon = text.indexOf(":");
   if (colon > 0) { entity = text.slice(0, colon).trim(); role = text.slice(colon + 1).trim(); }
-  else if (!generic) entity = text.replace(/\s+\d+$/, "").trim(); // "Binance 14" → "Binance"
+  else if (!generic) entity = text.replace(/ \d+$/, "").trim(); // "Binance 14" → "Binance" (text is already single-spaced)
   if (entity && (GENERIC.test(entity) || ENS.test(entity))) entity = undefined;
   return { raw, text, entity, role, exchange, generic };
 }

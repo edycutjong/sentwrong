@@ -61,7 +61,7 @@ ok(!/nsn_[a-z0-9]{20,}/i.test(execSync("git grep -I -h nsn_ -- . ':!README.md' |
 const links = [...new Set([...readme.matchAll(/https?:\/\/[^\s)>\]"]+/g)].map((m) => m[0]))].filter((u) => !u.includes("localhost"));
 for (const u of links) {
   try { const code = execSync(`curl -s -o /dev/null -m 15 -w "%{http_code}" -L "${u}"`, { encoding: "utf8" }); if (code === "000") continue; // 403 = a bot-gated page (Cloudflare on app.nansen.ai) — reachable, just not by curl; 404 on GitHub = the private repo before the flip
-    ok(code.startsWith("2") || code.startsWith("3") || code === "403" || (u.includes("github.com") && code === "404"), `link ${u} → ${code}`); }
+    ok(code.startsWith("2") || code.startsWith("3") || code === "403" || (new URL(u).hostname === "github.com" && code === "404"), `link ${u} → ${code}`); }
   catch { /* offline */ }
 }
 if (fails.length) { console.error("✖ not ready:\n  " + fails.join("\n  ")); process.exit(1); }
