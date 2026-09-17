@@ -200,7 +200,8 @@ code { font-family: var(--mono); font-size: 0.92em; background: rgba(255, 255, 2
 @media (prefers-reduced-motion: reduce) { .card, .drawer, .bar > i, .progress > i { transition: none !important; animation: none !important; } .call { animation: none !important; } }
 
 /* ── sentwrong-only: the route verdict's evidence, the live call rows, the action text ───────────────────── */
-.search select { flex: none; width: 150px; font: 500 16px var(--sans); padding: 14px 16px 14px 12px; border-radius: var(--r-md); border: 1px solid var(--border-2); background: var(--bg-2); color: var(--text); outline: none; transition: border-color 120ms, box-shadow 120ms; }
+.search select { flex: none; width: 150px; font: 500 16px var(--sans); padding: 14px 40px 14px 12px; border-radius: var(--r-md); border: 1px solid var(--border-2); background: var(--bg-2) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1.5 1.5 7 7l5.5-5.5' fill='none' stroke='%23b6c2cf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 16px center; color: var(--text); outline: none; appearance: none; -webkit-appearance: none; cursor: pointer; transition: border-color 120ms, box-shadow 120ms; }
+/* custom caret: the native one ignores padding, so its gap to the edge could not be tuned — 16px from the right, 40px reserved so the value never runs under it */
 .search select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22); }
 .search + .search { margin-top: 10px; }
 .search input.mono { font: 500 16px var(--mono); }
