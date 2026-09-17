@@ -200,7 +200,7 @@ code { font-family: var(--mono); font-size: 0.92em; background: rgba(255, 255, 2
 @media (prefers-reduced-motion: reduce) { .card, .drawer, .bar > i, .progress > i { transition: none !important; animation: none !important; } .call { animation: none !important; } }
 
 /* ── sentwrong-only: the route verdict's evidence, the live call rows, the action text ───────────────────── */
-.search select { flex: none; width: 150px; font: 500 16px var(--sans); padding: 14px 12px; border-radius: var(--r-md); border: 1px solid var(--border-2); background: var(--bg-2); color: var(--text); outline: none; transition: border-color 120ms, box-shadow 120ms; }
+.search select { flex: none; width: 150px; font: 500 16px var(--sans); padding: 14px 16px 14px 12px; border-radius: var(--r-md); border: 1px solid var(--border-2); background: var(--bg-2); color: var(--text); outline: none; transition: border-color 120ms, box-shadow 120ms; }
 .search select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22); }
 .search + .search { margin-top: 10px; }
 .search input.mono { font: 500 16px var(--mono); }
