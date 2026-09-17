@@ -30,7 +30,8 @@ export default function Checker({ initial }: { initial?: { address?: string; sen
     abort.current?.abort();
     const ctrl = new AbortController(); abort.current = ctrl;
     setError(undefined); setCalls([]); if (!deep) setVerdict(undefined); // a deep re-run streams its (cached) calls plus the labels call
-    deep ? setDeepBusy(true) : setBusy(true);
+    if (deep) setDeepBusy(true);
+    else setBusy(true);
     try {
       const res = await fetch("/api/verdict", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ address: address.trim(), sender: showSender && sender.trim() ? sender.trim() : undefined, chain, deep }), signal: ctrl.signal });
       if (!res.ok || !res.body) { const j = await res.json().catch(() => ({ message: res.statusText })); throw new Error(j.message ?? `HTTP ${res.status}`); }

@@ -1,0 +1,41 @@
+# Prettier is enforced (npm run format:check) on everything the engineering harness added or touches:
+# e2e/, .github/, the /judge route, the property + boundary tests, configs. The reviewed engine below keeps
+# its deliberately dense, line-per-rule style (packages/core/src/classify.ts is read as a decision table) —
+# reformatting it after the independent review would churn 9,000+ lines of judged history for no behaviour change.
+packages/core/src/
+packages/core/test/classify.test.ts
+packages/core/test/cache.test.ts
+packages/core/test/client.test.ts
+packages/core/test/gather.test.ts
+packages/core/test/text.test.ts
+packages/core/test/helpers.ts
+packages/cli/src/
+scripts/bench.ts
+scripts/seed.ts
+scripts/spike.ts
+scripts/verify.ts
+scripts/fixture-set.ts
+scripts/check_submission_readiness.ts
+apps/web/app/Checker.tsx
+apps/web/app/VerdictCard.tsx
+apps/web/app/layout.tsx
+apps/web/app/page.tsx
+apps/web/app/q/
+apps/web/app/api/
+apps/web/app/globals.css
+apps/web/lib/engine.ts
+
+# recorded Nansen responses — byte-for-byte, never reformatted
+fixtures/
+# generated / vendored
+node_modules/
+.next/
+coverage/
+playwright-report/
+test-results/
+.lighthouseci/
+package-lock.json
+apps/web/next-env.d.ts
+apps/web/tsconfig.tsbuildinfo
+docs/screenshots/
+*.md
