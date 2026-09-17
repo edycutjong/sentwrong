@@ -14,11 +14,11 @@ for (const s of SIZES) {
       await page.goto(path);
       const overflow = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, inner: window.innerWidth }));
       expect(overflow.scroll, `${path} scrollWidth`).toBeLessThanOrEqual(overflow.inner);
-      const header = await page.locator("header.top").boundingBox();
+      const header = await page.locator("header.site-header").boundingBox();
       expect(header?.width).toBeLessThanOrEqual(s.width);
     }
     await page.goto("/");
-    const btn = await page.getByRole("button", { name: "Where did it go?" }).boundingBox();
+    const btn = await page.getByRole("button", { name: "Check" }).boundingBox();
     expect(btn?.height).toBeGreaterThanOrEqual(36);
     const input = await page.getByLabel("The address you sent to").boundingBox();
     expect(input?.height).toBeGreaterThanOrEqual(36);

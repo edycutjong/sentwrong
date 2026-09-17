@@ -10,7 +10,7 @@ test.describe("verdict flow (no key)", () => {
   test("the submit button stays disabled until the address is a well-formed EVM address", async ({ page }) => {
     await page.goto("/");
     const input = page.getByLabel("The address you sent to");
-    const go = page.getByRole("button", { name: "Where did it go?" });
+    const go = page.getByRole("button", { name: "Check" });
     await expect(go).toBeDisabled();
     for (const bad of ["0x123", "vitalik.eth", "TN3W4H6rK2ce4vX9YnFQHwKENnHjoxb3m9", HERO.slice(0, 41)]) {
       await input.fill(bad);
@@ -45,8 +45,8 @@ test.describe("verdict flow (no key)", () => {
 
   test("in the UI the same error is shown in the banner; no verdict card appears", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("button", { name: "Binance deposit address" }).click();
-    await page.getByRole("button", { name: "Where did it go?" }).click();
+    await page.getByLabel("The address you sent to").fill(HERO);
+    await page.getByRole("button", { name: "Check" }).click();
     await expect(page.locator(".err")).toContainText("NANSEN_API_KEY is not set on the server");
     await expect(page.locator(".card")).toHaveCount(0);
   });

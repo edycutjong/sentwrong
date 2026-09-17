@@ -16,8 +16,8 @@ scripts/spike.ts
 scripts/verify.ts
 scripts/fixture-set.ts
 scripts/check_submission_readiness.ts
-apps/web/app/Checker.tsx
-apps/web/app/VerdictCard.tsx
+
+
 apps/web/app/layout.tsx
 apps/web/app/page.tsx
 apps/web/app/q/

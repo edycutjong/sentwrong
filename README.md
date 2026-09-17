@@ -118,7 +118,7 @@ What we learned the hard way is in [docs/DX-REPORT.md](docs/DX-REPORT.md) — in
 |---|---|
 | Tests | **188 vitest tests** (`npm test`), 9 s — **11 regression tests named after the defect they pin**, 8 key-boundary tests, 4 property-based tests |
 | Property-based verification | **40,000 generated Nansen response sets** through `classify()` (fast-check, 4 properties × 10,000): exactly one of the five routes every time · a failed `transactions` lookup never yields a stranger verdict · the decision hash is invariant to USD prices · pure. All 14 route/sub-state pairs reached |
-| E2E (Playwright) | **5 suites, 44 runs** (chromium + Pixel 7) against the built app with **no key**: home, `/judge`, validation + honest no-key error, responsive 375/768/1440, key-never-reaches-the-client |
+| E2E (Playwright) | **5 suites, 48 runs** (chromium + Pixel 7) against the built app with **no key**: home (the recorded example, "Run it live now"), `/judge`, validation + honest no-key error, responsive 375/768/1440, key-never-reaches-the-client |
 | Lighthouse (`npm run lighthouse`) | `/` and `/judge`: performance **100** · accessibility **100** · best practices 96 · SEO **100** (desktop, median of 3, 2026-09-17) |
 | Fixtures | **13** real Nansen responses recorded live 2026-09-16, byte-for-byte; `npm run verify` → **13/13 verdicts reproduced offline**, same decision hash, 0 network, 0 credits |
 | Benchmark, cold (13 addresses × 3 runs, every call live) | **p50 3157 ms · p95 6477 ms** · max 10567 ms |
