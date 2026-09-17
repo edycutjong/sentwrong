@@ -28,9 +28,17 @@ describe("rowsFor() / labelIndex() edge cases", () => {
           result: ok<TxLookupResponse>({
             data: [
               {
-                chain: "ethereum", transaction_hash: "0x" + "a".repeat(64), from_address: R, from_address_label: null,
-                to_address: HOT, to_address_label: null, native_value: 0, dated_native_value_usd: 0, receipt_status: 1,
-                block_timestamp: "2026-09-16T00:00:00Z", token_transfer_array: null,
+                chain: "ethereum",
+                transaction_hash: "0x" + "a".repeat(64),
+                from_address: R,
+                from_address_label: null,
+                to_address: HOT,
+                to_address_label: null,
+                native_value: 0,
+                dated_native_value_usd: 0,
+                receipt_status: 1,
+                block_timestamp: "2026-09-16T00:00:00Z",
+                token_transfer_array: null,
               },
             ],
           }),
@@ -105,7 +113,8 @@ describe("sentWrong() --deep edge cases", () => {
   it("agreement defaults to true for a route that is neither entity-bearing nor active-stranger (a burn address)", async () => {
     const c = fakeClient((e) => {
       if (e === "search/general") return search();
-      if (e === "profiler/address/transactions" || e === "profiler/address/counterparties") return new Response('{"error":"Burn address not allowed","message":"Burn address \'0x…\' is not allowed"}', { status: 422 });
+      if (e === "profiler/address/transactions" || e === "profiler/address/counterparties")
+        return new Response('{"error":"Burn address not allowed","message":"Burn address \'0x…\' is not allowed"}', { status: 422 });
       if (e === "profiler/address/related-wallets") return related([]);
       if (e === "profiler/address/first-funder") return noFunder();
       if (e === "profiler/address/labels") return labels([{ label: "Random Tag", category: "other", kind: ["entity"] }]);

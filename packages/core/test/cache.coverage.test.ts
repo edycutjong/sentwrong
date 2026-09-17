@@ -8,7 +8,9 @@ const KEY = "nsn_test_key_0000000000000000000000";
 
 // Every test that touches process.cwd() or process.env restores it here, even on failure.
 const cleanups: Array<() => void> = [];
-afterEach(() => { while (cleanups.length) cleanups.pop()!(); });
+afterEach(() => {
+  while (cleanups.length) cleanups.pop()!();
+});
 
 function withTmpDir(): string {
   const dir = mkdtempSync(join(tmpdir(), "sentwrong-cache-"));
@@ -26,7 +28,10 @@ function withEnv(key: string, value: string | undefined) {
   const prev = process.env[key];
   if (value === undefined) delete process.env[key];
   else process.env[key] = value;
-  cleanups.push(() => { if (prev === undefined) delete process.env[key]; else process.env[key] = prev; });
+  cleanups.push(() => {
+    if (prev === undefined) delete process.env[key];
+    else process.env[key] = prev;
+  });
 }
 
 describe("DiskCache", () => {
@@ -65,7 +70,10 @@ describe("CachedNansenClient without an explicit store", () => {
     const dir = withTmpDir();
     withCwd(dir);
     let hits = 0;
-    const fetchImpl: typeof fetch = async () => { hits++; return new Response('{"v":1}', { status: 200 }); };
+    const fetchImpl: typeof fetch = async () => {
+      hits++;
+      return new Response('{"v":1}', { status: 200 });
+    };
     const c = new CachedNansenClient(KEY, { fetchImpl, rps: 1000 });
     const result = await c.post("profiler/address/counterparties", { a: 1 });
     expect(result).toEqual({ v: 1 });

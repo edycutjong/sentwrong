@@ -37,7 +37,9 @@ describe("fixtureName()", () => {
 
 describe("writeFixture() / readFixture() round trip", () => {
   let dir: string;
-  afterEach(() => { if (dir && existsSync(dir)) rmSync(dir, { recursive: true, force: true }); });
+  afterEach(() => {
+    if (dir && existsSync(dir)) rmSync(dir, { recursive: true, force: true });
+  });
 
   it("creates the directory (recursive), names the file from address+sender, and writes readable JSON", () => {
     dir = mkdtempSync(join(tmpdir(), "sentwrong-fixtures-"));
@@ -76,7 +78,9 @@ describe("writeFixture() / readFixture() round trip", () => {
 
 describe("listFixtures()", () => {
   let dir: string;
-  afterEach(() => { if (dir && existsSync(dir)) rmSync(dir, { recursive: true, force: true }); });
+  afterEach(() => {
+    if (dir && existsSync(dir)) rmSync(dir, { recursive: true, force: true });
+  });
 
   it("returns [] when the directory does not exist (catch branch)", () => {
     expect(listFixtures(join(tmpdir(), "sentwrong-does-not-exist-" + Math.random().toString(36).slice(2)))).toEqual([]);
