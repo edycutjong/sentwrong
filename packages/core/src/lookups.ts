@@ -108,7 +108,9 @@ export async function gather(client: NansenClient, address: string, opts: Gather
     if (transactions.ok) {
       const { outbound, inbound } = splitDirection(transactions.data.data, a);
       for (const r of outbound.slice(0, 2)) wanted.push({ hash: r.transaction_hash, role: "outbound" });
-      const fromSender = sender ? inbound.find((r) => (r.tokens_received ?? []).some((t) => lc(t.from_address) === sender)) : undefined;
+      // `?? []` here is unreachable: splitDirection's own `inbound` filter (line 54) already requires a non-null,
+      // non-empty tokens_received on every row it returns, so this row can never have a null tokens_received.
+      const fromSender = sender ? inbound.find((r) => (r.tokens_received /* v8 ignore next */ ?? []).some((t) => lc(t.from_address) === sender)) : undefined;
       if (fromSender) wanted.push({ hash: fromSender.transaction_hash, role: "from-sender" });
       else if (inbound[0]) wanted.push({ hash: inbound[0].transaction_hash, role: "inbound" });
     }
