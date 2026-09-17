@@ -5,13 +5,13 @@ export const VERSION = `v${pkg.version}`;
 export const REPO = "https://github.com/edycutjong/sentwrong";
 export const SITE = "https://sentwrong.edycu.dev";
 
-/** The family mark: one green bar over two grey ones — the answer among the rest, in 24px. */
+/** The mark — the favicon's glyph at 24px: a transfer arrow stopped at a red wall. */
 export function Mark({ size = 24 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect x="2" y="3" width="20" height="5" rx="1.5" fill="var(--real)" />
-      <rect x="2" y="10" width="20" height="4" rx="1.5" fill="var(--border-2)" />
-      <rect x="2" y="16" width="20" height="4" rx="1.5" fill="var(--border-2)" />
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden>
+      <rect x="2" y="26" width="26" height="12" rx="3" fill="var(--accent)" />
+      <polygon points="26,14 46,32 26,50" fill="var(--accent)" />
+      <rect x="50" y="12" width="10" height="40" rx="2" fill="#dc2626" />
     </svg>
   );
 }
