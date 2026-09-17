@@ -28,6 +28,8 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
     // an empty key is "not set" to the app (engine.ts) — the server must run without one for every test here
-    env: { NANSEN_API_KEY: "", NANSEN_OFFLINE: "" },
+    // no key → no credit can be spent, so the per-IP spend guard (6/min in prod) only trips the parallel
+    // projects that all POST from 127.0.0.1; the guard itself is covered by packages/core/test/guard.test.ts
+    env: { NANSEN_API_KEY: "", NANSEN_OFFLINE: "", GUARD_IP_PER_MIN: "10000" },
   },
 });
