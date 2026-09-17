@@ -24,8 +24,7 @@ export function GET(req: NextRequest) {
           <div style={{ fontSize: 44, fontWeight: 700, lineHeight: 1.2, marginTop: 24 }}>{headline}</div>
         </div>
         <div style={{ display: "flex", alignItems: "center", fontSize: 22, color: "#5b6b80" }}>
-          <span style={{ fontFamily: "monospace" }}>{address}</span>
-          <span style={{ marginLeft: 18 }}>· decided by Nansen data</span>
+          <span style={{ fontFamily: "monospace", whiteSpace: "nowrap" }}>{address}</span>
           <div style={{ display: "flex", alignItems: "center", gap: 14, marginLeft: "auto" }}>
           <div style={{ fontSize: 22, color: "#8B9BAB" }}>sentwrong.edycu.dev</div>
           <div style={{ display: "flex", alignItems: "center", padding: "12px 22px", borderRadius: 999, background: "#38bdf8", color: "#05131c", fontSize: 24, fontWeight: 700, boxShadow: "0 8px 24px rgba(0,0,0,0.45)" }}>Check an address →</div>
