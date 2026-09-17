@@ -22,27 +22,27 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+        uses: github/codeql-action/autobuild@v4
 
       # Code scanning (the SARIF upload) is a free feature of PUBLIC repos; on this private repo it needs GHAS, which is
       # not purchased. The queries run either way; until the repo goes public the SARIF is kept as a run artifact.
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
           upload: ${{ github.event.repository.private && 'never' || 'always' }}
           output: codeql-results
 
       - name: Keep the SARIF as an artifact while the repo is private
         if: github.event.repository.private
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: codeql-sarif
           path: codeql-results
