@@ -144,7 +144,8 @@ export class NansenClient {
           body: JSON.stringify(body),
           signal: ctrl.signal,
         });
-        const text = await res.text();
+        // an error body is surfaced on the card and streamed to the browser as provenance: the key must never ride along in it
+        const text = (await res.text()).split(this.apiKey).join("nsn_[redacted]");
         const ms = Date.now() - started;
         if (res.status === 429 || res.status >= 500) {
           lastErr = new NansenError(endpoint, res.status, text);

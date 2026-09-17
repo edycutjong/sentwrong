@@ -109,7 +109,7 @@ export function classify(l: Lookups, now = Date.now()): Decision {
   }
   // 2. token contract
   if (l.search.ok) {
-    const hit = l.search.data.tokens.find((t) => lc(t.address) === l.address);
+    const hit = l.search.data.tokens.find((t) => lc(t.address) === l.address && lc(t.chain) === l.chain);
     if (hit) {
       ev.push({ code: "TOKEN_CONTRACT", field: "search/general → tokens[].address", value: `${hit.symbol} (${hit.name}) on ${hit.chain}`, meaning: `This address is the ${hit.symbol} token contract itself, not a wallet.` });
       return { route: "contract-or-burn", sub: "token-contract", confidence: "high", entity: hit.symbol, headline: `This is the ${hit.symbol} token contract. Tokens sent to a token contract cannot be withdrawn.`, evidence: ev, rule: 2, warnings };

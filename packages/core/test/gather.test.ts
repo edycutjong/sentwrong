@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { gather } from "../src/lookups.js";
 import { sentWrong, rowsFor, findTransfer } from "../src/verdict.js";
 import { CachedNansenClient, MemoryCache } from "../src/cache.js";
-import { fakeClient, binanceRoutes, search, txs, txRow, cps, related, noFunder, lookup, transfer, labels, R, HOT, USER, SENDER, KEY, binanceDeposit, ok } from "./helpers.js";
+import { fakeClient, binanceRoutes, search, txs, txRow, cps, related, noFunder, lookup, labels, R, HOT, USER, SENDER, KEY, binanceDeposit, ok } from "./helpers.js";
 
 describe("gather() over the wire", () => {
   it("rejects a malformed address before any call", async () => {
@@ -34,6 +34,13 @@ describe("gather() over the wire", () => {
     expect(c.creditsSpent).toBe(0);
     expect(l.skipped).toContain("profiler/address/transactions");
     expect(l.transactions.ok).toBe(false);
+  });
+  it("REGRESSION (review #10): a token hit on another chain does NOT short-circuit — the profiler lookups for the asked chain are made", async () => {
+    const c = fakeClient((e) => (e === "search/general" ? search([{ address: R, symbol: "WETH", chain: "base" }]) : binanceRoutes(e, {})));
+    const l = await gather(c, R, { chain: "ethereum" });
+    expect(l.skipped).not.toContain("profiler/address/transactions");
+    expect(c.calls.map((x) => x.endpoint)).toContain("profiler/address/transactions");
+    expect(l.transactions.ok).toBe(true);
   });
   it("a busy address (14-day page full) never requests the all-time window", async () => {
     const rows = Array.from({ length: 100 }, (_, i) => txRow({ from: R, to: USER, ts: `2026-09-1${i % 6}T00:00:${String(i % 60).padStart(2, "0")}`, hash: "0x" + String(i).padStart(64, "0") }));

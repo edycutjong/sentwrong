@@ -65,7 +65,9 @@ export async function gather(client: NansenClient, address: string, opts: Gather
 
   // 0 credits, fast: a token contract at this address ends the search before the expensive profiler calls start.
   const search = await settle(nansen.search(client, a));
-  const tokenHit = search.ok && search.data.tokens.some((t) => lc(t.address) === a);
+  // the hit must be on the chain being asked about: search/general is chain-agnostic, and a token deployed at this address
+  // on base says nothing about what the same address is on ethereum (independent review 2026-09-17, open item #10)
+  const tokenHit = search.ok && search.data.tokens.some((t) => lc(t.address) === a && lc(t.chain) === chain);
 
   const now = opts.now ?? Date.now();
   let transactionsWindow: Lookups["transactionsWindow"] = "14d";

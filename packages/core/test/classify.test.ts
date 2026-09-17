@@ -5,7 +5,6 @@ import { actionFor } from "../src/text.js";
 import { lookups, binanceDeposit, ok, fail, burn422, txs, txRow, cps, related, funder, noFunder, lookup, transfer, search, R, HOT, GAS, USER, SENDER } from "./helpers.js";
 
 const NOW = Date.parse("2026-09-16T14:00:00Z");
-const codes = (l: ReturnType<typeof lookups>) => classify(l, NOW).evidence.map((e) => e.code);
 
 describe("rule 1 — burn address (Nansen HTTP 422)", () => {
   it("transactions 422 'Burn address' → contract-or-burn/burn, high, BURN_422", () => {
@@ -31,6 +30,12 @@ describe("rule 2 — token contract (search/general)", () => {
     const d = classify(lookups({ search: ok(search([{ address: R, symbol: "USDC", name: "USD Coin" }])) }), NOW);
     expect(d).toMatchObject({ route: "contract-or-burn", sub: "token-contract", confidence: "high", entity: "USDC", rule: 2 });
     expect(d.evidence[0]).toMatchObject({ code: "TOKEN_CONTRACT", field: "search/general → tokens[].address" });
+  });
+  it("REGRESSION (review #10): a token found at this address on ANOTHER chain is not a token contract here — search/general is chain-agnostic, the verdict is per chain", () => {
+    const onBase = classify(lookups({ chain: "ethereum", search: ok(search([{ address: R, symbol: "WETH", chain: "base" }])) }), NOW);
+    expect(onBase.route).not.toBe("contract-or-burn");
+    const askedBase = classify(lookups({ chain: "base", search: ok(search([{ address: R, symbol: "WETH", chain: "base" }])) }), NOW);
+    expect(askedBase).toMatchObject({ route: "contract-or-burn", sub: "token-contract", entity: "WETH" });
   });
   it("a token at a DIFFERENT address does not match (case-insensitive compare on ours)", () => {
     const d = classify(lookups({ search: ok(search([{ address: HOT, symbol: "USDC" }])) }), NOW);
