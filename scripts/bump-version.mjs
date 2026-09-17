@@ -16,17 +16,28 @@ const dirs = [""]
   .concat((root.workspaces ?? []).flatMap((g) => (g.endsWith("/*") ? readdirSync(g.slice(0, -2)).map((d) => join(g.slice(0, -2), d)) : [g])))
   .filter((d) => existsSync(join(d, "package.json")));
 const log = [];
+// workspace package names — dependencies on them pinned to an exact version must follow the bump, or npm ci goes to the registry
+const names = new Set(dirs.map((d) => read(join(d, "package.json")).name).filter(Boolean));
+const retarget = (deps) => {
+  for (const [k, spec] of Object.entries(deps ?? {})) if (names.has(k) && /^\d+\.\d+\.\d+$/.test(spec)) deps[k] = v;
+};
 for (const d of dirs) {
   const f = join(d, "package.json");
   const j = read(f);
   j.version = v;
+  for (const k of ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"]) retarget(j[k]);
   write(f, j);
   log.push(`  ${f} -> ${v}`);
 }
 if (existsSync("package-lock.json")) {
   const l = read("package-lock.json");
   l.version = v;
-  for (const d of dirs) if (l.packages?.[d]) l.packages[d].version = v;
+  for (const d of dirs) {
+    const e = l.packages?.[d];
+    if (!e) continue;
+    e.version = v;
+    for (const k of ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"]) retarget(e[k]);
+  }
   write("package-lock.json", l);
   log.push(`  package-lock.json -> ${v} (${dirs.length} entries)`);
 }
