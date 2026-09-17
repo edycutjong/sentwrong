@@ -46,14 +46,14 @@ describe("CachedNansenClient", () => {
 });
 
 describe("review fixes (2026-09-16)", () => {
-  it("F1: nested bodies with different pagination get different keys", () => {
+  it("REGRESSION (cache key): two counterparties pages with different per_page collided on one key — nested body fields are part of the key, key order is not", () => {
     const a = cacheKey("profiler/address/counterparties", { chain: "ethereum", token_address: "0x1", pagination: { page: 1, per_page: 20 } });
     const b = cacheKey("profiler/address/counterparties", { chain: "ethereum", token_address: "0x1", pagination: { page: 1, per_page: 100 } });
     const c = cacheKey("profiler/address/counterparties", { chain: "ethereum", token_address: "0x1", pagination: { per_page: 20, page: 1 } });
     expect(a).not.toBe(b);
     expect(a).toBe(c);
   });
-  it("F2: ttlMs 0 (--no-cache) bypasses reads even when a fresh entry exists", async () => {
+  it("REGRESSION (--no-cache): ttlMs 0 still served a fresh cached entry — it bypasses reads, and what it writes does not poison the next cached read", async () => {
     const store = new MemoryCache();
     let hits = 0;
     const fetchImpl: typeof fetch = async () => { hits++; return new Response('{"v":1}', { status: 200 }); };
@@ -72,7 +72,7 @@ describe("review fixes (2026-09-16)", () => {
 });
 
 describe("review round 2: creditsSpent on the cached client", () => {
-  it("R2-2: failed calls are not charged", async () => {
+  it("REGRESSION (creditsSpent): a 503 was charged as a paid call — failed calls cost 0 credits", async () => {
     const store = new MemoryCache();
     const c = new CachedNansenClient(KEY, { fetchImpl: async () => new Response("x", { status: 503 }), rps: 1000, store });
     await expect(c.post("profiler/address/counterparties", { a: 1 }, [], { retries: 0 })).rejects.toThrow();

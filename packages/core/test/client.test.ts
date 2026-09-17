@@ -43,8 +43,8 @@ describe("NansenClient", () => {
   });
 });
 
-describe("review fix F5: retried attempts are visible", () => {
-  it("records attempts=2 and totalMs ≥ the retry backoff when the first attempt fails", async () => {
+describe("review fix: retried attempts are visible in provenance", () => {
+  it("REGRESSION (provenance): a retried call showed one attempt and the last attempt's ms — attempts=2 and totalMs ≥ the backoff are recorded", async () => {
     let n = 0;
     const c = fakeClient(() => (n++ === 0 ? new Response("x", { status: 503 }) : { ok: 1 }));
     await c.post("profiler/address/counterparties", {});
@@ -52,7 +52,7 @@ describe("review fix F5: retried attempts are visible", () => {
     expect(c.calls[0].totalMs).toBeGreaterThanOrEqual(700);
     expect(c.calls[0].ms).toBeLessThan(700);
   });
-  it("a first-attempt timeout is retried and counted", async () => {
+  it("REGRESSION (provenance): a first-attempt timeout was not retried — it is retried and counted as attempts=2", async () => {
     let n = 0;
     const fetchImpl: typeof fetch = async (_u, init) => {
       if (n++ === 0) await new Promise((_, rej) => init!.signal!.addEventListener("abort", () => rej(Object.assign(new Error("aborted"), { name: "AbortError" }))));
