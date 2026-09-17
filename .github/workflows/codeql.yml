@@ -32,5 +32,18 @@ jobs:
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
 
+      # Code scanning (the SARIF upload) is a free feature of PUBLIC repos; on this private repo it needs GHAS, which is
+      # not purchased. The queries run either way; until the repo goes public the SARIF is kept as a run artifact.
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
+        with:
+          upload: ${{ github.event.repository.private && 'never' || 'always' }}
+          output: codeql-results
+
+      - name: Keep the SARIF as an artifact while the repo is private
+        if: github.event.repository.private
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-sarif
+          path: codeql-results
+          retention-days: 14
