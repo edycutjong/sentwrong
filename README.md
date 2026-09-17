@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/assets/icon-animated.svg" width="96" alt="Sent Wrong mark — a transfer arrow stopped at a red wall; the Nansen label lands and one of four routes turns green">
+  <img src="docs/assets/icon-animated.svg" width="144" alt="Sent Wrong mark — a transfer arrow stopped at a red wall; the Nansen label lands and one of four routes turns green">
   <h1>Sent Wrong 🧭</h1>
   <p><em>Sent crypto to the wrong address? Paste it. Nansen tells you which of four recovery routes you're on — and drafts the ticket.</em></p>
   <img src="docs/assets/readme-hero-animated.svg" alt="Sent Wrong — routes a misdirected transfer: paste the address you sent to, the Nansen label lands, one of four recovery routes turns green and the ticket is drafted" width="100%">
