@@ -8,7 +8,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "types": ["node"],
-    "paths": { "@sentwrong/core": ["./packages/core/src/index.ts"] }
+    "paths": { "@sentwrong/core": ["./packages/core/src/index.ts"], "@/*": ["./apps/web/*"] }
   },
   "include": ["packages/**/*.ts", "scripts/**/*.ts", "e2e/**/*.ts", "playwright.config.ts"],
   "exclude": ["apps/**", "node_modules"]
