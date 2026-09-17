@@ -91,7 +91,7 @@ code { font-family: var(--mono); font-size: 0.92em; background: rgba(255, 255, 2
 .search button:active { transform: scale(0.97); }
 .search button:disabled { opacity: 0.6; cursor: wait; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.chip { border: 1px solid var(--border-2); background: transparent; color: var(--text-2); border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 500; transition: border-color 120ms, color 120ms, background 120ms; }
+.chip { border: 1px solid var(--border-2); background: transparent; color: var(--text-2); border-radius: 999px; padding: 6px 12px; min-height: 36px; font-size: 13px; font-weight: 500; transition: border-color 120ms, color 120ms, background 120ms; }
 .chip:hover, .chip:focus-visible { border-color: var(--accent); color: var(--text); outline: none; }
 .chip.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
 .chip.on:hover { filter: brightness(1.12); color: var(--accent-ink); }
