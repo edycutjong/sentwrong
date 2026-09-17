@@ -8,6 +8,7 @@
   <br/>
 
   [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://sentwrong-app.vercel.app)
+  [![For the Judge](https://img.shields.io/badge/⚖️_For_the-Judge-22c55e?style=for-the-badge)](https://sentwrong-app.vercel.app/judge)
   [![Built for Nansen Meridian](https://img.shields.io/badge/Nansen-Meridian_Buildathon-8b5cf6?style=for-the-badge)](https://nansen.ai/campaigns/meridian-buildathon)
 
   <br/>
@@ -17,6 +18,7 @@
   ![Nansen API](https://img.shields.io/badge/Nansen_API-7_endpoints-1c1c1c?style=flat)
   [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat)](https://opensource.org/licenses/MIT)
   [![CI](https://github.com/edycutjong/sentwrong/actions/workflows/ci.yml/badge.svg)](https://github.com/edycutjong/sentwrong/actions/workflows/ci.yml)
+  [![Release](https://img.shields.io/github/v/release/edycutjong/sentwrong?sort=semver&style=flat)](https://github.com/edycutjong/sentwrong/releases/latest)
 
 </div>
 
@@ -81,7 +83,7 @@ flowchart LR
 | Cache / replay | read-through cache keyed by sha256(endpoint + body), 24 h TTL, `NANSEN_OFFLINE=1` replay of recorded fixtures | `packages/core/src/cache.ts`, `fixtures/` |
 | CLI | `tsx` — `sentwrong <address> [--from] [--chain] [--json] [--explain] [--deep] [--no-cache]` | `packages/cli` |
 | Web | Next.js 15 — live-streaming call rows, verdict card, copy button, share page, route-coloured OG card; key stays server-side | `apps/web` |
-| Tests / CI | vitest (114 tests), offline fixture replay, GitHub Actions | `.github/workflows/ci.yml` |
+| Tests / CI | vitest (128 tests: unit, 40,000-case property, key-boundary), Playwright (5 suites, no key), offline fixture replay, 6-stage GitHub Actions pipeline + CodeQL + gitleaks + Dependabot | `.github/workflows/` |
 | Hosting | Vercel — production domain tracks `main` | https://sentwrong-app.vercel.app |
 
 ## 🏆 Nansen Integration
@@ -114,7 +116,10 @@ What we learned the hard way is in [docs/DX-REPORT.md](docs/DX-REPORT.md) — in
 
 | Metric | Value |
 |---|---|
-| Tests | **114 vitest tests** (`npm test`), 3 s |
+| Tests | **128 vitest tests** (`npm test`), 9 s — **11 regression tests named after the defect they pin**, 8 key-boundary tests, 4 property-based tests |
+| Property-based verification | **40,000 generated Nansen response sets** through `classify()` (fast-check, 4 properties × 10,000): exactly one of the five routes every time · a failed `transactions` lookup never yields a stranger verdict · the decision hash is invariant to USD prices · pure. All 14 route/sub-state pairs reached |
+| E2E (Playwright) | **5 suites, 44 runs** (chromium + Pixel 7) against the built app with **no key**: home, `/judge`, validation + honest no-key error, responsive 375/768/1440, key-never-reaches-the-client |
+| Lighthouse (`npm run lighthouse`) | `/` and `/judge`: performance **100** · accessibility **100** · best practices 96 · SEO **100** (desktop, median of 3, 2026-09-17) |
 | Fixtures | **13** real Nansen responses recorded live 2026-09-16, byte-for-byte; `npm run verify` → **13/13 verdicts reproduced offline**, same decision hash, 0 network, 0 credits |
 | Benchmark, cold (13 addresses × 3 runs, every call live) | **p50 3157 ms · p95 6477 ms** · max 10567 ms |
 | Benchmark, warm (same verdict from cache) | **p50 2 ms · p95 5 ms** · max 7 ms · 0 credits · identical decision hash on every run |
@@ -191,23 +196,54 @@ Timed with `date` around each step on a fresh clone into an empty directory (mac
 | 2 | `export NANSEN_API_KEY=…` | typing |
 | 3 | `npm run sentwrong -- 0xe460774c849089ee3edf0fb06da14c066caabbef --explain` (live, 13 credits) | 6 s (5.0 s of it Nansen); an independent re-run from a second fresh clone at 23:55 UTC took 13 s — Nansen's per-call latency varies 0.3–3 s by the minute |
 | 4 | `npm run verify` — 13 recorded verdicts replayed offline, 0 credits, 0 network | < 1 s |
-| 5 | `npm test` — 114 vitest tests | 3 s |
+| 5 | `npm test` — 128 vitest tests | 9 s |
 | 6 | `npm run dev -w apps/web`, open http://localhost:3000, paste an address | ~20 s (first compile) |
 | | **Total, including reading this README** | **well under 10 minutes; the commands themselves take 40–60 s** (a cold npm cache adds a minute or two) |
 
 ## 🧪 Testing & CI
 
+**6-stage pipeline** (`.github/workflows/ci.yml`): Quality → Security → Build → E2E → Performance → Deploy Gate, with concurrency control and a Node 20/22/24 matrix on `main`.
+
 ```bash
-npm test                  # 114 vitest tests, 3 s
+# ── Code quality ────────────────────────────
+npm run lint              # ESLint (flat config, TS + React hooks)
+npm run format:check      # Prettier
+npm run typecheck         # tsc --noEmit (engine, CLI, scripts, e2e) — CI also runs it for apps/web
+npm test                  # 128 vitest tests, 9 s
+npm run test:coverage     # + v8 coverage (engine 90 %+)
 npm run verify            # replay the 13 fixtures with NANSEN_OFFLINE=1 — 13/13 verdicts, same hash, no key, no network
-npm run typecheck         # tsc --noEmit (root) — CI also runs it for apps/web
-npm run check:submission  # no unfilled text, section names, test/fixture counts vs reality, links
+npm run check:submission  # no unfilled text, section names, test / fixture / property-case counts vs reality, links
+npm run ci                # all of the above
+
+# ── Advanced testing ────────────────────────
+npm run e2e               # Playwright, 5 suites — builds and starts the web app WITHOUT a key
+npm run e2e:ui            # Playwright interactive mode
+npm run lighthouse        # Lighthouse CI on / and /judge (a11y ≥ 0.9 is a hard gate)
 npm run bench             # 13 addresses × 3 runs live, cold/warm p50/p95 — costs credits
+
+# ── Security ────────────────────────────────
+npm run audit             # npm audit --audit-level=high
 ```
 
-- **114 vitest tests** (`npm test`): the decision table rule by rule, with the regressions live QA produced (a wallet depositing into its own `Binance: Deposit` address; Nansen's 🏦 marker on Uniswap's router; an exchange wallet given as "your address"; a DEX router read as a "forwarder"; a transactions timeout read as "nothing on record"), label parsing on the exact strings Nansen returns, the action texts, the wire-level call plan, client retry/timeout, cache, and a replay of every fixture.
+| Layer | Tool | Status |
+|---|---|---|
+| Code quality | ESLint + Prettier + TypeScript strict (engine, web app, e2e) | ✅ |
+| Unit testing | vitest — 128 tests, v8 coverage | ✅ |
+| High-signal tests | 11 defect-named regressions · 40,000-case property verification of `classify()` · key-boundary tests | ✅ |
+| E2E testing | Playwright — 5 suites × 2 browsers, no key | ✅ |
+| Security (SAST) | CodeQL (`javascript-typescript`) | ✅ |
+| Security (SCA) | Dependabot (4 npm manifests + actions, grouped monthly, no majors) + `npm audit` + license-checker | ✅ |
+| Secret scanning | gitleaks over the full history + TruffleHog (verified only) in CI | ✅ |
+| Performance | Lighthouse CI (`/`, `/judge`), bundle budget | ✅ |
+| Releases | `release.yml` — semantic version from conventional commits, from v1.0.0 | ✅ |
+| Community | Code of conduct, contributing, security policy, issue + PR templates | ✅ |
+
+- **128 vitest tests** (`npm test`): the decision table rule by rule, with the regressions live QA produced (a wallet depositing into its own `Binance: Deposit` address; Nansen's 🏦 marker on Uniswap's router; an exchange wallet given as "your address"; a DEX router read as a "forwarder"; a transactions timeout read as "nothing on record"), label parsing on the exact strings Nansen returns, the action texts, the wire-level call plan, client retry/timeout, cache, and a replay of every fixture.
 - **13 fixtures** (`fixtures/*.json`): real Nansen responses recorded live on 2026-09-16 by `npm run seed`, byte-for-byte, never edited, no key material. `npm run verify` replays them with `NANSEN_OFFLINE=1` → **13/13 verdicts reproduced offline**, same decision hash, zero network, zero credits. They exist so CI and a judge without a key can see the engine decide; the CLI and the web app hit Nansen live by default and say "cached" when they do not.
-- CI (`.github/workflows/ci.yml`): typecheck, tests, offline verify, submission-readiness check — no key needed.
+- **40,000-case property verification** (`packages/core/test/classify.property.test.ts`): fast-check generates whole Nansen response sets — real label strings, 422 refusals, timeouts, spoof tokens, deployer relations, senders — and `classify()` must give exactly one enumerated route with at least one evidence line every time, never turn a failed `transactions` lookup into a stranger verdict, keep the decision hash invariant to USD prices, and stay pure.
+- **Key-boundary tests** (`packages/core/test/boundary.test.ts`, `e2e/key-boundary.spec.ts`): the server key never appears in the verdict JSON, the streamed provenance, an error, the fixtures, the page HTML, the JS bundles or the OG route; malformed input is rejected before any network call. This is the concrete claim in [SECURITY.md](.github/SECURITY.md).
+- **E2E** (`e2e/`, Playwright): the built app runs **without** a key — the home page, `/judge` (200, no cookies, claim present), the validation path (400 before any lookup), the honest "no key" banner instead of a fabricated verdict, and 375/768/1440 px layouts.
+- CI (`.github/workflows/`): the 6-stage pipeline above, CodeQL, gitleaks (full history), Dependabot, and `release.yml` — no key needed anywhere.
 
 ## 📁 Project Structure
 
@@ -216,14 +252,17 @@ packages/core/src   the engine: client.ts (NansenClient) · cache.ts · nansen.t
                     · lookups.ts (gather) · classify.ts (decision table) · text.ts · verdict.ts · fixtures.ts
 packages/cli        sentwrong <address> [--from] [--chain] [--json] [--explain] [--deep] [--no-cache]
 apps/web            Next.js 15: / · /api/verdict (NDJSON stream) · /q/[address] (share page) · /api/og
+e2e/                Playwright suites (run against the built app with no key) · playwright.config.ts · lighthouserc.json
 scripts             spike.ts · seed.ts · verify.ts · bench.ts · check_submission_readiness.ts
 fixtures/           13 recorded live runs (real Nansen responses, byte-for-byte, no key material)
 docs/               SCORING.md (the decision table) · DX-REPORT.md (Nansen API friction log) · screenshots/
-ARCHITECTURE.md · DEMO.md · LICENSE
+.github/            ci.yml (6 stages) · codeql.yml · gitleaks.yml · release.yml · dependabot.yml · community files
+ARCHITECTURE.md · DEMO.md · JUDGE.md (mirror of /judge) · LICENSE
 ```
 
 ## 📽️ Demo Materials
 
+- **For the judge:** https://sentwrong-app.vercel.app/judge — the claim, the 30-second click path with live links, the real-run receipts, the reproduce command, three honest limitations. Mirrored in [JUDGE.md](JUDGE.md).
 - **Live app:** https://sentwrong-app.vercel.app — same engine as the CLI, key server-side, rows stream as each Nansen call lands.
 - **[30-second demo](DEMO.md):** the shot list, the hero query's verbatim `--explain --no-cache` output, and the full benchmark table with reproduce steps.
 - **[How it decides](docs/SCORING.md)** · **[Architecture](ARCHITECTURE.md)** · **[Nansen API friction log](docs/DX-REPORT.md)**

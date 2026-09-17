@@ -20,10 +20,26 @@ const real = (() => { try { const out = execSync("npx vitest run --reporter=json
 ok(real === testCount, `README says ${testCount} tests, vitest reports ${real === -1 ? "nothing (could not run vitest --reporter=json)" : real}`);
 const fixtures = existsSync("fixtures") ? readdirSync("fixtures").filter((f) => f.endsWith(".json")).length : 0;
 ok(readme.includes(`${fixtures} fixtures`) || readme.includes(`${fixtures}/${fixtures}`), `README fixture count does not match ${fixtures} files`);
+// 3b. the property-test case count the README and JUDGE.md publish = NUM_RUNS × properties in the test file
+const prop = readFileSync("packages/core/test/classify.property.test.ts", "utf8");
+const runs = Number((/NUM_RUNS = ([\d_]+)/.exec(prop)?.[1] ?? "0").replace(/_/g, ""));
+const props = (prop.match(/fc\.assert\(/g) ?? []).length;
+const cases = (runs * props).toLocaleString("en-US");
+ok(runs >= 10_000 && props >= 1, `property test: NUM_RUNS ${runs} × ${props} properties`);
+ok(readme.includes(`${cases} generated`), `README does not state the property-test case count ${cases}`);
+// 3c. JUDGE.md mirrors /judge and carries the same claim and counts as the README
+const judge = readFileSync("JUDGE.md", "utf8");
+const claim = /<em>(.+?)<\/em>/.exec(readme)?.[1] ?? "";
+ok(claim.length > 20 && judge.includes(claim), "JUDGE.md does not carry the README's one-sentence claim verbatim");
+ok(judge.includes(`${testCount} vitest tests`), `JUDGE.md test count differs from the README's ${testCount}`);
+ok(judge.includes(`${cases} generated`), `JUDGE.md does not state the property-test case count ${cases}`);
+const judgePage = readFileSync("apps/web/app/judge/page.tsx", "utf8");
+ok(judgePage.includes(`${testCount} vitest tests`) && judgePage.includes(`${cases} generated`), "/judge page counts differ from the README");
+ok(!/NANSEN_OFFLINE/.test(/pre className="cmd">\{`([\s\S]*?)`\}/.exec(judgePage)?.[1] ?? ""), "/judge reproduce command contains the offline flag");
 // 4. screenshots referenced exist
 for (const m of readme.matchAll(/docs\/screenshots\/([\w-]+\.png)/g)) ok(existsSync(`docs/screenshots/${m[1]}`), `screenshot ${m[1]} missing`);
 // 5. required files
-for (const f of ["LICENSE", "DEMO.md", "ARCHITECTURE.md", "docs/SCORING.md", "docs/DX-REPORT.md", ".github/workflows/ci.yml"]) ok(existsSync(f), `${f} missing`);
+for (const f of ["LICENSE", "DEMO.md", "ARCHITECTURE.md", "JUDGE.md", "docs/SCORING.md", "docs/DX-REPORT.md", ".env.example", "playwright.config.ts", "lighthouserc.json", "e2e/judge-route.spec.ts", "e2e/key-boundary.spec.ts", ".github/workflows/ci.yml", ".github/workflows/codeql.yml", ".github/workflows/gitleaks.yml", ".github/workflows/release.yml", ".github/dependabot.yml", ".github/SECURITY.md", ".github/CONTRIBUTING.md", ".github/CODE_OF_CONDUCT.md", ".github/PULL_REQUEST_TEMPLATE.md", ".github/ISSUE_TEMPLATE/bug_report.md", ".github/ISSUE_TEMPLATE/feature_request.md"]) ok(existsSync(f), `${f} missing`);
 // 6. no kitchen files, no key
 for (const f of ["CLAUDE.md", "AGENTS.md", ".claude", "specs", "PROGRESS.md", "project.json", ".env"]) ok(!existsSync(f), `kitchen file ${f} present in the repo`);
 ok(!/nsn_[a-z0-9]{20,}/i.test(execSync("git grep -I -h nsn_ -- . ':!README.md' || true", { encoding: "utf8" })), "an API key-looking string is in the tree");
@@ -35,4 +51,4 @@ for (const u of links) {
   catch { /* offline */ }
 }
 if (fails.length) { console.error("✖ not ready:\n  " + fails.join("\n  ")); process.exit(1); }
-console.log(`✔ submission-ready: ${testCount} tests, ${fixtures} fixtures, ${links.length} links checked`);
+console.log(`✔ submission-ready: ${testCount} tests, ${cases} property cases, ${fixtures} fixtures, ${links.length} links checked`);
