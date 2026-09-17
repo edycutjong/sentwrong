@@ -13,7 +13,7 @@ const readme = readFileSync("README.md", "utf8");
 // 1. placeholders
 for (const p of ["TODO", "TBD", "lorem", "XXX", "<insert", "coming soon", "PLACEHOLDER"]) ok(!readme.toLowerCase().includes(p.toLowerCase()), `README contains placeholder "${p}"`);
 // 2. sections
-for (const h of ["## What it does", "## The four routes", "## Quickstart", "## Runs in under 10 minutes", "## Nansen integration", "## Why only Nansen", "## Tests, fixtures and replay", "## Benchmark", "## License"]) ok(readme.includes(h), `README missing section "${h}"`);
+for (const h of ["## 💡 The Problem & Solution", "### The four routes", "## 🏗️ Architecture & Tech Stack", "## 🏆 Nansen Integration", "### Why only Nansen", "## 📊 Engineering Rigor", "### Honest limits (", "## 🚀 Getting Started", "### Runs in under 10 minutes", "## 🧪 Testing & CI", "### Benchmark", "## 📽️ Demo Materials", "## 📄 License"]) ok(readme.includes(h), `README missing section "${h}"`);
 // 3. counts match
 const testCount = Number(/(\d+) vitest tests/.exec(readme)?.[1] ?? 0);
 const real = (() => { try { const out = execSync("npx vitest run --reporter=json 2>/dev/null", { encoding: "utf8" }); const j = JSON.parse(out.slice(out.indexOf("{"))); return j.numTotalTests as number; } catch { return -1; } })();

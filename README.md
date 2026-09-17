@@ -1,22 +1,49 @@
 <div align="center">
+  <h1>Sent Wrong 🧭</h1>
+  <p><em>Sent crypto to the wrong address? Paste it. Nansen tells you which of four recovery routes you're on — and drafts the ticket.</em></p>
+  <img src="docs/screenshots/02-binance-deposit.png" alt="Sent Wrong — verdict for a Binance deposit address" width="100%">
 
-# Sent Wrong
+  <p>A cold verdict on the hero address costs <b>13 credits</b> across <b>10 Nansen calls</b> and returns in <b>3.9 s</b>; its decision hash <code>3ea6cfcd752b</code> reproduces from a second fresh clone and from the recorded fixture. <code>npm run verify</code> replays <b>13/13</b> verdicts offline — zero network, zero credits.</p>
 
-**Sent crypto to the wrong address? Paste it. Nansen tells you which of four recovery routes you're on — and drafts the ticket.**
+  <br/>
 
-[Live app](https://sentwrong-app.vercel.app) · [30-second demo](DEMO.md) · [How it decides](docs/SCORING.md) · [Architecture](ARCHITECTURE.md) · [Nansen API friction log](docs/DX-REPORT.md)
+  [![Live Demo](https://img.shields.io/badge/🚀_Live-Demo-06b6d4?style=for-the-badge)](https://sentwrong-app.vercel.app)
+  [![Built for Nansen Meridian](https://img.shields.io/badge/Nansen-Meridian_Buildathon-8b5cf6?style=for-the-badge)](https://nansen.ai/campaigns/meridian-buildathon)
 
-![verdict for a Binance deposit address](docs/screenshots/02-binance-deposit.png)
+  <br/>
+
+  ![Next.js](https://img.shields.io/badge/Next.js_15-black?style=flat&logo=next.js)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+  ![Nansen API](https://img.shields.io/badge/Nansen_API-7_endpoints-1c1c1c?style=flat)
+  [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat)](https://opensource.org/licenses/MIT)
+  [![CI](https://github.com/edycutjong/sentwrong/actions/workflows/ci.yml/badge.svg)](https://github.com/edycutjong/sentwrong/actions/workflows/ci.yml)
 
 </div>
 
-## What it does
+---
+
+## 📸 See it in Action
+
+| | |
+|---|---|
+| ![input](docs/screenshots/01-input.png) | ![burn address](docs/screenshots/03-burn.png) |
+| [input](docs/screenshots/01-input.png) | [burn address](docs/screenshots/03-burn.png) |
+| ![poisoning look-alike](docs/screenshots/04-poisoner.png) | ![your own wallet, mobile](docs/screenshots/05-own-wallet-mobile.png) |
+| [poisoning look-alike](docs/screenshots/04-poisoner.png) | [your own wallet, mobile](docs/screenshots/05-own-wallet-mobile.png) |
+
+Screenshots: [input](docs/screenshots/01-input.png) · [Binance deposit](docs/screenshots/02-binance-deposit.png) · [burn address](docs/screenshots/03-burn.png) · [poisoning look-alike](docs/screenshots/04-poisoner.png) · [your own wallet, mobile](docs/screenshots/05-own-wallet-mobile.png)
+
+## 💡 The Problem & Solution
+
+### The Problem
 
 Someone sends USDC to an old deposit address from an email, a look-alike address planted in their history, or a contract. At 2 am they are Googling "can I get it back" and the first three results are recovery scams. The answer depends entirely on **what the recipient address is**, and only Nansen's entity labels know that for user-level addresses.
 
+### The Solution
+
 Sent Wrong takes the recipient address (and optionally yours), runs ten Nansen profiler and transaction lookups, and returns **one verdict card** with exactly one route, the Nansen evidence behind it (endpoint and field, on the card), and one copy button holding the message to send. No dashboard, no accounts, no token.
 
-## The four routes
+### The four routes
 
 | Route | What Nansen showed | What you get |
 |---|---|---|
@@ -27,9 +54,100 @@ Sent Wrong takes the recipient address (and optionally yours), runs ten Nansen p
 
 Anything Nansen could not answer is a **retry**, never a verdict. Failed lookups are listed on the card, not hidden.
 
-Screenshots: [input](docs/screenshots/01-input.png) · [Binance deposit](docs/screenshots/02-binance-deposit.png) · [burn address](docs/screenshots/03-burn.png) · [poisoning look-alike](docs/screenshots/04-poisoner.png) · [your own wallet, mobile](docs/screenshots/05-own-wallet-mobile.png)
+## 🏗️ Architecture & Tech Stack
 
-## Quickstart
+One engine (`packages/core`), two faces (CLI and web). `gather()` is all the I/O — staged so a token contract ends the search at 0 credits and a quiet address gets its whole history; `classify()` is a pure decision table; `text()` writes the copy button. Every failure is a value, never an exception. Full module-by-module notes and the cold call trace are in [ARCHITECTURE.md](ARCHITECTURE.md); the decision table is [docs/SCORING.md](docs/SCORING.md).
+
+```mermaid
+flowchart LR
+  IN["recipient address<br/>(+ optional --from)"] --> S0
+  subgraph gather ["gather() — lookups.ts, every call through the 24 h cache"]
+    S0["Stage 0<br/>search/general · 0 cr<br/>token contract? → stop"] --> S1
+    S1["Stage 1 (parallel)<br/>transactions 14 d · related-wallets · first-funder"] --> S2
+    S2["Stage 2<br/>all-time transactions + counterparties (quiet addresses)<br/>sender's related-wallets (--from)"] --> S3
+    S3["Stage 3<br/>transaction-with-token-transfer-lookup × ≤4<br/>newest sweeps · newest inbound · funding tx → entity labels"]
+  end
+  S3 --> C["classify() — pure decision table<br/>burn (422) → token contract → Deposit label → sweep pattern<br/>→ contract/forwarder → your wallet → stranger → retry"]
+  C --> T["text() — ticket / checklist / memo / note"]
+  T --> V["verdict card + provenance<br/>route · evidence (endpoint → field) · credits · decision hash"]
+  V --> CLI["CLI: npm run sentwrong"]
+  V --> WEB["Web: /api/verdict NDJSON stream → card → /q/[address] share page"]
+```
+
+| Layer | Choice | Where |
+|---|---|---|
+| Data | Nansen API — 7 endpoints, the only source consulted (no Etherscan, no RPC, no local address list) | `packages/core/src/nansen.ts`, `client.ts` |
+| Engine | TypeScript: `lookups.ts` → `classify.ts` → `text.ts` → `verdict.ts`; sha256 decision hash | `packages/core` |
+| Cache / replay | read-through cache keyed by sha256(endpoint + body), 24 h TTL, `NANSEN_OFFLINE=1` replay of recorded fixtures | `packages/core/src/cache.ts`, `fixtures/` |
+| CLI | `tsx` — `sentwrong <address> [--from] [--chain] [--json] [--explain] [--deep] [--no-cache]` | `packages/cli` |
+| Web | Next.js 15 — live-streaming call rows, verdict card, copy button, share page, route-coloured OG card; key stays server-side | `apps/web` |
+| Tests / CI | vitest (114 tests), offline fixture replay, GitHub Actions | `.github/workflows/ci.yml` |
+| Hosting | Vercel — production domain tracks `main` | https://sentwrong-app.vercel.app |
+
+## 🏆 Nansen Integration
+
+Every decision term is a Nansen response field. Nothing else is consulted — no Etherscan, no RPC, no local address list.
+
+| Endpoint | Credits | Fields used | What it decides |
+|---|---|---|---|
+| `search/general` | 0 | `tokens[].address/symbol/chain` | token contract at this address → contract route, before anything is paid for |
+| `profiler/address/transactions` | 1 (+1 all-time for quiet addresses) | `data[].method`, `tokens_sent[].to_address`, `tokens_received[].from_address/token_symbol`, `block_timestamp`, `transaction_hash`, `pagination.is_last_page`; **HTTP 422 "Burn address"** | in/out counts, the sweep hashes to look up, last activity, the sender's transfer, homoglyph spoof tokens (poisoning), burn |
+| `profiler/address/counterparties` | 5 | `counterparty_address`, `counterparty_address_label`, `interaction_count`, `volume_in_usd`, `volume_out_usd` | outflow concentration (100 % to one wallet = sweep), look-alike counterparties (poisoning), the evidence table |
+| `profiler/address/related-wallets` | 1 (+1 on your address) | `relation`, `address`, `address_label` | `Deployed by`/`Created by` → contract; recipient ↔ sender link → your own wallet |
+| `profiler/address/first-funder` | 1 | `first_funder_address`, `first_funder_name`, `transaction_hash`, `chain` | funder identity (exchange gas dripper vs you), the funding tx to look up |
+| `transaction-with-token-transfer-lookup` | 1 × ≤4 | `token_transfer_array[].from_address_label`, `to_address_label`, `from_address`, `to_address` | **the entity labels** — `🏦 Binance: Deposit`, `🏦 Coinbase`, `🤖 BitGo MultiSig`, `🤖 🏦 Uniswap: V2 Router 2` — on the address and its counterparties |
+| `profiler/address/labels` | 100, `--deep` only | `label`, `category`, `kind` | a second opinion; the card says whether it agrees |
+
+A cold verdict costs 0–13 credits and makes 1–10 calls; a warm one (24 h cache) costs 0. The full decision table with the real numbers is in [docs/SCORING.md](docs/SCORING.md).
+
+### Why only Nansen
+
+- **User-level deposit addresses are labelled.** Etherscan tags "Binance 14"; Nansen's `transaction-with-token-transfer-lookup` labels the customer's deposit address itself — `🏦 Binance: Deposit [0xe46077]` — for 1 credit. That single field is the difference between "some address" and "file a ticket with Binance".
+- **Relations, not just code.** `related-wallets.relation` says `Deployed by`, `Created by`, `First Funder`, `Multisig Signer of` — an RPC says "contract or not", never whose.
+- **The gas dripper identifies the exchange** before a deposit address has ever swept: `first-funder` → funding tx → `🏦 Binance [0x943080]`.
+- **Aggregates per counterparty.** `counterparties.volume_out_usd` gives the 100 %-to-one-wallet sweep signature in one row.
+- **Even the refusal is a signal**: `422 Burn address not allowed`.
+
+What we learned the hard way is in [docs/DX-REPORT.md](docs/DX-REPORT.md) — including that the cheap profiler label fields carry wealth tags only, and that the all-time date range makes Nansen time out on routers (hence the 14-day/all-time two-stage window).
+
+## 📊 Engineering Rigor
+
+| Metric | Value |
+|---|---|
+| Tests | **114 vitest tests** (`npm test`), 3 s |
+| Fixtures | **13** real Nansen responses recorded live 2026-09-16, byte-for-byte; `npm run verify` → **13/13 verdicts reproduced offline**, same decision hash, 0 network, 0 credits |
+| Benchmark, cold (13 addresses × 3 runs, every call live) | **p50 3157 ms · p95 6477 ms** · max 10567 ms |
+| Benchmark, warm (same verdict from cache) | **p50 2 ms · p95 5 ms** · max 7 ms · 0 credits · identical decision hash on every run |
+| Credits per verdict | mean **10.2** · min 0 · max 13 (39 verdicts, 309 live calls, 0 non-422 failures) |
+| Hero verdict | 13 credits · 10 calls · 3.9 s · hash `3ea6cfcd752b` — stable across two `--no-cache` runs 45 s apart and a second fresh clone |
+| Timed clean clone | commands take 40–60 s end to end (see [Runs in under 10 minutes](#runs-in-under-10-minutes)) |
+
+### Benchmark
+
+`npm run bench` — 13 addresses × 3 runs, cold (fresh cache, every call live) then warm (same verdict from cache), decision hash compared. Numbers and reproduce steps in [DEMO.md](DEMO.md).
+
+### Honest limits (11)
+
+1. The hero address, the poisoning look-alikes and the burn/contract examples are real addresses found on-chain the day this was built; deposit addresses were harvested from one USDT sweep block into Binance 14 and one into Coinbase 10.
+2. "Odds" on the stranger route are words, not numbers: Nansen tells us whether the wallet moves funds; nobody knows whether its owner is honest.
+3. A verdict is triage, not legal advice. Do not pay anyone who promises to recover funds — every route's text says so.
+4. Nansen's per-call latency varies 0.3–3 s by the minute: the hero verdict measured 6 s on one fresh clone and 13 s on an independent re-run from a second (independent review 2026-09-16). The Uniswap V2 router — the busiest address in the bench set — can still hit the 10 s `transactions` cap and retry (10.6 s on one run; 3.6 s and 3.4 s on the others).
+5. The 24 h on-disk cache is local only. On Vercel the cache is in-memory per function instance, so a cold start is fully live and a rehearsal does not reliably warm it — rehearse and record against `npm run dev -w apps/web` (independent review 2026-09-16).
+6. **Bug found in review, fixed with a regression test:** the Uniswap V3 SwapRouter was read as a *forwarder* "that sweeps into Uniswap custody" because its outflow lands in labelled pools. A custodian must now carry a non-contract label; a DEX router is `contract-or-burn · contract` (independent review 2026-09-16, commit 33095ea).
+7. **Bug found in review, fixed with a regression test:** a `transactions` timeout with the other lookups answering fell through to `active-stranger · fresh` — "Nothing on record" — a fabricated verdict on a slow Nansen minute. It is now a `retry` with `TRANSACTIONS_FAILED` (independent review 2026-09-16, commit 33095ea).
+8. **Found in review:** Nansen returns `data: []` on every profiler endpoint for vitalik.eth, so the *fresh* headline no longer promises that waiting will help — Nansen may simply not index the address (independent review 2026-09-16; SCORING.md rule 7).
+9. **Bug found in review, fixed:** the CLI cache TTL was 30 min in code while the docs said 24 h — now 24 h; and `/q/[address]` computed the verdict twice per view (`generateMetadata` + page), now deduped with React `cache()` (independent review 2026-09-16, commit 3390a30).
+10. **Found in review, fixed:** the README linked a deployment-specific preview URL that would never receive fixes; it now links the production domain, which tracks `main` (independent review 2026-09-16, commit db45092).
+11. `--deep` (`profiler/address/labels`) costs **100 credits** and is never automatic; its cost is printed before it runs and the card says whether it agrees.
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node 20+ (`engines` in `package.json`; timed on Node 22)
+- A Nansen API key from https://app.nansen.ai/api — free tier works (a verdict costs 0–13 credits)
+
+### Installation
 
 One env var, `npm i`, one command.
 
@@ -63,7 +181,7 @@ Options: `--from <your address>` (own-wallet check + finds your transfer for the
 
 Web app: `npm run dev -w apps/web` → http://localhost:3000 (same engine; the key stays on the server; rows appear as each Nansen call lands; locally it shares the CLI's on-disk 24 h cache layout under `apps/web/.cache`, so a rehearsed address stays warm across restarts).
 
-## Runs in under 10 minutes
+### Runs in under 10 minutes
 
 Timed with `date` around each step on a fresh clone into an empty directory (macOS, Node 22, warm npm cache, 2026-09-16 15:05 UTC):
 
@@ -77,48 +195,39 @@ Timed with `date` around each step on a fresh clone into an empty directory (mac
 | 6 | `npm run dev -w apps/web`, open http://localhost:3000, paste an address | ~20 s (first compile) |
 | | **Total, including reading this README** | **well under 10 minutes; the commands themselves take 40–60 s** (a cold npm cache adds a minute or two) |
 
-## Nansen integration
+## 🧪 Testing & CI
 
-Every decision term is a Nansen response field. Nothing else is consulted — no Etherscan, no RPC, no local address list.
-
-| Endpoint | Credits | Fields used | What it decides |
-|---|---|---|---|
-| `search/general` | 0 | `tokens[].address/symbol/chain` | token contract at this address → contract route, before anything is paid for |
-| `profiler/address/transactions` | 1 (+1 all-time for quiet addresses) | `data[].method`, `tokens_sent[].to_address`, `tokens_received[].from_address/token_symbol`, `block_timestamp`, `transaction_hash`, `pagination.is_last_page`; **HTTP 422 "Burn address"** | in/out counts, the sweep hashes to look up, last activity, the sender's transfer, homoglyph spoof tokens (poisoning), burn |
-| `profiler/address/counterparties` | 5 | `counterparty_address`, `counterparty_address_label`, `interaction_count`, `volume_in_usd`, `volume_out_usd` | outflow concentration (100 % to one wallet = sweep), look-alike counterparties (poisoning), the evidence table |
-| `profiler/address/related-wallets` | 1 (+1 on your address) | `relation`, `address`, `address_label` | `Deployed by`/`Created by` → contract; recipient ↔ sender link → your own wallet |
-| `profiler/address/first-funder` | 1 | `first_funder_address`, `first_funder_name`, `transaction_hash`, `chain` | funder identity (exchange gas dripper vs you), the funding tx to look up |
-| `transaction-with-token-transfer-lookup` | 1 × ≤4 | `token_transfer_array[].from_address_label`, `to_address_label`, `from_address`, `to_address` | **the entity labels** — `🏦 Binance: Deposit`, `🏦 Coinbase`, `🤖 BitGo MultiSig`, `🤖 🏦 Uniswap: V2 Router 2` — on the address and its counterparties |
-| `profiler/address/labels` | 100, `--deep` only | `label`, `category`, `kind` | a second opinion; the card says whether it agrees |
-
-A cold verdict costs 0–13 credits and makes 1–10 calls; a warm one (24 h cache) costs 0. The full decision table with the real numbers is in [docs/SCORING.md](docs/SCORING.md).
-
-## Why only Nansen
-
-- **User-level deposit addresses are labelled.** Etherscan tags "Binance 14"; Nansen's `transaction-with-token-transfer-lookup` labels the customer's deposit address itself — `🏦 Binance: Deposit [0xe46077]` — for 1 credit. That single field is the difference between "some address" and "file a ticket with Binance".
-- **Relations, not just code.** `related-wallets.relation` says `Deployed by`, `Created by`, `First Funder`, `Multisig Signer of` — an RPC says "contract or not", never whose.
-- **The gas dripper identifies the exchange** before a deposit address has ever swept: `first-funder` → funding tx → `🏦 Binance [0x943080]`.
-- **Aggregates per counterparty.** `counterparties.volume_out_usd` gives the 100 %-to-one-wallet sweep signature in one row.
-- **Even the refusal is a signal**: `422 Burn address not allowed`.
-
-What we learned the hard way is in [docs/DX-REPORT.md](docs/DX-REPORT.md) — including that the cheap profiler label fields carry wealth tags only, and that the all-time date range makes Nansen time out on routers (hence the 14-day/all-time two-stage window).
-
-## Tests, fixtures and replay
+```bash
+npm test                  # 114 vitest tests, 3 s
+npm run verify            # replay the 13 fixtures with NANSEN_OFFLINE=1 — 13/13 verdicts, same hash, no key, no network
+npm run typecheck         # tsc --noEmit (root) — CI also runs it for apps/web
+npm run check:submission  # no unfilled text, section names, test/fixture counts vs reality, links
+npm run bench             # 13 addresses × 3 runs live, cold/warm p50/p95 — costs credits
+```
 
 - **114 vitest tests** (`npm test`): the decision table rule by rule, with the regressions live QA produced (a wallet depositing into its own `Binance: Deposit` address; Nansen's 🏦 marker on Uniswap's router; an exchange wallet given as "your address"; a DEX router read as a "forwarder"; a transactions timeout read as "nothing on record"), label parsing on the exact strings Nansen returns, the action texts, the wire-level call plan, client retry/timeout, cache, and a replay of every fixture.
 - **13 fixtures** (`fixtures/*.json`): real Nansen responses recorded live on 2026-09-16 by `npm run seed`, byte-for-byte, never edited, no key material. `npm run verify` replays them with `NANSEN_OFFLINE=1` → **13/13 verdicts reproduced offline**, same decision hash, zero network, zero credits. They exist so CI and a judge without a key can see the engine decide; the CLI and the web app hit Nansen live by default and say "cached" when they do not.
 - CI (`.github/workflows/ci.yml`): typecheck, tests, offline verify, submission-readiness check — no key needed.
 
-## Benchmark
+## 📁 Project Structure
 
-`npm run bench` — 13 addresses × 3 runs, cold (fresh cache, every call live) then warm (same verdict from cache), decision hash compared. Numbers and reproduce steps in [DEMO.md](DEMO.md).
+```
+packages/core/src   the engine: client.ts (NansenClient) · cache.ts · nansen.ts (typed endpoints) · labels.ts
+                    · lookups.ts (gather) · classify.ts (decision table) · text.ts · verdict.ts · fixtures.ts
+packages/cli        sentwrong <address> [--from] [--chain] [--json] [--explain] [--deep] [--no-cache]
+apps/web            Next.js 15: / · /api/verdict (NDJSON stream) · /q/[address] (share page) · /api/og
+scripts             spike.ts · seed.ts · verify.ts · bench.ts · check_submission_readiness.ts
+fixtures/           13 recorded live runs (real Nansen responses, byte-for-byte, no key material)
+docs/               SCORING.md (the decision table) · DX-REPORT.md (Nansen API friction log) · screenshots/
+ARCHITECTURE.md · DEMO.md · LICENSE
+```
 
-## Honesty notes
+## 📽️ Demo Materials
 
-- The hero address, the poisoning look-alikes and the burn/contract examples are real addresses found on-chain the day this was built; deposit addresses were harvested from one USDT sweep block into Binance 14 and one into Coinbase 10.
-- "Odds" on the stranger route are words, not numbers: Nansen tells us whether the wallet moves funds; nobody knows whether its owner is honest.
-- A verdict is triage, not legal advice. Do not pay anyone who promises to recover funds — every route's text says so.
+- **Live app:** https://sentwrong-app.vercel.app — same engine as the CLI, key server-side, rows stream as each Nansen call lands.
+- **[30-second demo](DEMO.md):** the shot list, the hero query's verbatim `--explain --no-cache` output, and the full benchmark table with reproduce steps.
+- **[How it decides](docs/SCORING.md)** · **[Architecture](ARCHITECTURE.md)** · **[Nansen API friction log](docs/DX-REPORT.md)**
 
-## License
+## 📄 License
 
 MIT — see [LICENSE](LICENSE).
