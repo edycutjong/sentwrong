@@ -1,7 +1,8 @@
 <div align="center">
+  <img src="docs/assets/icon-animated.svg" width="96" alt="Sent Wrong mark — a transfer arrow stopped at a red wall; the Nansen label lands and one of four routes turns green">
   <h1>Sent Wrong 🧭</h1>
   <p><em>Sent crypto to the wrong address? Paste it. Nansen tells you which of four recovery routes you're on — and drafts the ticket.</em></p>
-  <img src="docs/screenshots/02-binance-deposit.png" alt="Sent Wrong — verdict for a Binance deposit address" width="100%">
+  <img src="docs/assets/readme-hero-animated.svg" alt="Sent Wrong — routes a misdirected transfer: paste the address you sent to, the Nansen label lands, one of four recovery routes turns green and the ticket is drafted" width="100%">
 
   <p>A cold verdict on the hero address costs <b>13 credits</b> across <b>10 Nansen calls</b> and returns in <b>3.9 s</b>; its decision hash <code>3ea6cfcd752b</code> reproduces from a second fresh clone and from the recorded fixture. <code>npm run verify</code> replays <b>13/13</b> verdicts offline — zero network, zero credits.</p>
 
@@ -25,6 +26,8 @@
 ---
 
 ## 📸 See it in Action
+
+![Binance deposit address — the hero verdict, live on sentwrong.edycu.dev: 10 Nansen calls, 13 credits, the support ticket ready to copy](docs/screenshots/02-binance-deposit.png)
 
 | | |
 |---|---|

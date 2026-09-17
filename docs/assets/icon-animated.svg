@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Sent Wrong — routes a misdirected transfer: paste the address you sent to, the Nansen label lands, one of four recovery routes turns green and the ticket is drafted">
+<!-- STORYBOARD (dur 6s — the single master dur of this file)
+  0-8%    steady state: the full mark — blue arrow stopped at the red bar (poster; everything visible at t=0)
+  8-25%   trigger:      a blue packet flies along the arrow and STOPS at the bar; impact ripple on the bar   data-story="beat-2"
+  25-55%  mechanism:    The address arrives unknown in blue; the Nansen label lands, one of four routes turns green, three go dark.
+                        — a label tag lands on the bar; the mark slides left; four lanes draw out of the bar in grey;
+                          lane 1 turns green, lanes 2-4 dim                                                     data-story="beat-3"
+  55-80%  resolution:   the green lane stays lit and breathes; the packet turns green at the bar               data-story="beat-4"
+  80-100% breathe + seam fade: lanes and tag fade 86-94%, the mark slides home 92-98%, packet fades 94-98%
+-->
+<style>
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+<defs>
+  <clipPath id="plateClip"><rect width="512" height="512" rx="112"/></clipPath>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10"/></filter>
+</defs>
+<!-- plate: makes the mark self-sufficient on white AND dark GitHub; everything else is clipped to it -->
+<rect width="512" height="512" rx="112" fill="#0f141b"/>
+<g clip-path="url(#plateClip)">
+
+<!-- the four recovery routes leaving the wall (absolute coords: the mark slides left 56px to reveal them) -->
+<g data-story="beat-3" opacity="0" stroke-linecap="round" fill="none">
+  <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.30;0.31;0.86;0.94;1" values="0;0;1;1;0;0"/>
+  <g stroke="#2c3b4b" stroke-width="16">
+    <line x1="400" y1="172" x2="484" y2="172" pathLength="100" stroke-dasharray="100">
+      <animate attributeName="stroke-dashoffset" dur="6s" repeatCount="indefinite" keyTimes="0;0.30;0.40;1" values="100;100;0;0"/>
+    </line>
+    <g data-story="beat-3" opacity="0">
+      <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.30;0.31;0.42;0.50;0.86;0.94;1" values="0;0;1;1;0.28;0.28;0;0"/>
+      <line x1="400" y1="228" x2="484" y2="228" pathLength="100" stroke-dasharray="100">
+        <animate attributeName="stroke-dashoffset" dur="6s" repeatCount="indefinite" keyTimes="0;0.31;0.41;1" values="100;100;0;0"/>
+      </line>
+      <line x1="400" y1="284" x2="484" y2="284" pathLength="100" stroke-dasharray="100">
+        <animate attributeName="stroke-dashoffset" dur="6s" repeatCount="indefinite" keyTimes="0;0.32;0.42;1" values="100;100;0;0"/>
+      </line>
+      <line x1="400" y1="340" x2="484" y2="340" pathLength="100" stroke-dasharray="100">
+        <animate attributeName="stroke-dashoffset" dur="6s" repeatCount="indefinite" keyTimes="0;0.33;0.43;1" values="100;100;0;0"/>
+      </line>
+    </g>
+  </g>
+  <!-- lane 1 lights green: the decided route — glow breath underneath -->
+  <line data-story="beat-4" opacity="0" x1="400" y1="172" x2="484" y2="172" stroke="#22c55e" stroke-width="26" filter="url(#glow)">
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.42;0.50;0.58;0.66;0.74;0.82;0.86;0.94;1" values="0;0;0.75;0.35;0.75;0.35;0.75;0.55;0;0"/>
+  </line>
+  <line data-story="beat-3" opacity="0" x1="400" y1="172" x2="484" y2="172" stroke="#22c55e" stroke-width="16" pathLength="100" stroke-dasharray="100">
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.42;0.43;0.86;0.94;1" values="0;0;1;1;0;0"/>
+    <animate attributeName="stroke-dashoffset" dur="6s" repeatCount="indefinite" keyTimes="0;0.42;0.50;1" values="100;100;0;0"/>
+  </line>
+</g>
+
+<!-- the mark: the static icon's geometry ×8 — slides left while the routes are revealed, slides home before the seam -->
+<g id="mark">
+  <animateTransform attributeName="transform" type="translate" dur="6s" repeatCount="indefinite" keyTimes="0;0.24;0.32;0.92;0.98;1" values="0 0;0 0;-56 0;-56 0;0 0;0 0" calcMode="spline" keySplines="0 0 1 1;0.2 0.8 0.2 1;0 0 1 1;0.2 0.8 0.2 1;0 0 1 1"/>
+  <rect x="64" y="208" width="192" height="96" rx="24" fill="#38bdf8"/>
+  <polygon points="240,128 368,256 240,384" fill="#38bdf8"/>
+  <rect x="384" y="112" width="64" height="288" rx="16" fill="#dc2626"/>
+
+  <!-- beat 2: the transfer packet flies along the arrow and stops at the wall -->
+  <circle data-story="beat-2" opacity="0" r="30" fill="#38bdf8" filter="url(#glow)">
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.08;0.10;0.94;0.98;1" values="0;0;0.9;0.9;0;0"/>
+    <animate attributeName="fill" dur="6s" repeatCount="indefinite" keyTimes="0;0.42;0.48;1" values="#38bdf8;#38bdf8;#22c55e;#22c55e"/>
+    <animateMotion dur="6s" repeatCount="indefinite" keyTimes="0;0.08;0.22;1" keyPoints="0;0;1;1" path="M 72 256 L 352 256" calcMode="linear"/>
+  </circle>
+  <circle data-story="beat-2" opacity="0" r="16" fill="#e6edf3">
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.08;0.10;0.94;0.98;1" values="0;0;1;1;0;0"/>
+    <animate attributeName="fill" dur="6s" repeatCount="indefinite" keyTimes="0;0.42;0.48;1" values="#e6edf3;#e6edf3;#22c55e;#22c55e"/>
+    <animateMotion dur="6s" repeatCount="indefinite" keyTimes="0;0.08;0.22;1" keyPoints="0;0;1;1" path="M 72 256 L 352 256" calcMode="linear"/>
+  </circle>
+  <!-- impact ripple on the wall -->
+  <circle data-story="beat-2" opacity="0" cx="376" cy="256" r="8" fill="none" stroke="#38bdf8" stroke-width="6">
+    <animate attributeName="r" dur="6s" repeatCount="indefinite" keyTimes="0;0.22;0.34;1" values="8;8;90;90"/>
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.22;0.23;0.34;1" values="0;0;0.9;0;0"/>
+  </circle>
+
+  <!-- beat 3: the Nansen label lands on the wall (a tag glyph, no text) -->
+  <g data-story="beat-3" opacity="0">
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.25;0.30;0.86;0.94;1" values="0;0;1;1;0;0"/>
+    <animateTransform attributeName="transform" type="translate" dur="6s" repeatCount="indefinite" keyTimes="0;0.25;0.31;1" values="0 -48;0 -48;0 0;0 0" calcMode="spline" keySplines="0 0 1 1;0.2 1.4 0.4 1;0 0 1 1"/>
+    <rect x="360" y="40" width="112" height="52" rx="12" fill="#22c55e"/>
+    <polygon points="404,92 428,92 416,108" fill="#22c55e"/>
+    <rect x="376" y="56" width="20" height="20" rx="4" fill="#04150a"/>
+    <rect x="404" y="58" width="52" height="6" rx="3" fill="#04150a"/>
+    <rect x="404" y="70" width="36" height="6" rx="3" fill="#04150a"/>
+  </g>
+</g>
+</g>
+</svg>

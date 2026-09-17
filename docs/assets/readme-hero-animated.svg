@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-label="Sent Wrong — routes a misdirected transfer: paste the address you sent to, the Nansen label lands, one of four recovery routes turns green and the ticket is drafted">
+<!-- STORYBOARD (dur 8s — the single master dur of this file)
+  0-8%    steady state: plate + grid + mini mark + outlined "Sent Wrong" + tagline + metric + stack; right: the address pill and four grey routes with labels (poster)
+  8-22%   trigger:      a blue packet flies from the mark into the address pill; the pill's ring turns blue          data-story="beat-2"
+  22-55%  mechanism:    The address arrives unknown in blue; the Nansen label lands, one of four routes turns green, three go dark.
+                        — the label tag "Binance: Deposit" drops onto the pill; route 1 (Exchange deposit) draws green; routes 2-4 dim   data-story="beat-3"
+  55-80%  resolution:   the ticket card pops at the end of route 1 with a green tick; the lit route + card persist to the seam   data-story="beat-4"
+  80-100% breathe (glow on the lit route re-pulses at 84% — the echo) + seam fade 96-100%, fade-in 0-2%
+-->
+<style>
+  [data-story] { will-change: opacity; }
+  .aur1 { animation: drift1 16s ease-in-out infinite alternate; }
+  .aur2 { animation: drift2 19s ease-in-out infinite alternate; }
+  @keyframes drift1 { from { transform: translate(0, 0); } to { transform: translate(120px, 30px); } }
+  @keyframes drift2 { from { transform: translate(0, 0); } to { transform: translate(-140px, -24px); } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+<defs>
+  <clipPath id="plate"><rect width="1280" height="320" rx="24"/></clipPath>
+  <clipPath id="wrongClip"><path transform="translate(245.1 152)" d="M31.2 0L17.5 0L1.9-58.2L14.9-58.2L21.7-29.6Q22.5-26 23.2-21.9Q23.9-17.8 24.5-13.7Q24.7-12.8 24.8-12Q25-12.8 25.1-13.7Q25.8-17.8 26.6-21.9Q27.3-26 28.2-29.6L35.3-58.2L47.7-58.2L54.8-29.6Q55.7-26 56.4-21.9Q57.1-17.8 57.9-13.7Q58-12.9 58.2-12.1Q58.3-12.9 58.4-13.7Q59.1-17.8 59.8-21.9Q60.5-26 61.3-29.6L68-58.2L81.1-58.2L65.4 0L51.8 0L44.1-29.8Q42.9-34.7 42-40.5Q41.7-42.2 41.4-43.9Q41.2-42.3 41-40.7Q40.2-35 38.9-29.8 M99.7 0L88 0L88-43.7L99.3-43.7L99.3-36.1L99.8-36.1Q101-40.1 103.8-42.2Q106.7-44.3 110.4-44.3Q111.3-44.3 112.3-44.2Q113.4-44.1 114.1-43.9L114.1-33.4Q113.4-33.7 111.9-33.8Q110.4-34 109.1-34Q106.4-34 104.3-32.8Q102.1-31.7 100.9-29.6Q99.7-27.6 99.7-24.8 M140.1 0.9Q133.6 0.9 128.8-2Q123.9-4.8 121.3-9.9Q118.8-14.9 118.8-21.6Q118.8-28.4 121.3-33.5Q123.9-38.6 128.8-41.4Q133.6-44.2 140.1-44.2Q146.7-44.2 151.5-41.4Q156.3-38.6 158.9-33.5Q161.5-28.4 161.5-21.6Q161.5-14.9 158.9-9.9Q156.3-4.8 151.5-2Q146.7 0.9 140.1 0.9M140.1-8.4Q143.2-8.4 145.4-10.1Q147.5-11.8 148.5-14.9Q149.6-17.9 149.6-21.7Q149.6-25.5 148.5-28.6Q147.5-31.6 145.4-33.3Q143.2-35 140.1-35Q137-35 134.9-33.3Q132.8-31.6 131.8-28.6Q130.7-25.5 130.7-21.7Q130.7-17.9 131.8-14.9Q132.8-11.8 134.9-10.1Q137-8.4 140.1-8.4 M181.4-25.3L181.4 0L169.6 0L169.6-43.7L180.7-43.7L180.9-34.6Q182.5-38.8 185.4-41.2Q188.9-44.2 194.5-44.2Q199-44.2 202.4-42.2Q205.7-40.3 207.6-36.6Q209.5-32.9 209.5-27.8L209.5 0L197.7 0L197.7-25.7Q197.7-29.8 195.6-32.1Q193.6-34.4 189.8-34.4Q187.4-34.4 185.4-33.3Q183.5-32.3 182.4-30.2Q181.4-28.2 181.4-25.3 M238.9 17.3Q233.4 17.3 229.3 15.9Q225.3 14.5 222.7 12.1Q220.2 9.6 219.2 6.6L229.3 3.8Q229.8 5 231 6.1Q232.1 7.3 234.1 8Q236 8.8 238.8 8.8Q243.3 8.8 245.8 6.7Q248.4 4.6 248.4 0.3L248.4-7.7L247.5-7.7Q246.7-6 245.2-4.3Q243.8-2.7 241.3-1.7Q238.9-0.6 235.4-0.6Q230.5-0.6 226.4-2.9Q222.4-5.2 220-10Q217.6-14.7 217.6-21.9Q217.6-29.3 220.1-34.3Q222.5-39.2 226.5-41.7Q230.6-44.2 235.4-44.2Q239.1-44.2 241.6-43Q244.1-41.8 245.6-39.9Q247.2-38 248-36.3L248.5-36.3L248.5-43.7L260-43.7L260-0.4Q260 5.5 257.3 9.5Q254.6 13.4 249.8 15.3Q245 17.3 238.9 17.3M239.1-9.5Q242.1-9.5 244.2-11Q246.3-12.5 247.3-15.3Q248.4-18.1 248.4-22Q248.4-25.9 247.3-28.7Q246.3-31.6 244.2-33.2Q242.1-34.8 239.1-34.8Q236-34.8 233.9-33.2Q231.8-31.5 230.7-28.6Q229.6-25.7 229.6-22Q229.6-18.2 230.7-15.4Q231.8-12.6 233.9-11.1Q236-9.5 239.1-9.5"/></clipPath>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#22303d" stroke-width="1" opacity="0.55"/></pattern>
+  <linearGradient id="wrongGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ef4444"/><stop offset="1" stop-color="#f87171"/></linearGradient>
+  <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity="0"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.85"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#38bdf8" stop-opacity="0"/><stop offset="0.5" stop-color="#38bdf8" stop-opacity="0.16"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></linearGradient>
+  <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+
+<!-- plate (mandatory: self-sufficient on white AND dark GitHub) -->
+<rect width="1280" height="320" rx="24" fill="#0a0e13"/>
+<g clip-path="url(#plate)">
+  <rect width="1280" height="320" fill="url(#grid)"/>
+  <circle class="aur1" cx="260" cy="60" r="180" fill="#22c55e" opacity="0.10" filter="url(#soft)"/>
+  <circle class="aur2" cx="1080" cy="300" r="200" fill="#38bdf8" opacity="0.10" filter="url(#soft)"/>
+  <!-- one beam sweep per loop, riding with the packet -->
+  <rect data-story="beat-2" opacity="0" x="-300" y="-40" width="260" height="400" fill="url(#beam)" transform="skewX(-18)">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.08;0.10;0.28;0.30;1" values="0;0;1;1;0;0"/>
+    <animate attributeName="x" dur="8s" repeatCount="indefinite" keyTimes="0;0.08;0.30;1" values="-300;-300;1500;1500"/>
+  </rect>
+</g>
+<rect x="0.5" y="0.5" width="1279" height="319" rx="24" fill="none" stroke="#22303d"/>
+
+<!-- ───────── left: brand ───────── -->
+<g transform="translate(48 40) scale(0.9)" aria-hidden="true">
+  <rect x="2" y="26" width="26" height="12" rx="3" fill="#38bdf8"/>
+  <polygon points="26,14 46,32 26,50" fill="#38bdf8"/>
+  <rect x="50" y="12" width="10" height="40" rx="2" fill="#dc2626"/>
+</g>
+<text x="118" y="70" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#8b9bab" letter-spacing="0.08em">SENTWRONG.EDYCU.DEV · BUILT ON THE NANSEN API</text>
+<!-- outlined wordmark — Inter 700 glyph paths, never <text> -->
+<path transform="translate(48 152)" d="M26.6 0.9Q19.6 0.9 14.4-1.3Q9.3-3.4 6.4-7.7Q3.5-11.9 3.3-18L14.9-18Q15.2-15.1 16.7-13.1Q18.2-11.2 20.7-10.2Q23.3-9.2 26.5-9.2Q29.7-9.2 32.1-10.1Q34.4-11.1 35.7-12.7Q37.1-14.4 37.1-16.6Q37.1-18.6 35.9-20Q34.7-21.3 32.5-22.3Q30.2-23.3 27-24L20.6-25.6Q13.2-27.4 9.1-31.3Q4.9-35.1 4.9-41.4Q4.9-46.7 7.7-50.7Q10.5-54.6 15.5-56.8Q20.4-59 26.8-59Q33.2-59 38-56.8Q42.8-54.6 45.5-50.6Q48.2-46.7 48.3-41.6L36.8-41.6Q36.4-45.1 33.8-47Q31.1-48.9 26.6-48.9Q23.6-48.9 21.5-48.1Q19.3-47.2 18.2-45.7Q17.1-44.2 17.1-42.2Q17.1-40.1 18.4-38.7Q19.7-37.2 21.8-36.3Q24-35.5 26.4-34.9L31.7-33.6Q35.4-32.8 38.5-31.4Q41.7-30 44.1-27.9Q46.4-25.9 47.8-23Q49.1-20.2 49.1-16.6Q49.1-11.3 46.4-7.4Q43.8-3.4 38.7-1.3Q33.7 0.9 26.6 0.9 M77.1 0.9Q70.4 0.9 65.6-1.9Q60.7-4.6 58.1-9.6Q55.5-14.7 55.5-21.6Q55.5-28.4 58.1-33.4Q60.7-38.5 65.4-41.4Q70.2-44.2 76.5-44.2Q80.8-44.2 84.5-42.9Q88.2-41.5 91.1-38.7Q93.9-36 95.4-31.8Q97-27.7 97-22.1L97-18.8L67.1-18.8Q67.3-15.5 68.4-13.1Q69.7-10.5 72-9.3Q74.3-8 77.3-8Q79.4-8 81.1-8.6Q82.7-9.1 83.9-10.3Q85.1-11.4 85.7-13.1L96.4-11.1Q95.3-7.5 92.7-4.8Q90.1-2.1 86.2-0.6Q82.2 0.9 77.1 0.9M67.2-26.1L85.7-26.1Q85.5-28.3 84.8-30.1Q83.8-32.6 81.7-34Q79.6-35.4 76.6-35.4Q73.6-35.4 71.5-34Q69.3-32.6 68.2-30.2Q67.4-28.4 67.2-26.1 M116.8-25.3L116.8 0L105 0L105-43.7L116.1-43.7L116.3-34.6Q117.9-38.8 120.8-41.2Q124.3-44.2 129.8-44.2Q134.4-44.2 137.8-42.2Q141.1-40.3 143-36.6Q144.8-32.9 144.8-27.8L144.8 0L133.1 0L133.1-25.7Q133.1-29.8 131-32.1Q128.9-34.4 125.2-34.4Q122.8-34.4 120.8-33.3Q118.9-32.3 117.8-30.2Q116.8-28.2 116.8-25.3 M168.4-43.7L176.5-43.7L176.5-34.7L168.4-34.7L168.4-12.8Q168.4-10.7 169.3-9.7Q170.2-8.7 172.3-8.7Q173-8.7 174.2-8.9Q175.4-9.1 176.1-9.2L177.7-0.4Q175.8 0.2 173.8 0.4Q171.9 0.6 170.2 0.6Q163.6 0.6 160.1-2.6Q156.6-5.8 156.6-11.8L156.6-34.7L150.6-34.7L150.6-43.7L156.6-43.7L156.6-54.1L168.4-54.1" fill="#e6edf3"/>
+<path transform="translate(245.1 152)" d="M31.2 0L17.5 0L1.9-58.2L14.9-58.2L21.7-29.6Q22.5-26 23.2-21.9Q23.9-17.8 24.5-13.7Q24.7-12.8 24.8-12Q25-12.8 25.1-13.7Q25.8-17.8 26.6-21.9Q27.3-26 28.2-29.6L35.3-58.2L47.7-58.2L54.8-29.6Q55.7-26 56.4-21.9Q57.1-17.8 57.9-13.7Q58-12.9 58.2-12.1Q58.3-12.9 58.4-13.7Q59.1-17.8 59.8-21.9Q60.5-26 61.3-29.6L68-58.2L81.1-58.2L65.4 0L51.8 0L44.1-29.8Q42.9-34.7 42-40.5Q41.7-42.2 41.4-43.9Q41.2-42.3 41-40.7Q40.2-35 38.9-29.8 M99.7 0L88 0L88-43.7L99.3-43.7L99.3-36.1L99.8-36.1Q101-40.1 103.8-42.2Q106.7-44.3 110.4-44.3Q111.3-44.3 112.3-44.2Q113.4-44.1 114.1-43.9L114.1-33.4Q113.4-33.7 111.9-33.8Q110.4-34 109.1-34Q106.4-34 104.3-32.8Q102.1-31.7 100.9-29.6Q99.7-27.6 99.7-24.8 M140.1 0.9Q133.6 0.9 128.8-2Q123.9-4.8 121.3-9.9Q118.8-14.9 118.8-21.6Q118.8-28.4 121.3-33.5Q123.9-38.6 128.8-41.4Q133.6-44.2 140.1-44.2Q146.7-44.2 151.5-41.4Q156.3-38.6 158.9-33.5Q161.5-28.4 161.5-21.6Q161.5-14.9 158.9-9.9Q156.3-4.8 151.5-2Q146.7 0.9 140.1 0.9M140.1-8.4Q143.2-8.4 145.4-10.1Q147.5-11.8 148.5-14.9Q149.6-17.9 149.6-21.7Q149.6-25.5 148.5-28.6Q147.5-31.6 145.4-33.3Q143.2-35 140.1-35Q137-35 134.9-33.3Q132.8-31.6 131.8-28.6Q130.7-25.5 130.7-21.7Q130.7-17.9 131.8-14.9Q132.8-11.8 134.9-10.1Q137-8.4 140.1-8.4 M181.4-25.3L181.4 0L169.6 0L169.6-43.7L180.7-43.7L180.9-34.6Q182.5-38.8 185.4-41.2Q188.9-44.2 194.5-44.2Q199-44.2 202.4-42.2Q205.7-40.3 207.6-36.6Q209.5-32.9 209.5-27.8L209.5 0L197.7 0L197.7-25.7Q197.7-29.8 195.6-32.1Q193.6-34.4 189.8-34.4Q187.4-34.4 185.4-33.3Q183.5-32.3 182.4-30.2Q181.4-28.2 181.4-25.3 M238.9 17.3Q233.4 17.3 229.3 15.9Q225.3 14.5 222.7 12.1Q220.2 9.6 219.2 6.6L229.3 3.8Q229.8 5 231 6.1Q232.1 7.3 234.1 8Q236 8.8 238.8 8.8Q243.3 8.8 245.8 6.7Q248.4 4.6 248.4 0.3L248.4-7.7L247.5-7.7Q246.7-6 245.2-4.3Q243.8-2.7 241.3-1.7Q238.9-0.6 235.4-0.6Q230.5-0.6 226.4-2.9Q222.4-5.2 220-10Q217.6-14.7 217.6-21.9Q217.6-29.3 220.1-34.3Q222.5-39.2 226.5-41.7Q230.6-44.2 235.4-44.2Q239.1-44.2 241.6-43Q244.1-41.8 245.6-39.9Q247.2-38 248-36.3L248.5-36.3L248.5-43.7L260-43.7L260-0.4Q260 5.5 257.3 9.5Q254.6 13.4 249.8 15.3Q245 17.3 238.9 17.3M239.1-9.5Q242.1-9.5 244.2-11Q246.3-12.5 247.3-15.3Q248.4-18.1 248.4-22Q248.4-25.9 247.3-28.7Q246.3-31.6 244.2-33.2Q242.1-34.8 239.1-34.8Q236-34.8 233.9-33.2Q231.8-31.5 230.7-28.6Q229.6-25.7 229.6-22Q229.6-18.2 230.7-15.4Q231.8-12.6 233.9-11.1Q236-9.5 239.1-9.5" fill="url(#wrongGrad)"/>
+<g clip-path="url(#wrongClip)">
+  <rect data-story="beat-2" opacity="0" x="165.1" y="72" width="60" height="110" fill="url(#shine)" transform="skewX(-20)">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.10;0.12;0.24;0.26;1" values="0;0;0.9;0.9;0;0"/>
+    <animate attributeName="x" dur="8s" repeatCount="indefinite" keyTimes="0;0.10;0.26;1" values="165.1;165.1;545.1;545.1"/>
+  </rect>
+</g>
+<text x="48" y="196" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="17" fill="#b6c2cf">Paste the address you sent to. Nansen labels decide</text>
+<text x="48" y="219" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="17" fill="#b6c2cf">which of four recovery routes you're on — and draft the ticket.</text>
+<text x="48" y="254" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" fill="#22c55e" font-weight="700">13 credits · 10 calls · 3.9 s · verdict 3ea6cfcd752b · 13/13 replay offline
+  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.5;1" values="1;0.72;1"/>
+</text>
+<text x="48" y="280" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#8b9bab">Next.js 15 · TypeScript · Nansen API × 7 endpoints · 196 tests · 13 fixtures</text>
+
+<!-- ───────── right: the story ───────── -->
+<!-- four routes, open at t=0 (poster): grey -->
+<g fill="none" stroke="#2c3b4b" stroke-width="3" stroke-linecap="round">
+  <path d="M 860 156 C 940 156 960 64 1056 64"/>
+  <path d="M 860 156 C 940 156 960 124 1056 124"/>
+  <path d="M 860 156 C 940 156 960 184 1056 184"/>
+  <path d="M 860 156 C 940 156 960 244 1056 244"/>
+</g>
+<g font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="14" fill="#8b9bab">
+  <text x="1072" y="69"><animate attributeName="fill" dur="8s" repeatCount="indefinite" keyTimes="0;0.44;0.50;0.96;1" values="#8b9bab;#8b9bab;#22c55e;#22c55e;#8b9bab"/>Exchange deposit</text>
+  <g>
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.44;0.50;0.96;1" values="1;1;0.35;0.35;1"/>
+    <text x="1072" y="129">Your own wallet</text>
+    <text x="1072" y="189">Active stranger</text>
+    <text x="1072" y="249">Contract / burn</text>
+  </g>
+</g>
+<!-- routes 2-4 dim when route 1 is decided -->
+<g fill="none" stroke="#0a0e13" stroke-width="5" stroke-linecap="round" opacity="0" data-story="beat-3">
+  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.44;0.50;0.96;1" values="0;0;0.65;0.65;0"/>
+  <path d="M 860 156 C 940 156 960 124 1056 124"/>
+  <path d="M 860 156 C 940 156 960 184 1056 184"/>
+  <path d="M 860 156 C 940 156 960 244 1056 244"/>
+</g>
+
+<!-- the address pill -->
+<rect x="620" y="136" width="240" height="40" rx="20" fill="#131a22" stroke="#2c3b4b" stroke-width="2">
+  <animate attributeName="stroke" dur="8s" repeatCount="indefinite" keyTimes="0;0.18;0.21;0.42;0.47;0.96;1" values="#2c3b4b;#2c3b4b;#38bdf8;#38bdf8;#22c55e;#22c55e;#2c3b4b"/>
+</rect>
+<text x="740" y="161" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" fill="#e6edf3">0xe460…bbef</text>
+<!-- pill pulse on arrival -->
+<rect data-story="beat-2" opacity="0" x="620" y="136" width="240" height="40" rx="20" fill="none" stroke="#38bdf8" stroke-width="2">
+  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.20;0.21;0.32;1" values="0;0;0.9;0;0"/>
+  <animate attributeName="x" dur="8s" repeatCount="indefinite" keyTimes="0;0.20;0.32;1" values="620;620;606;606"/>
+  <animate attributeName="y" dur="8s" repeatCount="indefinite" keyTimes="0;0.20;0.32;1" values="136;136;122;122"/>
+  <animate attributeName="width" dur="8s" repeatCount="indefinite" keyTimes="0;0.20;0.32;1" values="240;240;268;268"/>
+  <animate attributeName="height" dur="8s" repeatCount="indefinite" keyTimes="0;0.20;0.32;1" values="40;40;68;68"/>
+</rect>
+
+<!-- beat 2: the transfer packet flies out of the mark into the address -->
+<g data-story="beat-2" opacity="0">
+  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.08;0.10;0.20;0.24;1" values="0;0;1;1;0;0"/>
+  <circle r="9" fill="#38bdf8" filter="url(#glow)">
+    <animateMotion dur="8s" repeatCount="indefinite" keyTimes="0;0.08;0.20;1" keyPoints="0;0;1;1" path="M 96 69 C 320 60 500 156 618 156" calcMode="linear"/>
+  </circle>
+  <circle r="4" fill="#e6edf3">
+    <animateMotion dur="8s" repeatCount="indefinite" keyTimes="0;0.08;0.20;1" keyPoints="0;0;1;1" path="M 96 69 C 320 60 500 156 618 156" calcMode="linear"/>
+  </circle>
+</g>
+
+<!-- beat 3: the Nansen label lands on the address -->
+<g data-story="beat-3" opacity="0">
+  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.26;0.31;0.96;1" values="0;0;1;1;0"/>
+  <animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" keyTimes="0;0.26;0.33;1" values="0 -36;0 -36;0 0;0 0" calcMode="spline" keySplines="0 0 1 1;0.2 1.4 0.4 1;0 0 1 1"/>
+  <rect x="646" y="90" width="188" height="32" rx="8" fill="#22c55e"/>
+  <polygon points="732,122 748,122 740,132" fill="#22c55e"/>
+  <rect x="658" y="99" width="14" height="14" rx="3" fill="#04150a"/>
+  <text x="680" y="111" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#04150a">Binance: Deposit</text>
+</g>
+<!-- beat 3: route 1 lights green — the decision -->
+<path data-story="beat-3" opacity="0" d="M 860 156 C 940 156 960 64 1056 64" fill="none" stroke="#22c55e" stroke-width="10" stroke-linecap="round" filter="url(#glow)">
+  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.36;0.48;0.60;0.72;0.84;0.88;0.96;1" values="0;0;0.6;0.25;0.6;0.25;0.7;0;0"/>
+</path>
+<path data-story="beat-3" opacity="0" d="M 860 156 C 940 156 960 64 1056 64" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" pathLength="100" stroke-dasharray="100">
+  <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.36;0.37;0.96;1" values="0;0;1;1;0"/>
+  <animate attributeName="stroke-dashoffset" dur="8s" repeatCount="indefinite" keyTimes="0;0.36;0.48;1" values="100;100;0;0"/>
+</path>
+<!-- beat 4: the ticket card pops at the end of the lit route -->
+<g transform="translate(1154 72)">
+  <g data-story="beat-4" opacity="0">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.52;0.56;0.96;1" values="0;0;1;1;0"/>
+    <animateTransform attributeName="transform" type="scale" dur="8s" repeatCount="indefinite" keyTimes="0;0.52;0.58;0.62;1" values="0.6;0.6;1.08;1;1" calcMode="spline" keySplines="0 0 1 1;0.2 1.4 0.4 1;0.2 0.8 0.2 1;0 0 1 1"/>
+    <g transform="translate(-1154 -72)">
+      <rect x="1060" y="44" width="184" height="56" rx="10" fill="#0f141b" stroke="#22c55e" stroke-width="2"/>
+      <text x="1072" y="90" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="12" fill="#b6c2cf">support ticket drafted</text>
+      <path d="M 1206 84 l 6 6 l 12 -13" fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</g>
+<!-- route-1 label re-drawn above the card so it stays legible after the pop -->
+<text x="1072" y="69" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#22c55e" data-story="beat-4" opacity="0"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;0.52;0.56;0.96;1" values="0;0;1;1;0"/>Exchange deposit</text>
+</svg>
