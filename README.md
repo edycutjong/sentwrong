@@ -27,7 +27,7 @@
 
 ## 📸 See it in Action
 
-![Binance deposit address — the hero verdict, live on sentwrong.edycu.dev: 10 Nansen calls, 13 credits, the support ticket ready to copy](docs/screenshots/02-binance-deposit.png)
+<img src="docs/demo.gif" alt="Sent Wrong — 16 s demo: paste the address you sent to, Nansen calls land one by one (funder, counterparties, transfer labels), verdict: recoverable — a Binance deposit address — and the prefilled support ticket" width="100%">
 
 | | |
 |---|---|
