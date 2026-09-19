@@ -2,7 +2,7 @@
  * Server-side engine for the web app. The Nansen key never leaves this process: the browser talks to /api/verdict.
  * One in-memory cache per server instance (Vercel functions have no durable disk) with the same 24 h TTL as the CLI.
  */
-import { CachedNansenClient, MemoryCache, DiskCache, sentWrong, CHAINS, EVM_ADDRESS, type Chain, type Verdict } from "@sentwrong/core";
+import { CachedNansenClient, MemoryCache, DiskCache, sentWrong, CHAINS, EVM_ADDRESS, type Chain, type Verdict, type CallEvent } from "@sentwrong/core";
 import { join } from "node:path";
 
 // On Vercel the function has no durable disk, so the cache lives in memory and only for the life of one warm instance
@@ -11,10 +11,10 @@ import { join } from "node:path";
 const store = process.env.VERCEL ? new MemoryCache() : new DiskCache(join(process.cwd(), ".cache"));
 export const TTL_MS = 24 * 3600 * 1000;
 
-export function client(): CachedNansenClient {
+export function client(onEvent?: (e: CallEvent) => void): CachedNansenClient {
   const key = process.env.NANSEN_API_KEY ?? "";
   if (!key) throw new Error("NANSEN_API_KEY is not set on the server");
-  return new CachedNansenClient(key, { store, ttlMs: TTL_MS });
+  return new CachedNansenClient(key, { store, ttlMs: TTL_MS, onEvent });
 }
 
 export type VerdictInput = { address: string; sender?: string; chain?: string; deep?: boolean };
@@ -30,14 +30,11 @@ export function parseInput(raw: unknown): VerdictInput {
   return { address, sender, chain, deep: o.deep === true };
 }
 
-export async function verdictFor(input: VerdictInput, onCall?: (c: CachedNansenClient) => void): Promise<Verdict> {
-  const c = client();
-  const p = sentWrong(c, input.address, { sender: input.sender, chain: input.chain as Chain, deep: input.deep });
-  if (onCall) {
-    // stream provenance as calls land: poll the client's call log while the verdict is in flight
-    let seen = 0;
-    const timer = setInterval(() => { if (c.calls.length > seen) { seen = c.calls.length; onCall(c); } }, 120);
-    try { return await p; } finally { clearInterval(timer); onCall(c); }
-  }
-  return p;
+/**
+ * One verdict. `onEvent` receives every Nansen call twice — `start` before it is made, `end` with the finished Call —
+ * so the route can stream a pending row and then the real one; the Calls are the objects `verdict.provenance` holds.
+ */
+export function verdictFor(input: VerdictInput, onEvent?: (e: CallEvent) => void): Promise<Verdict> {
+  const c = client(onEvent);
+  return sentWrong(c, input.address, { sender: input.sender, chain: input.chain as Chain, deep: input.deep });
 }

@@ -5,6 +5,9 @@ import { defineConfig, devices } from "@playwright/test";
  * the home page, /judge, the validation path, the honest "no key" error, responsive layout, and that no key-shaped
  * string ever reaches the browser. Nothing here spends a credit.
  */
+// E2E_PORT lets a second checkout (or a sibling project on 3000) run this suite without colliding
+const PORT = process.env.E2E_PORT ?? "3000";
+
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
@@ -13,7 +16,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? "html" : "list",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: `http://localhost:${PORT}`,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
   },
@@ -24,12 +27,12 @@ export default defineConfig({
   webServer: {
     // CI builds in its own step; locally build first so `next start` has something to serve
     command: process.env.CI ? "npm run start" : "npm run build && npm run start",
-    url: "http://localhost:3000",
+    url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
     // an empty key is "not set" to the app (engine.ts) — the server must run without one for every test here
     // no key → no credit can be spent, so the per-IP spend guard (6/min in prod) only trips the parallel
     // projects that all POST from 127.0.0.1; the guard itself is covered by packages/core/test/guard.test.ts
-    env: { NANSEN_API_KEY: "", NANSEN_OFFLINE: "", GUARD_IP_PER_MIN: "10000" },
+    env: { PORT, NANSEN_API_KEY: "", NANSEN_OFFLINE: "", GUARD_IP_PER_MIN: "10000" },
   },
 });

@@ -9,7 +9,7 @@ import { existsSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { parseInput, TTL_MS } from "../../../apps/web/lib/engine.js";
-import type { Call } from "../src/index.js";
+import type { CallEvent } from "../src/index.js";
 import { R, SENDER, KEY, search, txs, cps, related, noFunder } from "./helpers.js";
 
 const ENGINE = "../../../apps/web/lib/engine.js";
@@ -101,7 +101,7 @@ describe("engine.ts — client()", () => {
 });
 
 describe("engine.ts — verdictFor()", () => {
-  it("resolves a Verdict with no progress callback (the `if (onCall)` false branch)", async () => {
+  it("resolves a Verdict with no observer", async () => {
     const { mod } = await freshEngine(false);
     process.env.NANSEN_API_KEY = KEY;
     stubStaggeredFetch();
@@ -110,34 +110,49 @@ describe("engine.ts — verdictFor()", () => {
     expect(v.calls).toBeGreaterThan(0);
   }, 15000);
 
-  it("streams provenance via onCall as calls land, polling ticks that see nothing new and ticks that do", async () => {
+  it("streams every call twice — `start` before the network is touched, `end` with the very Call object provenance holds", async () => {
     const { mod } = await freshEngine(true);
     process.env.NANSEN_API_KEY = KEY;
     stubStaggeredFetch();
-    const snapshots: number[] = [];
-    const seenCounts = new Set<number>();
-    const v = await mod.verdictFor({ address: R }, (c) => {
-      snapshots.push(c.calls.length);
-      seenCounts.add(c.calls.length);
-    });
-    expect(v.calls).toBeGreaterThan(0);
-    // the poller must have reported at least one intermediate count before the final one — proof it actually
-    // polled mid-flight (the interval's `c.calls.length > seen` true branch) rather than only firing once in `finally`.
-    expect(snapshots.length).toBeGreaterThan(1);
-    expect(Math.max(...seenCounts)).toBe(v.calls);
-    // strictly non-decreasing: the poller never reports fewer calls than it already has
-    for (let i = 1; i < snapshots.length; i++) expect(snapshots[i]).toBeGreaterThanOrEqual(snapshots[i - 1]);
+    const events: CallEvent[] = [];
+    const v = await mod.verdictFor({ address: R }, (e) => events.push(e));
+    const starts = events.filter((e) => e.type === "start");
+    const ends = events.filter((e) => e.type === "end");
+    expect(starts.length).toBe(v.calls);
+    expect(ends.length).toBe(v.calls);
+    // every end pairs with exactly one earlier start of the same endpoint
+    for (const e of ends) {
+      if (e.type !== "end") continue;
+      const i = events.findIndex((x) => x.type === "start" && x.start.seq === e.seq);
+      expect(i).toBeGreaterThanOrEqual(0);
+      expect(i).toBeLessThan(events.indexOf(e));
+      expect((events[i] as { start: { endpoint: string } }).start.endpoint).toBe(e.call.endpoint);
+    }
+    // the rail prints the same objects the drawer prints: identity, not a copy
+    const provenance = new Set(v.provenance);
+    for (const e of ends) if (e.type === "end") expect(provenance.has(e.call)).toBe(true);
+    // the first start precedes the first end — a pending row can exist before any call lands
+    expect(events[0].type).toBe("start");
   }, 15000);
 
-  it("still clears the interval and reports the final call count when the underlying verdict rejects", async () => {
+  it("an observer that throws never breaks the verdict", async () => {
     const { mod } = await freshEngine(false);
     process.env.NANSEN_API_KEY = KEY;
-    // an address that fails EVM validation deep inside gather() — sentWrong rejects, `finally` must still run.
+    stubStaggeredFetch();
+    const v = await mod.verdictFor({ address: R }, () => {
+      throw new Error("observer bug");
+    });
+    expect(v.calls).toBeGreaterThan(0);
+  }, 15000);
+
+  it("rejects before any fetch when the address fails validation inside gather()", async () => {
+    const { mod } = await freshEngine(false);
+    process.env.NANSEN_API_KEY = KEY;
     const fetchImpl = vi.fn(async () => new Response("{}", { status: 200 }));
     vi.stubGlobal("fetch", fetchImpl as unknown as typeof fetch);
-    const calls: number[] = [];
-    await expect(mod.verdictFor({ address: "0xnotaddress" }, (c: { calls: Call[] }) => calls.push(c.calls.length))).rejects.toThrow();
-    // no network call was ever made — parseInput-shaped validation happens inside gather(), before any fetch
+    const events: CallEvent[] = [];
+    await expect(mod.verdictFor({ address: "0xnotaddress" }, (e) => events.push(e))).rejects.toThrow();
     expect(fetchImpl).not.toHaveBeenCalled();
+    expect(events).toEqual([]);
   });
 });

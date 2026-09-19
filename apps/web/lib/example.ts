@@ -1,9 +1,9 @@
 /**
  * The empty state's examples come from the recorded fixtures (`fixtures/*.json`, live 2026-09-16, byte-for-byte) — the
- * same files `npm run verify` replays. Only the decision is sent to the client; the raw responses and the ticket text
- * stay on the server (a fixture is 25–75 KB, the trimmed example under 2 KB).
+ * same files `npm run verify` replays. Only the decision and the call list are sent to the client; the raw responses
+ * and the ticket text stay on the server (a fixture is 25–75 KB, the trimmed example a few KB).
  */
-import type { Decision, Fixture } from "@sentwrong/core";
+import type { Call, Decision, Fixture } from "@sentwrong/core";
 
 export type ExampleVerdict = {
   address: string;
@@ -11,9 +11,11 @@ export type ExampleVerdict = {
   chain: string;
   decision: Pick<Decision, "route" | "sub" | "confidence" | "entity" | "headline" | "evidence" | "warnings">;
   hash: string;
-  live: { calls: number; credits: number };
+  live: { calls: number; credits: number; ms: number };
   recordedAt: string;
   file: string;
+  /** the replayed calls behind this verdict (cached, 0 credits) — the call rail shows them on load, labelled replayed */
+  provenance: Call[];
 };
 
 export function exampleFrom(f: Fixture, file: string): ExampleVerdict {
@@ -24,8 +26,9 @@ export function exampleFrom(f: Fixture, file: string): ExampleVerdict {
     chain: f.verdict.chain,
     decision: { route: d.route, sub: d.sub, confidence: d.confidence, entity: d.entity, headline: d.headline, evidence: d.evidence, warnings: d.warnings },
     hash: f.verdict.hash,
-    live: { calls: f.live.calls, credits: f.live.credits },
+    live: { calls: f.live.calls, credits: f.live.credits, ms: f.live.ms },
     recordedAt: f.recordedAt.slice(0, 10),
     file,
+    provenance: f.verdict.provenance,
   };
 }

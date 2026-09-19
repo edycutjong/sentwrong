@@ -88,7 +88,7 @@ export default function Judge() {
             <tr>
               <td>Tests</td>
               <td>
-                <b>197 vitest tests</b> in 9 s, of which <b>11 regression tests named after the defect they pin</b> (e.g. &ldquo;a transactions timeout read as &lsquo;nothing on record&rsquo;&rdquo;),
+                <b>209 vitest tests</b> in 9 s, of which <b>11 regression tests named after the defect they pin</b> (e.g. &ldquo;a transactions timeout read as &lsquo;nothing on record&rsquo;&rdquo;),
                 plus <b>13 fixtures</b> recorded live and replayed offline 13/13 with the same decision hash
               </td>
             </tr>
@@ -103,7 +103,7 @@ export default function Judge() {
               <td>Boundary tests</td>
               <td>
                 The server key never appears in the verdict JSON, the streamed provenance, an error message or the fixtures; every malformed address is rejected with zero network calls. Backed by 8
-                unit tests and 4 Playwright suites that run with no key at all.
+                unit tests and 6 Playwright suites that run with no key at all.
               </td>
             </tr>
             <tr>

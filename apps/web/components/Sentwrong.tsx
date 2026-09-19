@@ -1,10 +1,12 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { Verdict, Call } from "@sentwrong/core";
+import type { Verdict, Call, CallStart } from "@sentwrong/core";
 import type { ExampleVerdict } from "@/lib/example";
+import { EMPTY_RAIL, beginRun, endCall, failRun, finishRun, runLabel, seedRun, startCall, type RailState } from "@/lib/rail";
 import { Card, short } from "./Card";
 import { Drawer } from "./Drawer";
 import { Example, HowItDecides } from "./Example";
+import { Rail } from "./Rail";
 
 const CHAINS = ["ethereum", "base", "arbitrum", "polygon", "optimism", "bnb", "avalanche", "linea"];
 const EVM = /^0x[0-9a-fA-F]{40}$/;
@@ -20,7 +22,7 @@ const EXAMPLES: Array<{ label: string; address: string; sender?: string }> = [
 const EXPECTED_CALLS = 10;
 
 type Phase = "idle" | "running" | "done" | "error";
-type Line = { type: "call"; call: Call } | { type: "verdict"; verdict: Verdict } | { type: "error"; message: string };
+type Line = { type: "start"; start: CallStart } | { type: "call"; seq?: number; call: Call } | { type: "verdict"; verdict: Verdict } | { type: "error"; message: string };
 
 const usd = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
 
@@ -89,55 +91,81 @@ export function Sentwrong({
   const [drawer, setDrawer] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  // the call rail accumulates across the session; seeded with the permalink's own calls or the recorded example's replayed ones
+  const [rail, setRail] = useState<RailState>(() =>
+    initialVerdict
+      ? seedRun(EMPTY_RAIL, runLabel(initialVerdict.address, initialVerdict.chain, initialVerdict.sender), "server", initialVerdict.provenance, 0, initialVerdict.ms, initialVerdict.hash)
+      : examples[0]
+        ? seedRun(EMPTY_RAIL, runLabel(examples[0].address, examples[0].chain, examples[0].sender), "replayed", examples[0].provenance, 0, 0, examples[0].hash)
+        : EMPTY_RAIL,
+  );
+  const railRef = useRef(rail);
+  const updRail = useCallback((fn: (s: RailState) => RailState) => {
+    railRef.current = fn(railRef.current);
+    setRail(railRef.current);
+  }, []);
+  const [now, setNow] = useState(0);
 
   /** POST /api/verdict and parse the NDJSON stream; state changes happen only after the first await. */
-  const stream = useCallback(async (a: string, s: string | undefined, ch: string, deep: boolean) => {
-    abortRef.current?.abort();
-    const ctrl = new AbortController();
-    abortRef.current = ctrl;
-    if (typeof history !== "undefined") history.replaceState(null, "", `/?address=${a}${s ? `&from=${s}` : ""}${ch !== "ethereum" ? `&chain=${ch}` : ""}`);
-    try {
-      const res = await fetch("/api/verdict", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ address: a, sender: s, chain: ch, deep }),
-        signal: ctrl.signal,
-      });
-      if (!res.ok || !res.body) {
-        const j = await res.json().catch(() => ({ message: res.statusText }));
-        throw new Error(j.message ?? `HTTP ${res.status}`);
-      }
-      const reader = res.body.getReader();
-      const dec = new TextDecoder();
-      let buf = "";
-      let sawVerdict = false;
-      for (;;) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        buf += dec.decode(value, { stream: true });
-        let nl: number;
-        while ((nl = buf.indexOf("\n")) >= 0) {
-          const line = buf.slice(0, nl).trim();
-          buf = buf.slice(nl + 1);
-          if (!line) continue;
-          const o = JSON.parse(line) as Line;
-          if (o.type === "call") setCalls((cs) => [...cs, o.call]);
-          else if (o.type === "verdict") {
-            sawVerdict = true;
-            setVerdict(o.verdict);
-            setPhase("done");
-          } else if (o.type === "error") throw new Error(o.message);
+  const stream = useCallback(
+    async (a: string, s: string | undefined, ch: string, deep: boolean) => {
+      abortRef.current?.abort();
+      const ctrl = new AbortController();
+      abortRef.current = ctrl;
+      if (typeof history !== "undefined") history.replaceState(null, "", `/?address=${a}${s ? `&from=${s}` : ""}${ch !== "ethereum" ? `&chain=${ch}` : ""}`);
+      const begun = beginRun(railRef.current, `${runLabel(a, ch, s)}${deep ? " · deep" : ""}`, "live", Date.now());
+      const runId = begun.run;
+      updRail(() => begun.state);
+      let fallbackSeq = 0;
+      try {
+        const res = await fetch("/api/verdict", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ address: a, sender: s, chain: ch, deep }),
+          signal: ctrl.signal,
+        });
+        if (!res.ok || !res.body) {
+          const j = await res.json().catch(() => ({ message: res.statusText }));
+          throw new Error(j.message ?? `HTTP ${res.status}`);
         }
+        const reader = res.body.getReader();
+        const dec = new TextDecoder();
+        let buf = "";
+        let sawVerdict = false;
+        for (;;) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buf += dec.decode(value, { stream: true });
+          let nl: number;
+          while ((nl = buf.indexOf("\n")) >= 0) {
+            const line = buf.slice(0, nl).trim();
+            buf = buf.slice(nl + 1);
+            if (!line) continue;
+            const o = JSON.parse(line) as Line;
+            if (o.type === "start") updRail((r) => startCall(r, runId, o.start, Date.now()));
+            else if (o.type === "call") {
+              setCalls((cs) => [...cs, o.call]);
+              updRail((r) => endCall(r, runId, o.seq ?? ++fallbackSeq, o.call, Date.now()));
+            } else if (o.type === "verdict") {
+              sawVerdict = true;
+              updRail((r) => finishRun(r, runId, o.verdict.ms, o.verdict.hash));
+              setVerdict(o.verdict);
+              setPhase("done");
+            } else if (o.type === "error") throw new Error(o.message);
+          }
+        }
+        if (!sawVerdict) throw new Error("the stream ended before a verdict arrived — try again");
+      } catch (e) {
+        if ((e as Error).name === "AbortError") return;
+        updRail((r) => failRun(r, runId, (e as Error).message.slice(0, 60)));
+        setError((e as Error).message);
+        setPhase("error");
+      } finally {
+        setDeepBusy(false);
       }
-      if (!sawVerdict) throw new Error("the stream ended before a verdict arrived — try again");
-    } catch (e) {
-      if ((e as Error).name === "AbortError") return;
-      setError((e as Error).message);
-      setPhase("error");
-    } finally {
-      setDeepBusy(false);
-    }
-  }, []);
+    },
+    [updRail],
+  );
 
   /** A user-initiated run: reset the verdict state, then stream. `deep` re-runs with the 100-credit labels call added. */
   const run = useCallback(
@@ -164,11 +192,17 @@ export function Sentwrong({
   );
 
   useEffect(() => {
-    // /?address=… (the permalink's "run it again" link) streams on mount; stream() only sets state after `await fetch`
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // /?address=… (the permalink's "run it again" link) streams on mount
     if (initialAddress && EVM.test(initialAddress) && !initialVerdict && !initialError) void stream(initialAddress, initialSender || undefined, chain, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // the rail's clock ticks while a run is in flight (its `T s` counter), and stops the moment it isn't
+  useEffect(() => {
+    if (phase !== "running" && !deepBusy) return;
+    const id = setInterval(() => setNow(Date.now()), 100);
+    return () => clearInterval(id);
+  }, [phase, deepBusy]);
 
   const say = (t: string) => {
     setToast(t);
@@ -411,6 +445,7 @@ export function Sentwrong({
       )}
       {phase === "idle" && <HowItDecides />}
 
+      <Rail state={rail} now={now} onClear={() => updRail(() => EMPTY_RAIL)} />
       <Drawer
         calls={verdict?.provenance ?? []}
         skipped={verdict?.skipped ?? []}
