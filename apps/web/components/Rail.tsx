@@ -73,15 +73,20 @@ export function Rail({ state, now, onClear }: { state: RailState; now: number; o
   const credits = useCountUp(totals.credits);
   const secs = (totals.ms / 1000).toFixed(1);
 
-  // oldest at top, follow the newest — unless the reader has scrolled up to look at something
+  // oldest at top, follow the newest — unless the reader has scrolled up to look at something.
+  // The follow is an instant jump (no smooth scroll): an animated scroll fires intermediate scroll events that would
+  // read as "the reader scrolled up" and silently stop the follow mid-run.
+  const ownScroll = useRef(0);
   useLayoutEffect(() => {
     const el = listRef.current;
     if (!el || !stick.current) return;
+    ownScroll.current = performance.now();
     el.scrollTop = el.scrollHeight;
-  }, [state.rows.length, totals.calls]);
+  }, [state.rows.length, totals.calls, totals.pending]);
   const onScroll = () => {
     const el = listRef.current;
-    if (el) stick.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+    if (!el || performance.now() - ownScroll.current < 120) return;
+    stick.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
   };
 
   const runsById = new Map(state.runs.map((r) => [r.id, r]));

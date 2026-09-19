@@ -51,7 +51,11 @@ export function Drawer({
               <td>{c.credits}</td>
               <td>{c.ok ? c.ms : `${c.totalMs} · ${c.error}`}</td>
               <td>{c.cached ? "yes" : "live"}</td>
-              <td className="mono">{c.fieldsUsed.join(", ")}</td>
+              <td className="mono fields">
+                {c.fieldsUsed.map((f) => (
+                  <span key={f}>{f}</span>
+                ))}
+              </td>
             </tr>
           ))}
           {skipped.map((s) => (
