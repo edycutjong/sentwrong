@@ -88,6 +88,8 @@ export function Sentwrong({
   const [verdict, setVerdict] = useState<Verdict | undefined>(initialVerdict);
   const [error, setError] = useState<string | undefined>(initialError);
   const [deepBusy, setDeepBusy] = useState(false);
+  /** the address the in-flight stream is resolving — the input may be edited while a run is in flight */
+  const [inflight, setInflight] = useState({ address: initialAddress ?? "", chain: initialChain ?? "ethereum" });
   const [drawer, setDrawer] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -179,6 +181,7 @@ export function Sentwrong({
       }
       const from = s?.trim() || undefined;
       setError(undefined);
+      setInflight({ address: addr, chain: ch });
       setCalls([]);
       setDrawer(false);
       if (deep) setDeepBusy(true);
@@ -331,6 +334,25 @@ export function Sentwrong({
           {banner.text}
           {verdict.decision.warnings.length > 0 && <small>{verdict.decision.warnings.join(" · ")}</small>}
         </div>
+      )}
+
+      {busy && !verdict && (
+        <article className="card pending deciding" aria-busy="true" aria-label="deciding the route">
+          <div className="top">
+            <span className="name">Deciding the route…</span>
+            <span className="badge chain">{inflight.chain}</span>
+            <span className="badge muted">
+              {calls.length} of ~{EXPECTED_CALLS} calls
+            </span>
+          </div>
+          <div className="addr">
+            <b>{inflight.address}</b>
+          </div>
+          <p className="reason">Burn? Token contract? Deposit label? Sweep pattern? Your own wallet? — the first matching rule wins. Every call is on the right as it lands.</p>
+          <div className="bar">
+            <i style={{ width: `${8 + Math.min(92, (calls.length / EXPECTED_CALLS) * 92)}%` }} />
+          </div>
+        </article>
       )}
 
       {(busy || (verdict && calls.length > 0)) && (
