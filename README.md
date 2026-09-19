@@ -27,16 +27,16 @@
 
 ## 📸 See it in Action
 
-<img src="docs/demo.gif" alt="Sent Wrong — 16 s demo: paste the address you sent to, Nansen calls land one by one (funder, counterparties, transfer labels), verdict: recoverable — a Binance deposit address — and the prefilled support ticket" width="100%">
+<img src="docs/demo.gif" alt="Sent Wrong — 17 s demo: paste the address you sent to; on the right the Nansen call rail streams every call as it happens (pending ring → green dot, POST endpoint, credits, ms, response hash, counters ticking); verdict: recoverable — a Binance deposit address — and the prefilled support ticket" width="100%">
 
 | | |
 |---|---|
-| ![input](docs/screenshots/01-input.png) | ![burn address](docs/screenshots/03-burn.png) |
-| [input](docs/screenshots/01-input.png) | [burn address](docs/screenshots/03-burn.png) |
-| ![poisoning look-alike](docs/screenshots/04-poisoner.png) | ![your own wallet, mobile](docs/screenshots/05-own-wallet-mobile.png) |
-| [poisoning look-alike](docs/screenshots/04-poisoner.png) | [your own wallet, mobile](docs/screenshots/05-own-wallet-mobile.png) |
+| ![the Nansen call rail after a live run — 10 green rows, 13 credits, 3.4 s](docs/screenshots/06-call-rail.png) | ![input](docs/screenshots/01-input.png) |
+| [the Nansen call rail, live run](docs/screenshots/06-call-rail.png) | [input](docs/screenshots/01-input.png) |
+| ![burn address](docs/screenshots/03-burn.png) | ![poisoning look-alike](docs/screenshots/04-poisoner.png) |
+| [burn address](docs/screenshots/03-burn.png) | [poisoning look-alike](docs/screenshots/04-poisoner.png) |
 
-Screenshots: [input](docs/screenshots/01-input.png) · [Binance deposit](docs/screenshots/02-binance-deposit.png) · [burn address](docs/screenshots/03-burn.png) · [poisoning look-alike](docs/screenshots/04-poisoner.png) · [your own wallet, mobile](docs/screenshots/05-own-wallet-mobile.png)
+Screenshots: [the Nansen call rail, live run](docs/screenshots/06-call-rail.png) · [input](docs/screenshots/01-input.png) · [Binance deposit](docs/screenshots/02-binance-deposit.png) · [burn address](docs/screenshots/03-burn.png) · [poisoning look-alike](docs/screenshots/04-poisoner.png) · [your own wallet, mobile](docs/screenshots/05-own-wallet-mobile.png)
 
 ## 💡 The Problem & Solution
 
