@@ -19,7 +19,7 @@ export function Mark({ size = 24 }: { size?: number }) {
 export function SiteHeader({ current }: { current: "home" | "judge" }) {
   return (
     <header className="site-header">
-      <Link href="/" className="brand" aria-label="Sent Wrong — home">
+      <Link href="/" className="brand">
         <Mark />
         <span className="brand-name">sentwrong</span>
         <span className="brand-tag">where your transfer went · on Nansen</span>
