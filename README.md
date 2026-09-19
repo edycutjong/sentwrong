@@ -63,7 +63,7 @@ Anything Nansen could not answer is a **retry**, never a verdict. Failed lookups
 
 One engine (`packages/core`), two faces (CLI and web). `gather()` is all the I/O — staged so a token contract ends the search at 0 credits and a quiet address gets its whole history; `classify()` is a pure decision table; `text()` writes the copy button. Every failure is a value, never an exception. Full module-by-module notes and the cold call trace are in [ARCHITECTURE.md](ARCHITECTURE.md); the decision table is [docs/SCORING.md](docs/SCORING.md).
 
-<p align="center"><img src="docs/assets/architecture.png" alt="Sent Wrong architecture — recipient address → gather() in four staged Nansen stages → classify() decision table → text() → verdict; CLI and web faces; 24 h cache and fixtures" width="100%"></p>
+<p align="center"><img src="docs/assets/architecture.png" alt="Sent Wrong architecture — four views (web page with the live Nansen call rail, /q permalink, OG card, CLI) → /api/verdict with its spend guard → packages/core sentWrong(): gather() in four staged lookups → classify() decision table → actionFor() → Verdict with provenance; six Nansen endpoints with their credit cost; 24 h read-through cache and 13 offline fixtures" width="100%"></p>
 
 <details>
 <summary><b>Mermaid source</b> — expand to see the diagram as text (renders on GitHub)</summary>
@@ -80,8 +80,8 @@ flowchart LR
   S3 --> C["classify() — pure decision table<br/>burn (422) → token contract → Deposit label → sweep pattern<br/>→ contract/forwarder → your wallet → stranger → retry"]
   C --> T["text() — ticket / checklist / memo / note"]
   T --> V["verdict card + provenance<br/>route · evidence (endpoint → field) · credits · decision hash"]
-  V --> CLI["CLI: npm run sentwrong"]
-  V --> WEB["Web: /api/verdict NDJSON stream → card → /q/[address] share page"]
+  V --> CLI["CLI: npm run sentwrong (--explain prints the same call rows)"]
+  V --> WEB["Web: /api/verdict NDJSON stream (start → call → verdict)<br/>→ Nansen call rail (live) + route card + provenance drawer → /q/[address] share page"]
 ```
 
 </details>
@@ -92,7 +92,7 @@ flowchart LR
 | Engine | TypeScript: `lookups.ts` → `classify.ts` → `text.ts` → `verdict.ts`; sha256 decision hash | `packages/core` |
 | Cache / replay | read-through cache keyed by sha256(endpoint + body), 24 h TTL, `NANSEN_OFFLINE=1` replay of recorded fixtures | `packages/core/src/cache.ts`, `fixtures/` |
 | CLI | `tsx` — `sentwrong <address> [--from] [--chain] [--json] [--explain] [--deep] [--no-cache]` | `packages/cli` |
-| Web | Next.js 15 — live-streaming call rows, verdict card, copy button, share page, route-coloured OG card; key stays server-side | `apps/web` |
+| Web | Next.js 15 — the Nansen call rail (every call live: pending → live/cached/error, credits, ms, hash), verdict card, copy button, provenance drawer, share page, route-coloured OG card; key stays server-side | `apps/web` |
 | Tests / CI | vitest (209 tests: unit, 40,000-case property, key-boundary), Playwright (6 suites, no key), offline fixture replay, 7-stage GitHub Actions pipeline (gates → Vercel production deploy) + CodeQL + gitleaks + Dependabot | `.github/workflows/` |
 | Hosting | Vercel — production domain tracks `main` | https://sentwrong.edycu.dev |
 

@@ -86,6 +86,7 @@ code { font-family: var(--mono); font-size: 0.92em; background: rgba(255, 255, 2
 .search { display: flex; gap: 10px; }
 .search input { flex: 1; min-width: 0; font: 500 20px var(--sans); padding: 14px 16px; border-radius: var(--r-md); border: 1px solid var(--border-2); background: var(--bg-2); color: var(--text); outline: none; transition: border-color 120ms, box-shadow 120ms; }
 .search input::placeholder { color: var(--muted); }
+.search input:hover { border-color: var(--muted); }
 .search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22); }
 .search button { padding: 14px 24px; border-radius: var(--r-md); border: 0; background: var(--real); color: var(--real-ink); font-weight: 800; font-size: 16px; transition: transform 120ms, filter 120ms; }
 .search button:hover { filter: brightness(1.08); }
@@ -203,6 +204,7 @@ code { font-family: var(--mono); font-size: 0.92em; background: rgba(255, 255, 2
 /* ── sentwrong-only: the route verdict's evidence, the live call rows, the action text ───────────────────── */
 .search select { flex: none; width: 150px; font: 500 16px var(--sans); padding: 14px 40px 14px 12px; border-radius: var(--r-md); border: 1px solid var(--border-2); background: var(--bg-2) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1.5 1.5 7 7l5.5-5.5' fill='none' stroke='%23b6c2cf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 16px center; color: var(--text); outline: none; appearance: none; -webkit-appearance: none; cursor: pointer; transition: border-color 120ms, box-shadow 120ms; }
 /* custom caret: the native one ignores padding, so its gap to the edge could not be tuned — 16px from the right, 40px reserved so the value never runs under it */
+.search select:hover { border-color: var(--muted); }
 .search select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22); }
 .search + .search { margin-top: 10px; }
 .search input.mono { font: 500 16px var(--mono); }
@@ -311,6 +313,9 @@ table.rows td.num { text-align: right; font-family: var(--mono); color: var(--mu
 .rail-foot a code { font-size: inherit; padding: 0 3px; }
 .rail-clear { border: 1px solid var(--border-2); background: transparent; color: var(--text-2); border-radius: 999px; padding: 3px 10px; font: inherit; font-size: 11.5px; min-height: 26px; transition: border-color 120ms, color 120ms, background 120ms; }
 .rail-clear:hover, .rail-clear:focus-visible { border-color: var(--accent); color: var(--text); background: rgba(56, 189, 248, 0.08); outline: none; }
+/* a row that just landed live flashes green once — the truth arriving, nothing else */
+.rail-row.live { animation: rail-in 240ms var(--ease) both, rail-land 700ms var(--ease); }
+@keyframes rail-land { 0% { background: rgba(34, 197, 94, 0.14); } 100% { background: transparent; } }
 @keyframes rail-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes rail-ring { 0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.45); } 100% { box-shadow: 0 0 0 7px rgba(56, 189, 248, 0); } }
 @keyframes rail-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
