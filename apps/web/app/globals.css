@@ -43,7 +43,7 @@ body {
   min-height: 100vh;
 }
 a { color: var(--accent); text-decoration: none; }
-a:hover, a:focus-visible { text-decoration: underline; outline: none; }
+a:hover, a:focus-visible { text-decoration: underline; }
 button { font: inherit; cursor: pointer; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 code { font-family: var(--mono); font-size: 0.92em; background: rgba(255, 255, 255, 0.05); padding: 1px 5px; border-radius: 5px; }
@@ -94,7 +94,7 @@ code { font-family: var(--mono); font-size: 0.92em; background: rgba(255, 255, 2
 .search button:disabled { opacity: 0.6; cursor: wait; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .chip { border: 1px solid var(--border-2); background: transparent; color: var(--text-2); border-radius: 999px; padding: 6px 12px; min-height: 36px; font-size: 13px; font-weight: 500; transition: border-color 120ms, color 120ms, background 120ms; }
-.chip:hover, .chip:focus-visible { border-color: var(--accent); color: var(--text); outline: none; }
+.chip:hover, .chip:focus-visible { border-color: var(--accent); color: var(--text); }
 .chip.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
 .chip.on:hover { filter: brightness(1.12); color: var(--accent-ink); }
 
@@ -144,7 +144,7 @@ code { font-family: var(--mono); font-size: 0.92em; background: rgba(255, 255, 2
 .card.winner .bar > i { background: var(--real); }
 .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 .btn { padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border-2); background: transparent; color: var(--text); font-weight: 600; transition: background 120ms, border-color 120ms, transform 120ms; }
-.btn:hover, .btn:focus-visible { border-color: var(--accent); background: rgba(56, 189, 248, 0.08); outline: none; }
+.btn:hover, .btn:focus-visible { border-color: var(--accent); background: rgba(56, 189, 248, 0.08); }
 .btn:active { transform: scale(0.97); }
 .btn.primary { background: var(--real); border-color: var(--real); color: var(--real-ink); }
 .btn.primary:hover { filter: brightness(1.08); }
@@ -201,6 +201,9 @@ code { font-family: var(--mono); font-size: 0.92em; background: rgba(255, 255, 2
 .judge code { font-family: var(--mono); font-size: 0.92em; background: rgba(255,255,255,0.05); padding: 1px 5px; border-radius: 4px; }
 .judge pre { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; overflow-x: auto; }
 .judge pre code { background: transparent; padding: 0; font-size: 13.5px; line-height: 1.6; }
+.notfound-actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 24px 0 0; }
+.notfound-actions .btn { display: inline-block; text-decoration: none; }
+.notfound-actions .btn:hover, .notfound-actions .btn:focus-visible { text-decoration: none; }
 .judge-table { width: 100%; border-collapse: collapse; font-size: 15px; }
 .judge-table th { text-align: left; vertical-align: top; padding: 10px 12px 10px 0; color: var(--muted); font-weight: 600; white-space: nowrap; width: 1%; }
 .judge-table td { padding: 10px 0; border-top: 1px solid var(--border); vertical-align: top; }
@@ -271,8 +274,8 @@ table.rows td.num { text-align: right; font-family: var(--mono); color: var(--mu
 .rail { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9; background: var(--surface); border: 1px solid var(--border); border-bottom: 0; border-radius: var(--r-lg) var(--r-lg) 0 0; display: flex; flex-direction: column; max-height: 60vh; transform: translateY(calc(100% - 44px)); transition: transform 300ms var(--ease); }
 .rail.open { transform: translateY(0); }
 .rail-bar { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border: 0; background: transparent; color: var(--text); font-size: 13px; text-align: left; flex: none; border-radius: var(--r-lg) var(--r-lg) 0 0; transition: background 120ms; }
-.rail-bar:hover, .rail-bar:focus-visible { background: rgba(56, 189, 248, 0.08); outline: none; }
-.rail-bar:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+.rail-bar:hover, .rail-bar:focus-visible { background: rgba(56, 189, 248, 0.08); }
+.rail-bar:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--accent); }
 .rail-bar .kicker { margin: 0; }
 .rail-bar-text { flex: 1; font-variant-numeric: tabular-nums; }
 .rail-bar-text b { font-family: var(--mono); font-weight: 700; }
@@ -322,7 +325,7 @@ table.rows td.num { text-align: right; font-family: var(--mono); color: var(--mu
 .rail-foot a { color: var(--text-2); }
 .rail-foot a code { font-size: inherit; padding: 0 3px; }
 .rail-clear { border: 1px solid var(--border-2); background: transparent; color: var(--text-2); border-radius: 999px; padding: 3px 10px; font: inherit; font-size: 11.5px; min-height: 26px; transition: border-color 120ms, color 120ms, background 120ms; }
-.rail-clear:hover, .rail-clear:focus-visible { border-color: var(--accent); color: var(--text); background: rgba(56, 189, 248, 0.08); outline: none; }
+.rail-clear:hover, .rail-clear:focus-visible { border-color: var(--accent); color: var(--text); background: rgba(56, 189, 248, 0.08); }
 /* a row that just landed live flashes green once — the truth arriving, nothing else */
 .rail-row.live { animation: rail-in 240ms var(--ease) both, rail-land 700ms var(--ease); }
 @keyframes rail-land { 0% { background: rgba(34, 197, 94, 0.14); } 100% { background: transparent; } }
