@@ -39,3 +39,4 @@ apps/web/next-env.d.ts
 apps/web/tsconfig.tsbuildinfo
 docs/screenshots/
 *.md
+.vercel/

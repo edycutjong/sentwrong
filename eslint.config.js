@@ -6,7 +6,7 @@ import globals from "globals";
 
 export default tseslint.config(
   {
-    ignores: ["**/node_modules/", "**/.next/", "coverage/", "playwright-report/", "test-results/", ".lighthouseci/", "fixtures/", "apps/web/next-env.d.ts", "apps/web/.cache/", ".cache/"],
+    ignores: ["**/node_modules/", "**/.next/", "coverage/", "playwright-report/", "test-results/", ".lighthouseci/", "fixtures/", "apps/web/next-env.d.ts", "apps/web/.cache/", ".cache/", ".vercel/"],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
