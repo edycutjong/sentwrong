@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Verdict, Call, CallStart } from "@sentwrong/core";
 import type { ExampleVerdict } from "@/lib/example";
-import { EMPTY_RAIL, beginRun, endCall, failRun, finishRun, runLabel, seedRun, startCall, type RailState } from "@/lib/rail";
+import { EMPTY_RAIL, beginRun, clearRail, endCall, failRun, finishRun, runLabel, seedRun, startCall, type RailState } from "@/lib/rail";
 import { Card, short } from "./Card";
 import { Drawer } from "./Drawer";
 import { Example, HowItDecides } from "./Example";
@@ -89,7 +89,7 @@ export function Sentwrong({
   const [error, setError] = useState<string | undefined>(initialError);
   const [deepBusy, setDeepBusy] = useState(false);
   /** the address the in-flight stream is resolving — the input may be edited while a run is in flight */
-  const [inflight, setInflight] = useState({ address: initialAddress ?? "", chain: initialChain ?? "ethereum" });
+  const [inflight, setInflight] = useState({ address: initialAddress ?? "", chain: initialChain && CHAINS.includes(initialChain) ? initialChain : "ethereum" });
   const [drawer, setDrawer] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -106,7 +106,6 @@ export function Sentwrong({
     railRef.current = fn(railRef.current);
     setRail(railRef.current);
   }, []);
-  const [now, setNow] = useState(0);
 
   /** POST /api/verdict and parse the NDJSON stream; state changes happen only after the first await. */
   const stream = useCallback(
@@ -199,13 +198,6 @@ export function Sentwrong({
     if (initialAddress && EVM.test(initialAddress) && !initialVerdict && !initialError) void stream(initialAddress, initialSender || undefined, chain, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // the rail's clock ticks while a run is in flight (its `T s` counter), and stops the moment it isn't
-  useEffect(() => {
-    if (phase !== "running" && !deepBusy) return;
-    const id = setInterval(() => setNow(Date.now()), 100);
-    return () => clearInterval(id);
-  }, [phase, deepBusy]);
 
   const say = (t: string) => {
     setToast(t);
@@ -467,7 +459,7 @@ export function Sentwrong({
       )}
       {phase === "idle" && <HowItDecides />}
 
-      <Rail state={rail} now={now} onClear={() => updRail(() => EMPTY_RAIL)} />
+      <Rail state={rail} onClear={() => updRail((s) => clearRail(s))} />
       <Drawer
         calls={verdict?.provenance ?? []}
         skipped={verdict?.skipped ?? []}

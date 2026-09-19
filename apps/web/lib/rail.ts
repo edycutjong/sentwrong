@@ -95,6 +95,11 @@ export function msCell(c: Call | undefined): string {
 
 export type RailTotals = { calls: number; credits: number; ms: number; pending: number };
 
+/** true while a live run has neither landed its verdict nor failed — the rail's clock ticks only then */
+export function inFlight(state: RailState): boolean {
+  return state.runs.some((r) => r.origin === "live" && r.ms === undefined && !r.error);
+}
+
 /** Session totals — credits and calls over every row; time = the wall time of each finished run (the drawer's number). */
 export function totalsOf(state: RailState, now: number): RailTotals {
   let calls = 0,
@@ -107,7 +112,7 @@ export function totalsOf(state: RailState, now: number): RailTotals {
     } else pending++;
   }
   let ms = 0;
-  for (const run of state.runs) ms += run.ms ?? (run.origin === "live" && state.rows.some((r) => r.run === run.id && !r.call) ? Math.max(0, now - run.startedAt) : 0);
+  for (const run of state.runs) ms += run.ms ?? (run.origin === "live" && !run.error && state.rows.some((r) => r.run === run.id && !r.call) ? Math.max(0, now - run.startedAt) : 0);
   return { calls, credits, ms, pending };
 }
 
@@ -137,6 +142,11 @@ export function endCall(state: RailState, run: number, seq: number, call: Call, 
   const rows = state.rows.slice();
   rows[i] = { ...rows[i], call };
   return { ...state, rows };
+}
+
+/** `clear`: drop every row; keep the run counter (ids are never reused) and any run still in flight, so its rows still land under a header. */
+export function clearRail(state: RailState): RailState {
+  return { runs: state.runs.filter((r) => r.origin === "live" && r.ms === undefined && !r.error), rows: [], next: state.next };
 }
 
 /** The verdict landed: stamp the run with the wall time and hash the drawer will print. */

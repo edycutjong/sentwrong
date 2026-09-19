@@ -88,7 +88,7 @@ export default function Judge() {
             <tr>
               <td>Tests</td>
               <td>
-                <b>212 vitest tests</b> in 9 s, of which <b>11 regression tests named after the defect they pin</b> (e.g. &ldquo;a transactions timeout read as &lsquo;nothing on record&rsquo;&rdquo;),
+                <b>213 vitest tests</b> in 9 s, of which <b>11 regression tests named after the defect they pin</b> (e.g. &ldquo;a transactions timeout read as &lsquo;nothing on record&rsquo;&rdquo;),
                 plus <b>13 fixtures</b> recorded live and replayed offline 13/13 with the same decision hash
               </td>
             </tr>

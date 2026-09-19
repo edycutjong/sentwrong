@@ -13,6 +13,8 @@ import {
   endCall,
   finishRun,
   failRun,
+  clearRail,
+  inFlight,
   seedRun,
   totalsOf,
   statusOf,
@@ -126,6 +128,27 @@ describe("rail — the recorded example and the session", () => {
     expect(totalsOf(s, 0).calls).toBe(RAIL_CAP);
     // run ids keep climbing — never reused within a session
     expect(s.next).toBe(4);
+  });
+});
+
+describe("rail — clear and the clock", () => {
+  it("clear drops the rows, keeps the id counter and the run still in flight; a cancelled run stops the clock", () => {
+    let s = seedRun(EMPTY_RAIL, "example", "replayed", [call({ cached: true, credits: 0 })], 0);
+    const live = beginRun(s, "live", "live", 1000);
+    s = startCall(live.state, live.run, { seq: 1, endpoint: "search/general", body: {} }, 1000);
+    expect(inFlight(s)).toBe(true);
+    const cleared = clearRail(s);
+    expect(cleared.rows).toEqual([]);
+    expect(cleared.runs.map((r) => r.label)).toEqual(["live"]);
+    expect(cleared.next).toBe(s.next);
+    // a row that lands after the clear still finds its run header
+    const after = endCall(cleared, live.run, 1, call(), 1200);
+    expect(after.rows[0].run).toBe(live.run);
+    // an aborted run is closed as cancelled: no longer in flight, no time added
+    const cancelled = failRun(s, live.run, "cancelled — a newer query replaced it");
+    expect(inFlight(cancelled)).toBe(false);
+    expect(totalsOf(cancelled, 99_000).ms).toBe(0);
+    expect(cancelled.runs[1].error).toMatch(/^cancelled/);
   });
 });
 

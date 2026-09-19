@@ -29,12 +29,14 @@ test.describe("Nansen call rail", () => {
     }
   });
 
-  test("a failed live run closes its pending rows as errors — the rail never shows a row pulsing forever", async ({ page }) => {
+  test("a run that fails before its first call still gets its header and error line; nothing is left pending", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("button", { name: "Run it live now" }).click();
     await expect(page.locator(".banner.err")).toContainText("NANSEN_API_KEY is not set on the server");
     const rail = page.getByRole("complementary", { name: "Nansen API calls" });
     await expect(rail.locator(".rail-run.live")).toHaveCount(1);
+    await expect(rail.locator(".rail-run.live .rail-run-error")).toContainText("NANSEN_API_KEY is not set");
+    await expect(rail.locator(".rail-run.live .rail-run-tail")).toHaveText("failed");
     await expect(rail.locator(".rail-row.pending")).toHaveCount(0);
     // the example's rows stay: the rail accumulates across the session
     await expect(rail.locator(".rail-row")).toHaveCount(10);

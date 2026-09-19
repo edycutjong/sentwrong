@@ -1,19 +1,20 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { REPO } from "./Shell";
-import { type RailState, type RailRun, creditsCell, hashCell, msCell, paramSummary, statusOf, totalsOf } from "@/lib/rail";
+import { type RailState, type RailRun, creditsCell, hashCell, inFlight, msCell, paramSummary, statusOf, totalsOf } from "@/lib/rail";
 
 const REDUCED = () => typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /** A number that counts up to its new value over 240 ms (family §7); jumps when the user prefers reduced motion. */
 function useCountUp(value: number): number {
   const [shown, setShown] = useState(value);
-  const from = useRef(value);
+  // the digit on screen — a new target mid-animation continues from here, never from a stale start
+  const shownRef = useRef(value);
   useEffect(() => {
-    const start = from.current;
+    const start = shownRef.current;
     if (start === value) return;
     if (REDUCED() || value < start) {
-      from.current = value;
+      shownRef.current = value;
       setShown(value);
       return;
     }
@@ -23,9 +24,9 @@ function useCountUp(value: number): number {
       const k = Math.min(1, (t - t0) / 240);
       const eased = 1 - Math.pow(1 - k, 3);
       const v = Math.round(start + (value - start) * eased);
+      shownRef.current = v;
       setShown(v);
       if (k < 1) raf = requestAnimationFrame(tick);
-      else from.current = value;
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
@@ -36,7 +37,7 @@ function useCountUp(value: number): number {
 function RunHead({ run }: { run: RailRun }) {
   const tail = run.error ? "failed" : run.ms ? `${(run.ms / 1000).toFixed(1)} s${run.hash ? ` · ${run.hash.slice(0, 12)}` : ""}` : run.origin === "live" ? "running…" : (run.hash?.slice(0, 12) ?? "");
   return (
-    <li className={`rail-run ${run.origin} ${run.error ? "failed" : ""}`}>
+    <li className={`rail-run ${run.origin} ${run.error ? (run.error.startsWith("cancelled") ? "cancelled" : "failed") : ""}`}>
       <span className="rail-run-kind">{run.origin === "replayed" ? "example · replayed · 0 cr" : run.origin === "server" ? "permalink · server-side" : "live"}</span>
       <span className="rail-run-tail">{tail}</span>
       <span className="rail-run-q">{run.label}</span>
@@ -64,8 +65,16 @@ function Endpoint({ ep }: { ep: string }) {
  * makes, as it happens — pending → live / cached / error, endpoint, params, credits, latency, response hash — with
  * counters that tick. The drawer is the receipt; this is the live meter. Every row is a real Call from the engine.
  */
-export function Rail({ state, now, onClear }: { state: RailState; now: number; onClear: () => void }) {
+export function Rail({ state, onClear }: { state: RailState; onClear: () => void }) {
   const [open, setOpen] = useState(false);
+  // the `T s` cell ticks only while a live run is in flight; nothing else re-renders for the clock
+  const [now, setNow] = useState(0);
+  const ticking = inFlight(state);
+  useEffect(() => {
+    if (!ticking) return;
+    const id = setInterval(() => setNow(Date.now()), 100);
+    return () => clearInterval(id);
+  }, [ticking]);
   const listRef = useRef<HTMLOListElement>(null);
   const stick = useRef(true);
   const totals = totalsOf(state, now);
