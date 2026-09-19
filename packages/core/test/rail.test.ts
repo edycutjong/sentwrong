@@ -173,7 +173,18 @@ describe("rail — cells", () => {
     expect(msCell(call({ ok: false, totalMs: 0 }))).toBe("");
   });
 
-  it("labels a run by short address, chain and sender", () => {
+  it("labels a run by short address, chain and sender; short strings are left whole", () => {
     expect(runLabel("0xe460774c849089ee3edf0fb06da14c066caabbef", "base", "0xb0aeba103a12d6034c758c37c0d9b9977e1d03b5")).toBe("0xe460…bbef · base · from 0xb0ae…03b5");
+    expect(paramSummary("search/general", { search_query: "PEPE" })).toBe("“PEPE”");
+  });
+
+  it("finishRun stamps only the run named; seedRun without a wall time records 0", () => {
+    let s = beginRun(EMPTY_RAIL, "a", "live", 0).state;
+    s = beginRun(s, "b", "live", 0).state;
+    s = finishRun(s, 2, 1234);
+    expect(s.runs.map((r) => r.ms)).toEqual([undefined, 1234]);
+    const seeded = seedRun(EMPTY_RAIL, "x", "server", [call()], 0);
+    expect(seeded.runs[0].ms).toBe(0);
+    expect(seeded.runs[0].hash).toBeUndefined();
   });
 });
