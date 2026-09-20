@@ -1,8 +1,20 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { gather } from "../src/lookups.js";
 import { sentWrong, rowsFor, findTransfer } from "../src/verdict.js";
 import { CachedNansenClient, MemoryCache } from "../src/cache.js";
 import { fakeClient, binanceRoutes, search, txs, txRow, cps, related, noFunder, lookup, labels, R, HOT, USER, SENDER, KEY, binanceDeposit, ok } from "./helpers.js";
+
+// A footgun fix: a real shell with NANSEN_OFFLINE=1 exported must not change what this suite asserts — the
+// CachedNansenClient built below takes no explicit `offline` option, so it falls back to reading the ambient
+// env directly; neutralized here around each test, then restored.
+const REAL_NANSEN_OFFLINE = process.env.NANSEN_OFFLINE;
+beforeEach(() => {
+  delete process.env.NANSEN_OFFLINE;
+});
+afterEach(() => {
+  if (REAL_NANSEN_OFFLINE === undefined) delete process.env.NANSEN_OFFLINE;
+  else process.env.NANSEN_OFFLINE = REAL_NANSEN_OFFLINE;
+});
 
 describe("gather() over the wire", () => {
   it("rejects a malformed address before any call", async () => {

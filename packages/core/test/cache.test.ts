@@ -1,5 +1,17 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { CachedNansenClient, MemoryCache, cacheKey } from "../src/cache.js";
+
+// A footgun fix: a real shell with NANSEN_OFFLINE=1 exported must not change what this suite asserts — every
+// test below builds its own CachedNansenClient without an explicit `offline` option, so CachedNansenClient falls
+// back to reading the ambient env directly; neutralized here around each test, then restored.
+const REAL_NANSEN_OFFLINE = process.env.NANSEN_OFFLINE;
+beforeEach(() => {
+  delete process.env.NANSEN_OFFLINE;
+});
+afterEach(() => {
+  if (REAL_NANSEN_OFFLINE === undefined) delete process.env.NANSEN_OFFLINE;
+  else process.env.NANSEN_OFFLINE = REAL_NANSEN_OFFLINE;
+});
 
 const KEY = "nsn_test_key_0000000000000000000000";
 function cached(routes: () => unknown, opts: Partial<ConstructorParameters<typeof CachedNansenClient>[1]> = {}) {

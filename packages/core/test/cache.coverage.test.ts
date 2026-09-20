@@ -67,6 +67,8 @@ describe("DiskCache", () => {
 
 describe("CachedNansenClient without an explicit store", () => {
   it("falls back to a DiskCache rooted at the current working directory", async () => {
+    // a real shell with NANSEN_OFFLINE=1 exported must not change this test: it asserts a live fetch happens.
+    withEnv("NANSEN_OFFLINE", undefined);
     const dir = withTmpDir();
     withCwd(dir);
     let hits = 0;
@@ -97,6 +99,8 @@ describe("MemoryCache.entries()", () => {
 
 describe("credits fall back to 1 for an endpoint absent from the CREDITS table", () => {
   it("a fresh (non-cached) call to an unlisted endpoint records credits: 1", async () => {
+    // a real shell with NANSEN_OFFLINE=1 exported must not change this test: it asserts a live fetch happens.
+    withEnv("NANSEN_OFFLINE", undefined);
     const store = new MemoryCache();
     const fetchImpl: typeof fetch = async () => new Response('{"v":1}', { status: 200 });
     const c = new CachedNansenClient(KEY, { fetchImpl, rps: 1000, store });
