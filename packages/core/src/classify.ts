@@ -80,9 +80,9 @@ export function outflowConcentration(l: Lookups): { share: number; to?: string; 
   const top = [...rows].sort((a, b) => (b.volume_out_usd ?? 0) - (a.volume_out_usd ?? 0))[0];
   if (!top || totalOut <= 0) return { share: 0, totalOut };
   // top is the row with the largest (volume_out_usd ?? 0); if top's own field were nullish (normalizing to 0) and it is
-  // still the max, every row normalizes to ≤ 0, which forces totalOut ≤ 0 and returns on the line above.
-  /* v8 ignore next -- unreachable given the guard above: see comment */
-  return { share: (top.volume_out_usd ?? 0) / totalOut, to: top.counterparty_address, totalOut };
+  // still the max, every row normalizes to ≤ 0, which forces totalOut ≤ 0 and returns on the line above — so top's
+  // field is provably non-nullish here; asserted rather than defaulted, leaving no dead branch behind.
+  return { share: top.volume_out_usd! / totalOut, to: top.counterparty_address, totalOut };
 }
 
 export function activity(l: Lookups, now: number) {
@@ -196,10 +196,9 @@ export function classify(l: Lookups, now = Date.now()): Decision {
   // retry: nothing to decide from
   const core = [l.transactions, l.counterparties, l.related];
   if (core.every((r) => !r.ok)) {
-    // reached only inside the `core.every((r) => !r.ok)` guard above, so every r.ok here is already false: the "ok" arm
-    // of `r.ok ? "ok" : r.error` can never execute in this branch.
-    /* v8 ignore next -- unreachable given the guard above: see comment */
-    ev.push({ code: "LOOKUPS_FAILED", field: "profiler/address/transactions, counterparties, related-wallets", value: core.map((r) => (r.ok ? "ok" : r.error)).join(" / "), meaning: "Nansen did not answer; no verdict is possible from zero data." });
+    // reached only inside the `core.every((r) => !r.ok)` guard above, so every r here is already the failed variant —
+    // cast instead of a `r.ok ? "ok" : r.error` ternary, so there is no "ok" arm left as a dead branch.
+    ev.push({ code: "LOOKUPS_FAILED", field: "profiler/address/transactions, counterparties, related-wallets", value: core.map((r) => (r as { ok: false; error: string }).error).join(" / "), meaning: "Nansen did not answer; no verdict is possible from zero data." });
     return { route: "retry", sub: "failed", confidence: "low", headline: "Nansen did not answer for this address. Retry in a minute — no verdict was made.", evidence: ev, rule: 0, warnings };
   }
   // retry: the stranger states (fresh / dormant / active / poisoner) are all read off the transactions page — without it
@@ -209,11 +208,9 @@ export function classify(l: Lookups, now = Date.now()): Decision {
     return { route: "retry", sub: "failed", confidence: "low", headline: "Nansen's transactions lookup failed for this address. Retry in a minute — no verdict was made.", evidence: ev, rule: 0, warnings };
   }
   // 7–9. stranger — first, two address-poisoning signatures read straight off the transactions page
-  // act and l.transactions.ok are both guaranteed truthy by this point: activity() returns undefined only when
-  // !l.transactions.ok, and the two retry checks above already returned if !l.transactions.ok — so neither "else []" arm
-  // below can execute.
-  /* v8 ignore next -- unreachable given the guards above: see comment */
-  const rows: TxRow[] = act ? l.transactions.ok ? l.transactions.data.data : [] : [];
+  // l.transactions.ok is guaranteed true by this point (the two retry checks above already returned if not), so
+  // TS narrows it directly — no "else []" fallback branch is needed, or left dead, to reach .data.data.
+  const rows: TxRow[] = l.transactions.data.data;
   const inboundTransfers = rows.flatMap((r) => (r.tokens_received ?? []).filter((t) => lc(t.to_address) === l.address));
   const spoof = inboundTransfers.filter((t) => isSpoofSymbol(t.token_symbol));
   if (act && act.rows > 0 && spoof.length >= 2 && spoof.length >= inboundTransfers.length * 0.5 && act.out === 0) {
@@ -233,9 +230,9 @@ export function classify(l: Lookups, now = Date.now()): Decision {
   }
   ev.push({ code: "ACTIVITY", field: "profiler/address/transactions → data[]", value: `${act.in} in / ${act.out} out${act.truncated ? " (newest 100)" : ""}, last ${act.newest?.slice(0, 10)}`, meaning: act.out ? "A wallet that receives and sends — someone operates it." : "Only ever received; never sent anything." });
   // inboundFromExchange is only ever set when parseLabel(t.from_address_label)?.exchange is true, and parseLabel returns
-  // undefined for a falsy raw — so from_address_label is already a truthy string here; the "" fallback can never execute.
-  /* v8 ignore next -- unreachable given the comment above */
-  if (inboundFromExchange) ev.push({ code: "FUNDED_BY_EXCHANGE", field: "transaction-with-token-transfer-lookup → token_transfer_array[].from_address_label", value: inboundFromExchange.t.from_address_label ?? "", meaning: "It has received withdrawals from an exchange — a person's wallet, not an exchange's." });
+  // undefined for a falsy raw — so from_address_label is already a truthy string here; asserted, not defaulted, so
+  // there is no "" fallback branch left dead.
+  if (inboundFromExchange) ev.push({ code: "FUNDED_BY_EXCHANGE", field: "transaction-with-token-transfer-lookup → token_transfer_array[].from_address_label", value: inboundFromExchange.t.from_address_label!, meaning: "It has received withdrawals from an exchange — a person's wallet, not an exchange's." });
   const top = l.counterparties.ok ? l.counterparties.data.data.slice(0, 3) : [];
   if (top.length) ev.push({ code: "COUNTERPARTIES", field: "profiler/address/counterparties → counterparty_address_label", value: top.map((r) => `${short(r.counterparty_address)} ${(r.counterparty_address_label ?? []).join("/") || "unlabelled"} ×${r.interaction_count}`).join(" · "), meaning: "Its main counterparties carry no exchange or contract identity." });
   if (act.out === 0) {

@@ -6,7 +6,7 @@
 import { describe, it, expect } from "vitest";
 import { sentWrong, rowsFor, findTransfer } from "../src/verdict.js";
 import type { CounterpartiesResponse, TxLookupResponse } from "../src/nansen.js";
-import { fakeClient, binanceRoutes, binanceDeposit, lookups, cps, txs, related, noFunder, search, labels, ok, R, HOT } from "./helpers.js";
+import { fakeClient, binanceRoutes, binanceDeposit, lookups, cps, txs, related, noFunder, search, labels, ok, fail, R, HOT } from "./helpers.js";
 
 describe("findTransfer()", () => {
   it("falls through to undefined when the given sender never sent the recipient anything, even though other inbound transfers exist", () => {
@@ -48,6 +48,19 @@ describe("rowsFor() / labelIndex() edge cases", () => {
     const rows = rowsFor(l);
     expect(rows).toHaveLength(1);
     expect(rows[0].entityLabel).toBeUndefined(); // no entity label was ever indexed for HOT
+  });
+
+  it("a failed tx lookup is skipped by labelIndex, not read for entity labels", () => {
+    // Every other coverage/gather test's txLookups resolve ok — none exercises the `x.result.ok` false arm
+    // of labelIndex's outer loop. A failed lookup carries no data.data to index, so it must be skipped clean,
+    // never crash, and never seed an entity label for the address it would have described.
+    const l = lookups({
+      counterparties: ok(cps([{ address: HOT, label: ["Some Label"], n: 1, in: 5 }])),
+      txLookups: [{ hash: "0x" + "b".repeat(64), role: "outbound", result: fail("timeout", 0) }],
+    });
+    const rows = rowsFor(l);
+    expect(rows).toHaveLength(1);
+    expect(rows[0].entityLabel).toBeUndefined();
   });
 
   it("volume_in_usd/volume_out_usd missing entirely (not just 0) still sum to 0, not NaN", () => {

@@ -72,9 +72,9 @@ export function findTransfer(l: Lookups): Transfer | undefined {
   if (!l.sender || !l.transactions.ok) return undefined;
   const { inbound } = splitDirection(l.transactions.data.data, l.address);
   // splitDirection() only puts r in `inbound` when (r.tokens_received ?? []).some(...) matched, which requires
-  // r.tokens_received to already be a non-null, non-empty array — so the `?? []` fallback below can never fire.
-  /* v8 ignore next */
-  for (const r of inbound) for (const t of r.tokens_received ?? []) {
+  // r.tokens_received to already be a non-null, non-empty array — so a `?? []` fallback below could never fire;
+  // asserted non-null instead of defaulted, so there is no dead branch left for coverage to paper over.
+  for (const r of inbound) for (const t of r.tokens_received!) {
     if (t.from_address.toLowerCase() === l.sender && t.to_address.toLowerCase() === l.address) return { hash: r.transaction_hash, date: r.block_timestamp, amount: t.token_amount, symbol: t.token_symbol, from: l.sender, to: l.address };
   }
   return undefined;
