@@ -110,5 +110,5 @@ npm install
 npm run sentwrong -- 0xe460774c849089ee3edf0fb06da14c066caabbef --explain   # the hero, live, 13 credits
 npm run verify                                                              # 13/13 fixtures replay offline, 0 credits
 npm run bench -- --runs 1                                                   # ~130 credits; --runs 3 for the table above
-npm test                                                                    # 128 tests
+npm test                                                                    # 214 tests
 ```
