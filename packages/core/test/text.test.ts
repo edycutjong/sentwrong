@@ -24,7 +24,7 @@ describe("one copy button per route", () => {
     expect(a.text).not.toContain("[your address]");
   });
   it("your-own-wallet → a checklist, no ticket, the scam warning", () => {
-    const a = actionFor(classify(lookups({ sender: SENDER, transactions: ok(txs([txRow({ from: SENDER, to: R })])), firstFunder: ok(funder(SENDER)) }), NOW), { ...ctx, sender: SENDER });
+    const a = actionFor(classify(lookups({ sender: SENDER, transactions: ok(txs([txRow({ from: R, to: USER }), txRow({ from: SENDER, to: R })])), firstFunder: ok(funder(SENDER)) }), NOW), { ...ctx, sender: SENDER });
     expect(a.kind).toBe("checklist");
     expect(a.text).toMatch(/Switch that wallet to ethereum/);
     expect(a.text).toMatch(/Anyone offering "recovery" for a fee is a scam/);

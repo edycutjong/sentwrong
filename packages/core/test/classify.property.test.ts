@@ -141,7 +141,7 @@ const arbLookups: fc.Arbitrary<Lookups> = fc
         firstFunder: result(firstFunder),
         txLookups: txLookups(self),
         senderRelated: sender ? result(relations) : fc.constant(undefined),
-        transactionsWindow: fc.constantFrom<Lookups["transactionsWindow"]>("14d", "all"),
+        transactionsWindow: fc.constantFrom<Lookups["transactionsWindow"]>("14d", "all", "14d-partial"),
       })
       .map((o): Lookups => ({ address: self, sender, chain: chain as Lookups["chain"], ...o, skipped: [] })),
   );

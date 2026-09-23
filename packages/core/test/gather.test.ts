@@ -83,6 +83,7 @@ describe("gather() over the wire", () => {
     const l = await gather(c, R);
     expect(l.transactions.ok && l.transactions.data.data).toHaveLength(1);
     expect(l.skipped[0]).toMatch(/all-time .* using the 14-day page/);
+    expect(l.transactionsWindow).toBe("14d-partial"); // not "all": classify must not read "never sent" off this page
   });
   it("a burn address (422) skips the transaction lookups", async () => {
     const c = fakeClient((e) => {

@@ -15,8 +15,12 @@ export type Lookups = {
   chain: Chain;
   search: LookupResult<SearchResponse>;
   transactions: LookupResult<TxResponse>;
-  /** "14d" when the recent page was full (busy address — the all-time window is skipped), "all" otherwise */
-  transactionsWindow: "14d" | "all";
+  /**
+   * "14d" when the recent page was full (busy address — the all-time window is skipped), "all" otherwise, and
+   * "14d-partial" when the address is quiet but the all-time page failed: the 14-day page is all there is, so "no
+   * rows" / "never sent" cannot be read off it (classify.ts turns that into a retry, not a fresh/dormant verdict)
+   */
+  transactionsWindow: "14d" | "all" | "14d-partial";
   counterparties: LookupResult<CounterpartiesResponse>;
   related: LookupResult<RelatedWalletsResponse>;
   firstFunder: LookupResult<FirstFunderResponse>;
@@ -97,7 +101,10 @@ export async function gather(client: NansenClient, address: string, opts: Gather
       sender ? settle(nansen.relatedWallets(client, sender, chain)) : Promise.resolve(undefined),
     ]);
     counterparties = cp; senderRelated = sr;
-    if (all) { if (all.ok) transactions = all; else skipped.push(`profiler/address/transactions all-time (${all.error}) — using the 14-day page`); }
+    if (all) {
+      if (all.ok) transactions = all;
+      else { transactionsWindow = "14d-partial"; skipped.push(`profiler/address/transactions all-time (${all.error}) — using the 14-day page`); }
+    }
   }
   // Which transaction hashes to look up: the newest 2 outbound (the sweeps), the newest inbound, the sender's transfer
   // if we can see it, and the funding transaction. These carry the entity labels the profiler rows do not.

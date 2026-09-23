@@ -150,8 +150,11 @@ export function classify(l: Lookups, now = Date.now()): Decision {
   // 4. sweep pattern: every outbound destination we looked up is an exchange's OWN wallet (hot/cold wallet, "Binance 14") —
   //    a destination labelled "<X>: Deposit" is someone depositing INTO the exchange, i.e. a user wallet, not a sweep
   //    and a 🏦-marked DEX router ("Uniswap: V2 Router 2") is a swap, not a sweep — contract labels are excluded
+  //    and a deposit address sweeps into ONE exchange: outflow split across several exchanges' wallets is a person's pattern
   const sweepTarget = (d: { label?: ParsedLabel }) => !!d.label?.exchange && !isDepositLabel(d.label) && !isContractLabel(d.label);
-  if (dests.length && dests.every(sweepTarget)) {
+  const sweepEntities = [...new Set(dests.map((d) => d.label?.entity))];
+  if (dests.length && dests.every(sweepTarget) && sweepEntities.length > 1) warnings.push(`its outbound goes to several exchanges' own wallets (${sweepEntities.join(", ")}) — not the single-exchange sweep of a deposit address`);
+  if (dests.length && dests.every(sweepTarget) && sweepEntities.length === 1) {
     const entity = dests[0].label!.entity ?? "an exchange";
     ev.push({ code: "SWEEP_TO_EXCHANGE", field: "transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label", value: dests.map((d) => d.label!.raw).join(" · "), meaning: `Every transfer out of this address went to ${entity}'s own wallet — it is swept like a deposit address.` });
     let confidence: Confidence = "medium";
@@ -186,7 +189,14 @@ export function classify(l: Lookups, now = Date.now()): Decision {
     const ff = l.firstFunder.ok ? l.firstFunder.data.data[0] : undefined;
     const fundedBySender = ff && lc(ff.first_funder_address) === l.sender;
     const viaRecipient = relations.find((r) => lc(r.address) === l.sender);
-    if (viaSender || fundedBySender || viaRecipient) {
+    // "you were its first funder" (first-funder, or the recipient's own "First Funder" relation) is also exactly what a
+    // mistaken send of ETH to a fresh address looks like: the transfer being asked about IS the first funding. It only
+    // shows you control the address if the address was operated afterwards (it has sent something); otherwise it is a
+    // warning, and the stranger rules decide (audit 2026-09-23)
+    const fundingOnly = !viaSender && (!viaRecipient || /^First Funder$/i.test(viaRecipient.relation));
+    const operated = !!act && act.out > 0;
+    if ((fundedBySender || viaRecipient) && fundingOnly && !operated) warnings.push("your address made this address's first-ever deposit — most likely the transfer you are asking about; with nothing ever sent from it, that does not show you control it");
+    else if (viaSender || fundedBySender || viaRecipient) {
       if (viaSender) ev.push({ code: "RELATED_TO_SENDER", field: "profiler/address/related-wallets (your address) → address, relation", value: `${viaSender.relation} — ${short(l.address)}`, meaning: "Nansen links the recipient to your wallet." });
       if (fundedBySender) ev.push({ code: "FUNDED_BY_SENDER", field: "profiler/address/first-funder → first_funder_address", value: `${short(ff!.first_funder_address)} on ${ff!.block_timestamp.slice(0, 10)}`, meaning: "Your wallet was the first to ever fund this address — you most likely created it." });
       if (viaRecipient) ev.push({ code: "RELATED_TO_SENDER", field: "profiler/address/related-wallets → address, relation", value: `${viaRecipient.relation} — ${short(viaRecipient.address)}`, meaning: "The recipient's related-wallet list contains your address." });
@@ -206,6 +216,12 @@ export function classify(l: Lookups, now = Date.now()): Decision {
   if (!l.transactions.ok) {
     ev.push({ code: "TRANSACTIONS_FAILED", field: "profiler/address/transactions", value: `${l.transactions.error}${l.transactions.status ? ` (HTTP ${l.transactions.status})` : ""}`, meaning: "The transactions lookup failed, so activity cannot be judged; no verdict was made." });
     return { route: "retry", sub: "failed", confidence: "low", headline: "Nansen's transactions lookup failed for this address. Retry in a minute — no verdict was made.", evidence: ev, rule: 0, warnings };
+  }
+  // retry: a quiet address whose all-time page failed — the 14-day page shows nothing sent, but that says nothing about
+  // the months before it; "nothing on record" / "never sent" / "poisoner" would be fabricated from a partial page
+  if (l.transactionsWindow === "14d-partial" && act && act.out === 0) {
+    ev.push({ code: "HISTORY_INCOMPLETE", field: "profiler/address/transactions (all-time window)", value: `failed; the 14-day page has ${act.rows} rows, 0 sent`, meaning: "Only the last 14 days loaded, and they show no outgoing transfer; the full history is needed to judge this wallet. No verdict was made." });
+    return { route: "retry", sub: "failed", confidence: "low", headline: "Nansen returned only the last 14 days for this address. Retry in a minute — no verdict was made.", evidence: ev, rule: 0, warnings };
   }
   // 7–9. stranger — first, two address-poisoning signatures read straight off the transactions page
   // l.transactions.ok is guaranteed true by this point (the two retry checks above already returned if not), so

@@ -140,6 +140,15 @@ describe("rule 4 — sweep pattern for a not-yet-labelled deposit address", () =
     ] }), NOW);
     expect(d.route).toBe("active-stranger");
   });
+  it("REGRESSION (audit 2026-09-23): outflow split across two exchanges' own wallets was 'a Binance deposit address' (first destination) — a deposit address sweeps into one", () => {
+    const s1 = txRow({ hash: "0x" + "5".repeat(64), from: R, to: HOT }), s2 = txRow({ hash: "0x" + "6".repeat(64), from: R, to: GAS });
+    const d = classify(lookups({ transactions: ok(txs([s1, s2])), txLookups: [
+      { hash: s1.transaction_hash, role: "outbound", result: ok(lookup(s1.transaction_hash, [transfer(R, HOT, null, "🏦 Binance 14 [0x28c6c0]")])) },
+      { hash: s2.transaction_hash, role: "outbound", result: ok(lookup(s2.transaction_hash, [transfer(R, GAS, null, "🏦 Coinbase 10 [0xa9d1e0]")])) },
+    ] }), NOW);
+    expect(d.route).toBe("active-stranger");
+    expect(d.warnings.some((w) => /several exchanges' own wallets \(Binance, Coinbase\)/.test(w))).toBe(true);
+  });
 });
 
 describe("rule 5 — contracts", () => {
@@ -185,7 +194,8 @@ describe("rule 5 — contracts", () => {
 });
 
 describe("rule 6 — your own wallet", () => {
-  const base = (over: Partial<ReturnType<typeof lookups>> = {}) => lookups({ sender: SENDER, transactions: ok(txs([txRow({ from: SENDER, to: R, symbol: "ETH", amount: 0.05 })])), counterparties: ok(cps([{ address: SENDER, n: 1, in: 100 }])), ...over });
+  // the recipient was funded by the sender AND has been operated since (it sent something) — what a wallet you created looks like
+  const base = (over: Partial<ReturnType<typeof lookups>> = {}) => lookups({ sender: SENDER, transactions: ok(txs([txRow({ from: R, to: USER, ts: "2026-09-10T00:00:00" }), txRow({ from: SENDER, to: R, symbol: "ETH", amount: 0.05, ts: "2026-09-01T00:00:00" })])), counterparties: ok(cps([{ address: SENDER, n: 1, in: 100 }])), ...over });
   it("recipient's first funder is the sender → your-own-wallet/funded, FUNDED_BY_SENDER", () => {
     const d = classify(base({ firstFunder: ok(funder(SENDER, "")) }), NOW);
     expect(d).toMatchObject({ route: "your-own-wallet", sub: "funded", confidence: "high", rule: 6 });
@@ -203,6 +213,22 @@ describe("rule 6 — your own wallet", () => {
   it("no sender → the same data is an active stranger", () => {
     const d = classify(base({ sender: undefined, firstFunder: ok(funder(SENDER, "")) }), NOW);
     expect(d.route).toBe("active-stranger");
+  });
+  // the mistaken send of ETH to a fresh address (a typo, a stranger's unused wallet) is that address's first funding
+  const typo = (over: Partial<ReturnType<typeof lookups>> = {}) => lookups({ sender: SENDER, transactions: ok(txs([txRow({ from: SENDER, to: R, symbol: "ETH", amount: 0.5 })])), counterparties: ok(cps([{ address: SENDER, n: 1, in: 1200 }])), ...over });
+  it("REGRESSION (audit 2026-09-23): a fresh address whose first funding IS the mistaken send was 'your own wallet — nothing is lost'; it is a dormant stranger with a warning", () => {
+    for (const over of [{ firstFunder: ok(funder(SENDER, "")) }, { related: ok(related([{ address: SENDER, relation: "First Funder" }])) }]) {
+      const d = classify(typo(over), NOW);
+      expect(d).toMatchObject({ route: "active-stranger", sub: "dormant", confidence: "low" });
+      expect(d.warnings.some((w) => /first-ever deposit/.test(w))).toBe(true);
+    }
+  });
+  it("REGRESSION (audit 2026-09-23): funded-by-you with the transactions lookup failed is a retry, not 'your own wallet'", () => {
+    expect(classify(typo({ transactions: fail("timeout"), firstFunder: ok(funder(SENDER, "")) }), NOW).route).toBe("retry");
+  });
+  it("a relation other than First Funder still proves the link on a never-used address (the sender deployed / signs for it)", () => {
+    expect(classify(typo({ related: ok(related([{ address: SENDER, relation: "Multisig Signer" }])) }), NOW)).toMatchObject({ route: "your-own-wallet", sub: "related" });
+    expect(classify(typo({ senderRelated: ok(related([{ address: R, relation: "First Funder" }])) }), NOW)).toMatchObject({ route: "your-own-wallet", sub: "related" });
   });
   it("REGRESSION: 'your address' labelled as an exchange wallet skips the own-wallet check with a warning", () => {
     const tx = txRow({ hash: "0x" + "8".repeat(64), from: HOT, to: R, amount: 249999 });
@@ -270,6 +296,20 @@ describe("retry — never a verdict from nothing", () => {
     const d = classify(lookups({ counterparties: ok(cps([])) }), NOW);
     expect(d).toMatchObject({ route: "active-stranger", sub: "fresh", rule: 7 });
     expect(d.headline).toMatch(/does not index/);
+  });
+  it("REGRESSION (audit 2026-09-23): a quiet address whose all-time page failed read 'nothing on record' off an empty 14-day page — it is a retry", () => {
+    const d = classify(lookups({ transactionsWindow: "14d-partial" }), NOW);
+    expect(d).toMatchObject({ route: "retry", sub: "failed", rule: 0 });
+    expect(d.evidence[0].code).toBe("HISTORY_INCOMPLETE");
+    expect(d.headline).not.toMatch(/nothing on record/i);
+    // inbound only in the last 14 days is not "never sent anything" either
+    expect(classify(lookups({ transactionsWindow: "14d-partial", transactions: ok(txs([txRow({ from: USER, to: R })])) }), NOW).route).toBe("retry");
+  });
+  it("…but a 14-day page that shows outgoing transfers still decides (activity is positive evidence)", () => {
+    const d = classify(lookups({ transactionsWindow: "14d-partial", transactions: ok(txs([txRow({ from: R, to: USER, ts: "2026-09-10T00:00:00" })])) }), NOW);
+    expect(d).toMatchObject({ route: "active-stranger", sub: "active" });
+    // and positive label evidence on the partial page still wins (the hero's labels are all in the last 14 days)
+    expect(classify(binanceDeposit({ transactionsWindow: "14d-partial" }), NOW).route).toBe("exchange-deposit");
   });
   it("one surviving core lookup is enough to decide (with the failures listed)", () => {
     const d = classify(lookups({ transactions: fail("timeout"), counterparties: fail("timeout"), related: ok(related([{ address: "0x9c", relation: "Deployed by" }])) }), NOW);
