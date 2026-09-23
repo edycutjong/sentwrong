@@ -21,7 +21,13 @@ if (sender && !/^0x[0-9a-fA-F]{40}$/.test(sender)) { console.error(`--from "${se
 
 const G = "\x1b[32m", R = "\x1b[31m", Y = "\x1b[33m", D = "\x1b[2m", B = "\x1b[1m", X = "\x1b[0m";
 if (flags.has("--deep")) console.error(`${Y}--deep: this run will spend ${CREDITS["profiler/address/labels"]} credits on profiler/address/labels${X}`);
-const client = cachedClientFromEnv({ ttlMs: flags.has("--no-cache") ? 0 : undefined });
+let client: ReturnType<typeof cachedClientFromEnv>;
+try { client = cachedClientFromEnv({ ttlMs: flags.has("--no-cache") ? 0 : undefined }); }
+catch (e) {
+  // the first thing a new clone hits if the export was skipped: one actionable line, not a stack trace
+  console.error(`${R}${(e as Error).message}${X}\n  export NANSEN_API_KEY=nsn_…   (https://app.nansen.ai/api — free tier works)\n  no key? \`npm run verify\` replays the 13 recorded verdicts offline`);
+  process.exit(1);
+}
 let v: Verdict;
 try { v = await sentWrong(client, address, { sender, chain, deep: flags.has("--deep") }); }
 catch (e) { console.error(`${R}${(e as Error).message}${X}`); process.exit(2); }
