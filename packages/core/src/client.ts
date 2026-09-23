@@ -70,6 +70,15 @@ function withAttempts(e: unknown, attempts: number): unknown {
   return e;
 }
 
+/** Parse a 200 body. A non-JSON 200 (a proxy's HTML error page) is a failed call — recorded once, never cached. */
+export function parseJson<T>(endpoint: string, text: string): T {
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    throw new Error(`Nansen ${endpoint} → non-JSON response: ${text.slice(0, 60)}`);
+  }
+}
+
 export function sha256(text: string): string {
   return createHash("sha256").update(text).digest("hex");
 }
@@ -136,14 +145,16 @@ export class NansenClient {
     }
   }
 
-  /** POST `endpoint` with a JSON body; one retry on 429/5xx/timeout unless `retries: 0`; records the call. */
+  /** POST `endpoint` with a JSON body; one retry on 429/5xx/timeout/dropped connection unless `retries: 0`; records the call. */
   async post<T = unknown>(endpoint: string, body: Record<string, unknown>, fieldsUsed: string[] = [], opts: CallOptions = {}): Promise<T> {
     const t0 = Date.now();
     const seq = this.begin(endpoint, body);
     try {
       const { text, ms, status, attempts, totalMs } = await this.postRaw(endpoint, body, opts);
+      // parsed BEFORE recording: a body that does not parse is one failed row, not an ok row followed by a failed one
+      const data = parseJson<T>(endpoint, text);
       this.record(seq, { endpoint, body, credits: CREDITS[endpoint] ?? 1, ms, cached: false, status, fieldsUsed, responseHash: sha256(text), attempts, totalMs, ok: true });
-      return JSON.parse(text) as T;
+      return data;
     } catch (e) {
       this.recordFailure(seq, endpoint, body, fieldsUsed, e, Date.now() - t0);
       throw e;
@@ -184,14 +195,22 @@ export class NansenClient {
         const ms = Date.now() - started;
         if (res.status === 429 || res.status >= 500) {
           lastErr = new NansenError(endpoint, res.status, text);
-          if (attempt < maxAttempts - 1) { await new Promise((r) => setTimeout(r, 750)); continue; }
+          if (attempt < maxAttempts - 1) {
+            // honour a short Retry-After on 429 (capped so one call cannot stall a recording), else a fixed 750 ms
+            const ra = Number(res.headers.get("retry-after"));
+            await new Promise((r) => setTimeout(r, ra > 0 ? Math.min(ra * 1000, 3000) : 750));
+            continue;
+          }
           throw lastErr;
         }
         if (!res.ok) throw new NansenError(endpoint, res.status, text);
         return { text, ms, status: res.status, attempts: attempt + 1, totalMs: Date.now() - t0 };
       } catch (e) {
         lastErr = e;
-        if (attempt === maxAttempts - 1 || !(e instanceof Error && e.name === "AbortError")) throw withAttempts(e, attemptsMade);
+        // retried: a timeout (AbortError) and a dropped connection (fetch's TypeError: "fetch failed", ECONNRESET) — both
+        // transient; a NansenError (4xx, or the final 429/5xx) is Nansen's answer and is thrown as is
+        const transient = e instanceof Error && (e.name === "AbortError" || e instanceof TypeError);
+        if (attempt === maxAttempts - 1 || !transient) throw withAttempts(e, attemptsMade);
       } finally {
         clearTimeout(timer);
       }

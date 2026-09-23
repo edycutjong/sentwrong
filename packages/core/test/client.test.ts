@@ -81,3 +81,38 @@ describe("per-call options", () => {
     expect(c.calls[0]).toMatchObject({ ok: false, error: "timeout", attempts: 1 });
   });
 });
+
+describe("audit 2026-09-23: transient failures", () => {
+  it("REGRESSION (dropped connection): a fetch TypeError ('fetch failed') was not retried like a timeout — it is retried once", async () => {
+    let n = 0;
+    const c = fakeClient(() => {
+      if (n++ === 0) throw new TypeError("fetch failed");
+      return { ok: true };
+    });
+    expect(await c.post("profiler/address/transactions", {})).toEqual({ ok: true });
+    expect(c.calls[0]).toMatchObject({ ok: true, attempts: 2 });
+  });
+  it("a second dropped connection gives up with attempts=2; a plain Error is not retried", async () => {
+    const c = fakeClient(() => { throw new TypeError("fetch failed"); });
+    await expect(c.post("profiler/address/transactions", {})).rejects.toThrow(/fetch failed/);
+    expect(c.calls[0]).toMatchObject({ ok: false, attempts: 2 });
+    let n = 0;
+    const d = fakeClient(() => { n++; throw new Error("boom"); });
+    await expect(d.post("profiler/address/transactions", {})).rejects.toThrow(/boom/);
+    expect(n).toBe(1);
+  });
+  it("a 429 with Retry-After waits that long (capped at 3 s) before the retry", async () => {
+    let n = 0;
+    const c = fakeClient(() => (n++ === 0 ? new Response("slow down", { status: 429, headers: { "retry-after": "1" } }) : { ok: true }));
+    const t0 = Date.now();
+    await c.post("profiler/address/transactions", {});
+    expect(Date.now() - t0).toBeGreaterThanOrEqual(990);
+    expect(c.calls[0].attempts).toBe(2);
+  });
+  it("a non-JSON 200 on the plain client is one failed row, not an ok row followed by a failed one", async () => {
+    const c = fakeClient(() => new Response("<html>oops</html>", { status: 200 }));
+    await expect(c.post("profiler/address/transactions", {})).rejects.toThrow(/non-JSON response/);
+    expect(c.calls).toHaveLength(1);
+    expect(c.calls[0].ok).toBe(false);
+  });
+});
