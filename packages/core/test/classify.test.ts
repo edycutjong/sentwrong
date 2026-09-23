@@ -149,6 +149,15 @@ describe("rule 4 — sweep pattern for a not-yet-labelled deposit address", () =
     expect(d.route).toBe("active-stranger");
     expect(d.warnings.some((w) => /several exchanges' own wallets \(Binance, Coinbase\)/.test(w))).toBe(true);
   });
+  it("an unnamed 🏦 wallet next to a named one is still one exchange — the sweep is named after the one that has a name", () => {
+    const s1 = txRow({ hash: "0x" + "5".repeat(64), from: R, to: HOT }), s2 = txRow({ hash: "0x" + "6".repeat(64), from: R, to: GAS });
+    const d = classify(lookups({ transactions: ok(txs([s1, s2])), txLookups: [
+      { hash: s1.transaction_hash, role: "outbound", result: ok(lookup(s1.transaction_hash, [transfer(R, HOT, null, "🏦 Hot Wallet [0x28c6c0]")])) },
+      { hash: s2.transaction_hash, role: "outbound", result: ok(lookup(s2.transaction_hash, [transfer(R, GAS, null, "🏦 Binance 14 [0xa9d1e0]")])) },
+    ] }), NOW);
+    expect(d).toMatchObject({ route: "exchange-deposit", sub: "sweep-pattern", entity: "Binance" });
+    expect(d.warnings.join(" ")).not.toMatch(/undefined|several exchanges/);
+  });
 });
 
 describe("rule 5 — contracts", () => {

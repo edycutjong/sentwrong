@@ -152,13 +152,14 @@ export function classify(l: Lookups, now = Date.now()): Decision {
   //    and a 🏦-marked DEX router ("Uniswap: V2 Router 2") is a swap, not a sweep — contract labels are excluded
   //    and a deposit address sweeps into ONE exchange: outflow split across several exchanges' wallets is a person's pattern
   const sweepTarget = (d: { label?: ParsedLabel }) => !!d.label?.exchange && !isDepositLabel(d.label) && !isContractLabel(d.label);
-  const sweepEntities = [...new Set(dests.map((d) => d.label?.entity))];
+  //    (a 🏦 label with no name — "🏦 Hot Wallet" — is not a second exchange)
+  const sweepEntities = [...new Set(dests.flatMap((d) => (d.label?.entity ? [d.label.entity] : [])))];
   if (dests.length && dests.every(sweepTarget) && sweepEntities.length > 1) warnings.push(`its outbound goes to several exchanges' own wallets (${sweepEntities.join(", ")}) — not the single-exchange sweep of a deposit address`);
-  if (dests.length && dests.every(sweepTarget) && sweepEntities.length === 1) {
-    const entity = dests[0].label!.entity ?? "an exchange";
+  if (dests.length && dests.every(sweepTarget) && sweepEntities.length <= 1) {
+    const entity = sweepEntities[0] ?? "an exchange";
     ev.push({ code: "SWEEP_TO_EXCHANGE", field: "transaction-with-token-transfer-lookup → token_transfer_array[].to_address_label", value: dests.map((d) => d.label!.raw).join(" · "), meaning: `Every transfer out of this address went to ${entity}'s own wallet — it is swept like a deposit address.` });
     let confidence: Confidence = "medium";
-    if (funder?.exchange && funder.entity === dests[0].label!.entity) { confidence = "high"; ev.push({ code: "FUNDED_BY_EXCHANGE", field: "profiler/address/first-funder → first_funder_address (looked up)", value: funder.raw, meaning: `${entity} also paid its first gas.` }); }
+    if (funder?.exchange && funder.entity === sweepEntities[0]) { confidence = "high"; ev.push({ code: "FUNDED_BY_EXCHANGE", field: "profiler/address/first-funder → first_funder_address (looked up)", value: funder.raw, meaning: `${entity} also paid its first gas.` }); }
     if (conc.share >= 0.95 && conc.to) { confidence = "high"; ev.push({ code: "OUTFLOW_CONCENTRATED", field: "profiler/address/counterparties → volume_out_usd", value: `${Math.round(conc.share * 100)}% to ${short(conc.to)}`, meaning: `All outflow ($${Math.round(conc.totalOut).toLocaleString("en-US")} at today's prices) goes to one counterparty.` }); }
     if (act && act.out < 2) warnings.push("only one sweep seen so far — the address is new; the pattern is consistent but thin");
     return { route: "exchange-deposit", sub: "sweep-pattern", confidence, entity, headline: `This looks like a ${entity} deposit address (not labelled yet, but swept into ${entity}). Recoverable through ${entity} support.`, evidence: ev, rule: 4, warnings };

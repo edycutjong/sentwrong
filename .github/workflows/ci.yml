@@ -189,7 +189,7 @@ jobs:
           echo "🚀 All CI/CD gates passed!"
           echo ""
           echo "Pipeline Summary:"
-          echo "  ✅ Stage 1 — Quality (format, lint, typecheck, 231 tests + coverage, offline replay, readiness)"
+          echo "  ✅ Stage 1 — Quality (format, lint, typecheck, 232 tests + coverage, offline replay, readiness)"
           echo "  ✅ Stage 2 — Secret Scanning (TruffleHog)"
           echo "  ✅ Stage 2 — Dependency Audit (npm audit + license-checker)"
           echo "  ✅ Stage 3 — Build Verification"

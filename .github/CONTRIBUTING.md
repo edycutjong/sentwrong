@@ -10,7 +10,7 @@ Thanks for your interest in improving Sent Wrong! 🎉
 5. Start the web app: `npm run dev` → http://localhost:3000
 
 ## Before You Open a PR
-- `npm run ci` passes — Prettier, ESLint, `tsc` for the engine and the web app, the 231 vitest tests with 100% coverage
+- `npm run ci` passes — Prettier, ESLint, `tsc` for the engine and the web app, the 232 vitest tests with 100% coverage
   (unit, property-based, boundary), the offline fixture replay (`npm run verify`, 13/13), and the submission-readiness check.
 - `npm run e2e` passes (Playwright; builds the web app and runs it **without** a key — nothing spends credits).
 - Engine changes: add or update a test in `packages/core/test/`. Name a regression test after the defect it pins
