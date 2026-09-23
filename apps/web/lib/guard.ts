@@ -1,5 +1,5 @@
 /**
- * Spend guard for the public API route. The Nansen key is server-only and every request spends real credits, so an
+ * Spend guard for the public live-verdict surfaces (POST /api/verdict and the /q/[address] permalink). The Nansen key is server-only and every request spends real credits, so an
  * unattended loop against the URL could drain the account. Two ceilings, no new services:
  *
  *   1. per-IP:  IP_PER_MIN requests per rolling minute → 429 with Retry-After;
@@ -54,6 +54,18 @@ export function recordSpend(credits: number, now = Date.now()): void {
 /** true when the day's budget cannot cover one more worst-case request */
 export function budgetExhausted(now = Date.now()): boolean {
   return creditsLeft(now) < MAX_REQUEST_CREDITS;
+}
+export type Admission = { ok: true } | { ok: false; status: 429 | 503; message: string; retryAfter: number };
+/**
+ * The one gate every live-verdict surface passes BEFORE any Nansen call: POST /api/verdict and the /q/[address]
+ * permalink (a server-rendered live verdict on every GET — link unfurlers and crawlers included). Pair it with
+ * recordSpend(verdict.credits) after the verdict.
+ */
+export function admit(headers: Headers, now = Date.now()): Admission {
+  const gate = ipAllowed(clientIp(headers), now);
+  if (!gate.ok) return { ok: false, status: 429, message: RATE_MESSAGE(gate.retryAfter), retryAfter: gate.retryAfter };
+  if (budgetExhausted(now)) return { ok: false, status: 503, message: BUDGET_MESSAGE, retryAfter: 3600 };
+  return { ok: true };
 }
 /** test hook */
 export function resetGuard(): void {

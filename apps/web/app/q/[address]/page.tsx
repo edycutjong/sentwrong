@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { cache } from "react";
+import { headers } from "next/headers";
 import { parseInput, verdictFor } from "@/lib/engine";
+import { admit, recordSpend } from "@/lib/guard";
 import { Sentwrong } from "@/components/Sentwrong";
 import { SiteHeader, SiteFooter } from "@/components/Shell";
 
@@ -10,9 +12,14 @@ export const maxDuration = 60;
 type Props = { params: Promise<{ address: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 
 // generateMetadata and the page both need the verdict; React's per-request cache makes it one set of Nansen calls, not two
+// — and one pass through the spend guard: every GET of a permalink (crawlers and link unfurlers too) is a live verdict
 const loadVerdict = cache(async (address: string, sender: string | undefined, chain: string | undefined) => {
   const input = parseInput({ address, sender, chain });
-  return { input, verdict: await verdictFor(input) };
+  const gate = admit(await headers());
+  if (!gate.ok) throw new Error(gate.message);
+  const verdict = await verdictFor(input);
+  recordSpend(verdict.credits);
+  return { input, verdict };
 });
 
 async function load(props: Props) {

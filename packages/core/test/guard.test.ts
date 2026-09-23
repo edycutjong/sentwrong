@@ -1,14 +1,17 @@
 /**
- * Spend guard on POST /api/verdict (apps/web/lib/guard.ts): the server key spends real credits — and `deep` adds the
+ * Spend guard on POST /api/verdict and the /q/[address] permalink (apps/web/lib/guard.ts): the server key spends real credits — and `deep` adds the
  * 100-credit labels call from a button — so past the per-IP rate the route answers 429 + Retry-After, and past the
  * day's credit ceiling an honest 503, both before `verdictFor` runs. `@/lib/engine` is mocked so no client or
  * network call is ever constructed; `parseInput` stays the real one.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { POST } from "@/app/api/verdict/route";
-import { ipAllowed, creditsLeft, recordSpend, budgetExhausted, resetGuard, clientIp, IP_PER_MIN, DAILY_CREDITS, MAX_REQUEST_CREDITS, BUDGET_MESSAGE } from "@/lib/guard";
+import { generateMetadata } from "@/app/q/[address]/page";
+import { ipAllowed, admit, creditsLeft, recordSpend, budgetExhausted, resetGuard, clientIp, IP_PER_MIN, DAILY_CREDITS, MAX_REQUEST_CREDITS, BUDGET_MESSAGE } from "@/lib/guard";
 
 const { verdictForMock } = vi.hoisted(() => ({ verdictForMock: vi.fn() }));
+// the /q page reads the request's headers through next/headers; one fixed client address here
+vi.mock("next/headers", () => ({ headers: async () => new Headers({ "x-forwarded-for": "192.0.2.50" }) }));
 vi.mock("@/lib/engine", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/engine")>();
   return { ...actual, verdictFor: verdictForMock };
@@ -102,6 +105,51 @@ describe("POST /api/verdict under the guard", () => {
     expect(res.status).toBe(503);
     expect(res.headers.get("retry-after")).toBe("3600");
     expect((await res.json()).message).toBe(BUDGET_MESSAGE);
+    expect(verdictForMock).not.toHaveBeenCalled();
+  });
+});
+
+describe("admit() — the gate shared by POST /api/verdict and the /q permalink", () => {
+  beforeEach(resetGuard);
+  const h = (ip: string) => new Headers({ "x-forwarded-for": ip });
+
+  it("admits, then 429s past the per-IP rate with the Retry-After in the message", () => {
+    for (let i = 0; i < IP_PER_MIN; i++) expect(admit(h("198.51.100.1"))).toEqual({ ok: true });
+    const r = admit(h("198.51.100.1"));
+    expect(r).toMatchObject({ ok: false, status: 429 });
+    if (!r.ok) expect(r.message).toMatch(new RegExp(`try again in ${r.retryAfter} s`));
+  });
+  it("503s with the budget message once the day cannot cover one more request", () => {
+    recordSpend(DAILY_CREDITS);
+    expect(admit(h("198.51.100.2"))).toEqual({ ok: false, status: 503, message: BUDGET_MESSAGE, retryAfter: 3600 });
+  });
+});
+
+describe("REGRESSION (audit 2026-09-23): the /q/[address] permalink spent live credits with no guard", () => {
+  let realKey: string | undefined;
+  beforeEach(() => {
+    resetGuard();
+    realKey = process.env.NANSEN_API_KEY;
+    process.env.NANSEN_API_KEY = "nsn_guard_test_key_0000000000000000000000";
+    verdictForMock.mockReset();
+    verdictForMock.mockResolvedValue({ credits: 13, address: "0x" + "a".repeat(40), decision: { route: "retry", headline: "h", confidence: "low" } });
+  });
+  afterEach(() => {
+    if (realKey == null) delete process.env.NANSEN_API_KEY;
+    else process.env.NANSEN_API_KEY = realKey;
+  });
+  const props = { params: Promise.resolve({ address: "0x" + "a".repeat(40) }), searchParams: Promise.resolve({}) };
+
+  it("every GET passes the per-IP gate and records its credits; past the rate the verdict never runs", async () => {
+    for (let i = 0; i < IP_PER_MIN; i++) await generateMetadata(props);
+    expect(verdictForMock).toHaveBeenCalledTimes(IP_PER_MIN);
+    expect(creditsLeft()).toBe(DAILY_CREDITS - 13 * IP_PER_MIN);
+    expect(await generateMetadata(props)).toEqual({ title: "Sent Wrong" });
+    expect(verdictForMock).toHaveBeenCalledTimes(IP_PER_MIN);
+  });
+  it("past the daily ceiling the verdict never runs", async () => {
+    recordSpend(DAILY_CREDITS);
+    expect(await generateMetadata(props)).toEqual({ title: "Sent Wrong" });
     expect(verdictForMock).not.toHaveBeenCalled();
   });
 });

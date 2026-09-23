@@ -1,5 +1,8 @@
 import { defineConfig } from "vitest/config";
 export default defineConfig({
+  // apps/web's tsconfig says jsx: "preserve" (Next compiles it); the guard suite imports the /q page, so vitest
+  // compiles JSX itself with the automatic runtime
+  oxc: { jsx: { runtime: "automatic" } },
   test: {
     // fast-check property suites run 10,000+ cases; 5 s is too tight on a loaded runner
     testTimeout: 60_000,
