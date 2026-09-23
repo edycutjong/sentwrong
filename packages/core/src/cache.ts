@@ -1,6 +1,6 @@
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { NansenClient, NansenError, sha256, CREDITS, type ClientOptions, type CallOptions } from "./client.js";
+import { NansenClient, NansenError, sha256, parseJson, CREDITS, type ClientOptions, type CallOptions } from "./client.js";
 
 /** `status` is set only for cached 4xx rejections (e.g. 422 "Burn address not allowed") — a deterministic answer worth replaying. */
 export type CacheEntry = { storedAt: string; ttlMs: number; endpoint: string; body: Record<string, unknown>; text: string; status?: number };
@@ -26,14 +26,29 @@ export class DiskCache implements CacheStore {
 
 export class MemoryCache implements CacheStore {
   private m = new Map<string, CacheEntry>();
+  /** `max` bounds a long-lived server instance's memory: past it the oldest entry is evicted (a miss is just a live call). */
+  constructor(private max = Infinity) {}
   get(key: string) { return this.m.get(key); }
-  set(key: string, entry: CacheEntry) { this.m.set(key, entry); }
+  set(key: string, entry: CacheEntry) {
+    this.m.delete(key);
+    if (this.m.size >= this.max) this.m.delete(this.m.keys().next().value!);
+    this.m.set(key, entry);
+  }
   /** Everything stored, insertion order — `scripts/seed.ts` writes this to a fixture file. */
   entries(): Record<string, CacheEntry> { return Object.fromEntries(this.m); }
 }
 
 /** 24 h, as the README states (a rehearsal the day before still warms the recording). --no-cache passes ttlMs 0. */
 export const DEFAULT_TTL_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * The 4xx answers that are Nansen's deterministic verdict on the INPUT and safe to replay for 24 h: 422 (burn address)
+ * and 400 (bad chain / body). 401/402/403 are about the account (key revoked, credits exhausted, plan) and 404/408/429
+ * are transient — caching those would keep answering "failed" for a day after the account is fixed.
+ */
+export function isCacheableRejection(e: unknown): e is NansenError {
+  return e instanceof NansenError && (e.status === 400 || e.status === 422);
+}
 
 /** Recursively sort object keys so `{a:{y,x}}` and `{a:{x,y}}` serialize identically (arrays keep order). */
 export function canonicalize(v: unknown): unknown {
@@ -97,17 +112,21 @@ export class CachedNansenClient extends NansenClient {
     }
     const t0 = Date.now();
     let raw: Awaited<ReturnType<NansenClient["postRaw"]>>;
-    try { raw = await this.postRaw(endpoint, body, opts); }
-    catch (e) {
+    let data: T;
+    try {
+      raw = await this.postRaw(endpoint, body, opts);
+      // parsed before anything is recorded or stored: an unparseable 200 is one failed row and is never cached
+      data = parseJson<T>(endpoint, raw.text);
+    } catch (e) {
       this.recordFailure(seq, endpoint, body, fieldsUsed, e, Date.now() - t0);
-      // 4xx other than 429 is Nansen's deterministic answer about the input (422 burn address, 400 bad chain): cache it too
-      if (e instanceof NansenError && e.status >= 400 && e.status < 500 && e.status !== 429) this.store.set(key, { storedAt: new Date().toISOString(), ttlMs: this.ttlMs, endpoint, body, text: e.bodyText, status: e.status });
+      // Nansen's deterministic answer about the input (422 burn address, 400 bad chain) is data: cache it too
+      if (isCacheableRejection(e)) this.store.set(key, { storedAt: new Date().toISOString(), ttlMs: this.ttlMs, endpoint, body, text: e.bodyText, status: e.status });
       throw e;
     }
     const { text, ms, status, attempts, totalMs } = raw;
     this.record(seq, { endpoint, body, credits: CREDITS[endpoint] ?? 1, ms, cached: false, status, fieldsUsed, responseHash: sha256(text), attempts, totalMs, ok: true });
     this.store.set(key, { storedAt: new Date().toISOString(), ttlMs: this.ttlMs, endpoint, body, text });
-    return JSON.parse(text) as T;
+    return data;
   }
 
   /** Credits actually spent on the network: cached hits and failed calls are recorded at 0. */

@@ -7,8 +7,9 @@ import { join } from "node:path";
 
 // On Vercel the function has no durable disk, so the cache lives in memory and only for the life of one warm instance
 // (a cold start begins empty — every call is live again). Locally (`npm run dev`) the same on-disk cache the CLI uses
-// survives restarts, so a rehearsed address stays warm for a recording.
-const store = process.env.VERCEL ? new MemoryCache() : new DiskCache(join(process.cwd(), ".cache"));
+// survives restarts, so a rehearsed address stays warm for a recording. 5,000 responses (~a few hundred verdicts) bound
+// a long-lived instance's memory; the oldest is evicted first.
+const store = process.env.VERCEL ? new MemoryCache(5000) : new DiskCache(join(process.cwd(), ".cache"));
 export const TTL_MS = 24 * 3600 * 1000;
 
 export function client(onEvent?: (e: CallEvent) => void): CachedNansenClient {

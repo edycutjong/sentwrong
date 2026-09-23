@@ -112,3 +112,41 @@ describe("4xx rejections are cached and replayed (burn addresses are determinist
     expect(store.get(cacheKey("profiler/address/transactions", { a: 1 }))).toBeUndefined();
   });
 });
+
+describe("audit 2026-09-23: what the cache keeps", () => {
+  it("REGRESSION (account errors cached): a 403 (key/credits) was replayed for 24 h after the account was fixed — only 400 and 422 are cached", async () => {
+    const store = new MemoryCache();
+    let status = 403;
+    const fetchImpl: typeof fetch = async () => (status === 200 ? new Response('{"data":[]}', { status: 200 }) : new Response('{"error":"Insufficient credits"}', { status }));
+    const c = new CachedNansenClient(KEY, { fetchImpl, rps: 1000, store });
+    for (const s of [401, 402, 403, 404]) {
+      status = s;
+      await expect(c.post("profiler/address/transactions", { a: s })).rejects.toThrow(new RegExp(`HTTP ${s}`));
+      expect(store.get(cacheKey("profiler/address/transactions", { a: s }))).toBeUndefined();
+    }
+    status = 400;
+    await expect(c.post("profiler/address/transactions", { a: 400 })).rejects.toThrow(/HTTP 400/);
+    expect(store.get(cacheKey("profiler/address/transactions", { a: 400 }))?.status).toBe(400);
+    // the account is fixed: the next call goes to the network and succeeds
+    status = 200;
+    expect(await c.post("profiler/address/transactions", { a: 403 })).toEqual({ data: [] });
+  });
+  it("REGRESSION (non-JSON 200): a proxy's HTML page was recorded ok AND failed, and cached for 24 h — it is one failed row, never stored", async () => {
+    const store = new MemoryCache();
+    const c = new CachedNansenClient(KEY, { fetchImpl: async () => new Response("<html>Bad gateway</html>", { status: 200 }), rps: 1000, store });
+    await expect(c.post("profiler/address/transactions", { a: 1 })).rejects.toThrow(/non-JSON response/);
+    expect(c.calls).toHaveLength(1);
+    expect(c.calls[0]).toMatchObject({ ok: false, credits: 0 });
+    expect(store.get(cacheKey("profiler/address/transactions", { a: 1 }))).toBeUndefined();
+  });
+  it("MemoryCache(max) evicts the oldest entry first; re-setting a key refreshes its place", () => {
+    const m = new MemoryCache(2);
+    const e = (text: string) => ({ storedAt: "2026-09-23T00:00:00Z", ttlMs: 1, endpoint: "x", body: {}, text });
+    m.set("a", e("1"));
+    m.set("b", e("2"));
+    m.set("a", e("1b")); // a is now the newest
+    m.set("c", e("3")); // evicts b
+    expect(Object.keys(m.entries())).toEqual(["a", "c"]);
+    expect(m.get("a")?.text).toBe("1b");
+  });
+});
