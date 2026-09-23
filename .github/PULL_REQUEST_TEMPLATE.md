@@ -5,7 +5,7 @@
 -
 
 ## Checklist
-- [ ] `npm run ci` passes (format, lint, typecheck, 214 tests + coverage, offline replay, readiness)
+- [ ] `npm run ci` passes (format, lint, typecheck, 231 tests + coverage, offline replay, readiness)
 - [ ] `npm run e2e` passes (Playwright, no key)
 - [ ] Tests added/updated for the change; regressions named after the defect
 - [ ] `docs/SCORING.md` updated if a decision rule changed; decision-hash changes are intentional
