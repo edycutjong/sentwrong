@@ -6,7 +6,7 @@
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { POST } from "@/app/api/verdict/route";
-import { generateMetadata } from "@/app/q/[address]/page";
+import Share, { generateMetadata } from "@/app/q/[address]/page";
 import { ipAllowed, admit, creditsLeft, recordSpend, budgetExhausted, resetGuard, clientIp, IP_PER_MIN, DAILY_CREDITS, MAX_REQUEST_CREDITS, BUDGET_MESSAGE } from "@/lib/guard";
 
 const { verdictForMock } = vi.hoisted(() => ({ verdictForMock: vi.fn() }));
@@ -150,6 +150,23 @@ describe("REGRESSION (audit 2026-09-23): the /q/[address] permalink spent live c
   it("past the daily ceiling the verdict never runs", async () => {
     recordSpend(DAILY_CREDITS);
     expect(await generateMetadata(props)).toEqual({ title: "Sent Wrong" });
+    expect(verdictForMock).not.toHaveBeenCalled();
+  });
+  // the page itself, not only its metadata: a refused permalink renders the guard's message in the banner, never a 500
+  const pageProps = (el: Awaited<ReturnType<typeof Share>>) => (el.props as { children: { props: Record<string, unknown> }[] }).children[1].props;
+  it("REGRESSION (a2a r01): past the daily ceiling the page renders the budget message as initialError — no throw, no verdict", async () => {
+    recordSpend(DAILY_CREDITS);
+    const p = pageProps(await Share(props));
+    expect(p.initialError).toBe(BUDGET_MESSAGE);
+    expect(p.initialVerdict).toBeUndefined();
+    expect(verdictForMock).not.toHaveBeenCalled();
+  });
+  it("REGRESSION (a2a r01): past the per-IP rate the page renders the 429 message as initialError — no throw, no verdict", async () => {
+    for (let i = 0; i < IP_PER_MIN; i++) await generateMetadata(props);
+    verdictForMock.mockClear();
+    const p = pageProps(await Share(props));
+    expect(p.initialError).toMatch(/^Too many requests from this address — try again in \d+ s$/);
+    expect(p.initialVerdict).toBeUndefined();
     expect(verdictForMock).not.toHaveBeenCalled();
   });
 });
